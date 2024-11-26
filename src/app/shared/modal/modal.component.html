@@ -1,0 +1,14 @@
+<p-dialog
+    (onHide)="onHide()"
+    [header]="title"
+    [dismissableMask]="true"
+    [modal]="true"
+    [(visible)]="isVisible"
+    [style]="{ width: '40rem' }"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+    [draggable]="false"
+    [resizable]="false"
+>
+    <span class="p-text-secondary block mb-5 xl:mt-0">{{ subtitle }}</span>
+    <ng-content />
+</p-dialog>

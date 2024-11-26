@@ -1,0 +1,131 @@
+<form [formGroup]="watchForm" (ngSubmit)="onSubmit()">
+    <div class="flex flex-column gap-2 mb-4">
+        <label for="description" class="font-semibold w-6rem">Description</label>
+        <input
+            pInputText
+            id="description"
+            class="flex-auto"
+            autocomplete="off"
+            formControlName="description"
+        />
+    </div>
+
+    <div class="md:flex gap-4">
+        <div class="flex flex-column gap-2 mb-4 align-items-stretch flex-grow-1">
+            <label for="dateOfPurchase" class="font-semibold">Date of Purchase</label>
+            <p-calendar 
+                [iconDisplay]="'input'" 
+                class="w-full"
+                [showIcon]="true" 
+                inputId="dateOfPurchase"
+                formControlName="dateOfPurchase" 
+            />
+        </div>
+
+        <div class="flex flex-column gap-2 mb-4 flex-grow-1">
+            <label for="material" class="font-semibold">Material</label>
+            <input
+                pInputText
+                id="material"
+                class="flex-auto"
+                autocomplete="off"
+                formControlName="material"
+            />
+        </div>
+    </div>
+
+    <div class="md:flex gap-4">
+        <div class="flex flex-column gap-2 mb-4 flex-grow-1">
+            <label for="referenceNumber" class="font-semibold">Reference No.</label>
+            <input
+                pInputText
+                id="referenceNumber"
+                class="flex-auto"
+                autocomplete="off"
+                formControlName="referenceNumber"
+            />
+        </div>
+    
+        <div class="flex flex-column gap-2 mb-4 flex-grow-1">
+            <label for="serialNumber" class="font-semibold w-6rem">Serial No.</label>
+            <input
+                pInputText
+                id="serialNumber"
+                class="flex-auto"
+                autocomplete="off"
+                formControlName="serialNumber"
+            />
+        </div>
+    </div>
+
+    <div class="md:flex gap-4">
+        <div class="flex flex-column gap-2 mb-4 flex-grow-1">
+            <label for="location" class="font-semibold">Location</label>
+            <input
+                pInputText
+                id="location"
+                class="flex-auto"
+                autocomplete="off"
+                formControlName="location"
+            />
+        </div>
+    
+        <div class="flex flex-column gap-2 mb-4 flex-grow-1">
+            <label for="cost" class="font-semibold w-6rem">Cost</label>
+            <p-inputNumber inputId="integeronly" formControlName="cost" />
+        </div>
+    </div>
+
+    <div class="grid pb-0">
+        <div class="col-12 flex flex-column gap-2 pb-0">
+            <label for="remarks" class="font-semibold">Remarks</label>
+            <textarea
+                id="remarks"
+                rows="3"
+                cols="45"
+                pInputTextarea
+                formControlName="remarks"
+            ></textarea>
+        </div>
+    </div>
+
+    <div class="flex align-items-baseline justify-content-between">
+        <div class="flex gap-3 align-self-center pt-3">
+            <div class="flex align-items-center">
+                <p-checkbox 
+                    label="Box" 
+                    name="Box" 
+                    value="Box"
+                    [binary]="true"
+                    formControlName="box"
+                />
+            </div>
+            <div class="flex align-items-center">
+                <p-checkbox 
+                    label="Papers"
+                    name="papers" 
+                    value="papers"
+                    [binary]="true"
+                    formControlName="papers" />
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <p-fileUpload 
+                #fileUpload
+                mode="basic" 
+                chooseLabel="Choose an image" 
+                chooseIcon="pi pi-upload"
+                customUpload="true"
+                accept="image/*" 
+                maxFileSize="2000000" 
+                (uploadHandler)="onUpload($event)"
+            />
+         </div>
+    </div>
+
+     <div class="flex justify-content-end gap-2 mt-4">
+        <p-button label="Cancel" [plain]="true" [text]="true" (click)="onCancel()" />
+        <p-button label="Save" type="submit" severity="success" />
+    </div>
+</form>
