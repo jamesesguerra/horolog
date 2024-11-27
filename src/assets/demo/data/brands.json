@@ -1,0 +1,39 @@
+{
+    "data": [
+        {
+            "id": 1,
+            "name": "Rolex",
+            "imageUrl": "https://static.vecteezy.com/system/resources/previews/021/963/719/non_2x/rolex-logo-editorial-illustration-free-vector.jpg"
+        },
+        {
+            "id": 2,
+            "name": "Patek Philippe",
+            "imageUrl": "https://www.logolynx.com/images/logolynx/27/2704cc7c19aae8f62c5d8bdbd3f7b223.jpeg"
+        },
+        {
+            "id": 3,
+            "name": "Audemars Piguet",
+            "imageUrl": "https://i.pinimg.com/564x/05/80/01/0580016128a27b33c46abb60d6f8fc21.jpg"
+        },
+        {
+            "id": 4,
+            "name": "Vacheron Constantin",
+            "imageUrl": "https://lh3.googleusercontent.com/proxy/t280B5c31IyldDJideL9oAu6EKWgcLVvrYdS_285jWeQw2gHpGOjMWD2M7ef5Yw83G5ChVlw02q_nwUIJqEMQcf6J9EgJkGJDVwW1HzAQjcAQpTw8ZI"
+        },
+        {
+            "id": 5,
+            "name": "Jaeger-LeCoultre",
+            "imageUrl": "https://media.glassdoor.com/sqll/1064041/jaeger-lecoultre-squarelogo-1538144000818.png"
+        },
+        {
+            "id": 6,
+            "name": "Omega",
+            "imageUrl": "https://static.vecteezy.com/system/resources/previews/021/963/717/non_2x/omega-logo-editorial-illustration-free-vector.jpg"
+        },
+        {
+            "id": 7,
+            "name": "Richard Mille",
+            "imageUrl": "https://logowik.com/content/uploads/images/richard-mille9316.logowik.com.webp"
+        }
+    ]
+}

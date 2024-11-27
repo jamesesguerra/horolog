@@ -1,5 +1,6 @@
 export interface Watch {
     id?: number;
+    brandId?: number;
     imageUrl?: string;
     description?: string;
     material?: string;
