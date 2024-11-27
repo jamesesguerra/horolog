@@ -61,8 +61,8 @@ export class SheetsComponent implements OnInit {
   }
 
   onAddWatch(watch: Watch) {
-    this.filteredWatches = [...this.filteredWatches, watch];
     this.isAddModalVisible = false;
+    this.filteredWatches = [...this.filteredWatches, watch];
   }
 
   onAddCancel() {

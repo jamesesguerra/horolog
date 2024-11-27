@@ -45,5 +45,7 @@ export class AppTopBarComponent {
     toggleTheme() {
         this.theme = this.colorScheme === 'light' ? 'mdc-dark-indigo' : 'mdc-light-indigo';
         this.colorScheme = this.colorScheme === 'light' ? 'dark' : 'light';
+
+        localStorage.setItem('horolog-theme', this.colorScheme);
     }
 }

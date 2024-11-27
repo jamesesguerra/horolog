@@ -35,6 +35,7 @@ export class AddWatchComponent {
 
   onSubmit() {
     const formValues = this.watchForm.value;
+    this.watchForm.reset();
     this.add.emit(
       {
         "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqCweec0alVpPmN9TOKUM7WK_5pHfyvfuQfw&s",
