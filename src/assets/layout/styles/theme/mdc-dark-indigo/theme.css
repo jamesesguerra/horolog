@@ -7795,3 +7795,7 @@
   }
 }
 /* Customizations to the designer theme should be defined here */
+.sold {
+  background-color: #FFF4BD;
+  color: black !important;
+}
