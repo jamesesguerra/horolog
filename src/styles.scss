@@ -15,38 +15,14 @@ $gutter: 1rem; //for primeflex grid system
 
 @import '../src/assets/layout/styles/layout/variables';
 
-// .p-dialog,
-// .p-confirm-dialog,
-// .p-sidebar,
-// .p-inputtext,
-// .p-dropdown,
-// .p-dropdown-items,
-// .p-message-wrapper,
-// .p-menuitem-content,
-// .p-tabview-nav,
-// .p-tabview-panel,
-// .p-toast-message,
-// body {
-//     font-family: -apple-system, BlinkMacSystemFont, 'Poppins', 'Helvetica Neue', Arial,
-//     'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
-//     'Noto Color Emoji' !important;
-// }
+.toolbar {
+    border-radius: 6px;
+    gap: 0.5rem;
+    background: var(--surface-card);
+    border: 1px solid var(--surface-border);
+    margin: 0px !important;
+}
 
-// .p-button,
-// .p-inputtext,
-// .p-dropdown-item,
-// .p-element,
-// .p-tabview-title,
-// .p-toast-detail,
-// .p-message-detail
-// .p-inputtextarea {
-//     font-family: inherit !important;
-// }
-
-// ::ng-deep body {
-//     color: blue !important;
-// }
-
-// h1, h2, h3, h4, h5 {
-//     font-family: $font;
-// }
+.max-w-55rem {
+    max-width: 55rem;
+}

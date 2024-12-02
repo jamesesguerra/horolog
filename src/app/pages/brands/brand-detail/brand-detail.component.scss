@@ -1,0 +1,13 @@
+a {
+    color: var(--text-color) !important;
+}
+
+::ng-deep div.p-divider {
+    color: red !important;
+    margin: 0;
+}
+
+.empty-container {
+    min-height: 90px;
+    color: #6b6b6b;
+}

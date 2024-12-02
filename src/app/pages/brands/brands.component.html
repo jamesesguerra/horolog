@@ -1,4 +1,4 @@
-<div class="grid">
+<div class="grid max-w-55rem mx-auto">
     <div class="col-12">
         <div class="toolbar grid justify-content-between">
             <div class="col-12 md:col-6 flex gap-2">
@@ -14,29 +14,23 @@
                 </span>
                 
             </div>
-            <div class="col-12 md:col-4 flex justify-content-end gap-2">
-                <p-button
-                    icon="pi pi-plus"
-                    label="Add"
-                    severity="success"
-                    (click)="isAddModalVisible = true"
-                />
-            </div>
         </div>
     </div>
 
-    @for (brand of brands; track brand.id) {
-        <div class="col-12 sm:col-6 md:col-3 lg:col-2">
-            <div class="card">
-                <div class="md:h-9rem relative image-container">
-                    <img
-                        class="block xl:block mx-auto border-round w-full responsive-image"
-                        [src]="brand.imageUrl"
-                        [alt]="brand.name"
-                    />
+    @for (brand of filteredBrands; track brand.id) {
+        <div class="col-12 sm:col-6 md:col-4">
+            <a [routerLink]="['/brands', brand.id]">
+                <div class="card">
+                    <div class="md:h-9rem relative image-container">
+                        <img
+                            class="block xl:block mx-auto border-round w-full responsive-image"
+                            [src]="brand.imageUrl"
+                            [alt]="brand.name"
+                        />
+                    </div>
+                    <p class="text-center pt-4">{{ brand.name }}</p>
                 </div>
-                <p class="text-center pt-4">{{ brand.name }}</p>
-            </div>
+            </a>
         </div>
     }
 </div>

@@ -1,0 +1,77 @@
+<div class="grid max-w-55rem mx-auto">
+    <div class="col-12">
+        <div class="toolbar grid justify-content-between">
+            <div class="col-12 md:col-6 flex gap-2">
+                <span class="p-input-icon-left flex-grow-1">
+                    <i class="pi pi-search"></i>
+                    <input
+                        pInputText
+                        class="w-full"
+                        placeholder="Find a watch"
+                        [(ngModel)]="searchTerm"
+                        (input)="filterWatches()"
+                    />
+                </span>
+            </div>
+                    
+            <div class="col-12 md:col-4 flex justify-content-end gap-2">
+                <p-button
+                    icon="pi pi-plus"
+                    label="Add"
+                    severity="success"
+                    (click)="isAddModalVisible = true"
+                />
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        @if (!(isLoading$ | async)) {
+            <h1 class="text-center">{{ brand.name }}</h1>
+
+            <div>
+                @if (watches.length > 0) {
+                    @for (watch of filteredWatches; track watch.id) {
+                        <a class="text-base py-4 block" [routerLink]="['/sheets']">
+                            <div class="flex justify-content-between">
+                                <span>{{ watch.description }}</span>
+                                <i class="pi pi-arrow-right mr-2" style="font-size: 1rem"></i>
+                            </div>
+                        </a>
+                        <p-divider />
+                    }
+                } @else {
+                    <div class="empty-container flex justify-content-center align-items-center">
+                        <span>
+                            No watches under this brand yet.
+                        </span>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+
+    <app-modal
+        [isVisible]="isAddModalVisible"
+        (hide)="isAddModalVisible = false"
+        [title]="'Add a watch model'"
+    >
+        <form [formGroup]="watchForm" (ngSubmit)="onSubmit()">
+            <div class="flex flex-column gap-2 mb-4">
+                <label for="name" class="font-semibold w-6rem">Name</label>
+                <input
+                    pInputText
+                    id="name"
+                    class="flex-auto"
+                    autocomplete="off"
+                    formControlName="name"
+                />
+            </div>
+
+            <div class="flex justify-content-end gap-2 mt-4">
+                <p-button label="Cancel" [plain]="true" [text]="true" (click)="onCancel()" />
+                <p-button label="Save" type="submit" severity="success" />
+            </div>
+        </form>
+    </app-modal>
+</div>

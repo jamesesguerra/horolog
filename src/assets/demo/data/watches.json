@@ -2,6 +2,7 @@
     "data": [
         {
           "id": 1,
+          "brandId": 1,
           "imageUrl": "https://lucerneluxe.com/wp-content/uploads/2022/08/m126613ln-0002_collection_upright_portrait-1.jpg",
           "description": "Deep Sea Black",
           "material": "Stainless Steel",
@@ -16,6 +17,7 @@
         },
         {
           "id": 2,
+          "brandId": 1,
           "imageUrl": "https://lucerneluxe.com/wp-content/uploads/2022/08/m126613ln-0002_collection_upright_portrait-1.jpg",
           "description": "Sea-Dweller 43",
           "material": "Gold-Plated",

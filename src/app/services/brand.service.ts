@@ -16,6 +16,13 @@ export class BrandService {
               .then(data => data);
   }
 
+  getBrandById(brandId: number) {
+    return this.http.get<any>('assets/demo/data/brands.json')
+              .toPromise()
+              .then(res => res.data.find(x => x.id === brandId) as Brand)
+              .then(data => data);
+  }
+
   addBrand(brand: Brand) {
     return brand;
   }

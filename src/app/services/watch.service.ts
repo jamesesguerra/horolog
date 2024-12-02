@@ -9,11 +9,16 @@ export class WatchService {
 
   constructor(private http: HttpClient) { }
 
-  getWatches() {
+  getWatches(brandId?: number) {
     return this.http.get<any>('assets/demo/data/watches.json')
               .toPromise()
               .then(res => res.data as Watch[])
-              .then(data => data);
+              .then(data => {
+                if (brandId) {
+                  return data.filter(x => x.brandId === brandId);
+                }
+                return data;
+              });
   }
 
   addWatch(watch: Watch) {

@@ -11,6 +11,7 @@ export class BrandsComponent implements OnInit {
   searchTerm = '';
   isAddModalVisible = false;
   brands!: Brand[];
+  filteredBrands!: Brand[];
 
   constructor(private brandService: BrandService) {
     this.brandService.getBrands
@@ -19,10 +20,13 @@ export class BrandsComponent implements OnInit {
   ngOnInit(): void {
     this.brandService.getBrands().then((data) => {
       this.brands = data;
+      this.filteredBrands = data;
     });
   }
 
   filterBrands() {
-
+    this.filteredBrands = this.brands.filter(brand => 
+      brand.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
   }
 }

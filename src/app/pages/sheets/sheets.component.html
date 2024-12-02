@@ -237,7 +237,7 @@
 <app-modal
     [isVisible]="isAddModalVisible"
     (hide)="isAddModalVisible = false"
-    [title]="'Add a record'"
+    [title]="'Add a watch record'"
     (hide)="onAddCancel()"
 >
     <app-add-watch (cancel)="onAddCancel()" (add)="onAddWatch($event)" />
