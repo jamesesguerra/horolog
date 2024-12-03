@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { Brand } from 'src/app/demo/api/brand';
+import { WatchModel } from 'src/app/demo/api/watch-model';
 import { WatchRecord } from 'src/app/demo/api/watch-record';
 import { BrandService } from 'src/app/services/brand.service';
+import { WatchModelService } from 'src/app/services/watch-model.service';
 import { WatchService } from 'src/app/services/watch.service';
 
 @Component({
@@ -18,13 +20,18 @@ export class SheetsComponent implements OnInit {
   searchTerm = ''
   
   brandOptions: Brand[];
-  sortOption: Brand;
+  brandOption: Brand;
+
+  modelOptions: WatchModel[];
+  modelOption: WatchModel;
 
   isAddModalVisible = false;
 
-  constructor(private watchService: WatchService, private brandService: BrandService) {
-
-  }
+  constructor(
+    private watchService: WatchService,
+    private brandService: BrandService,
+    private watchModelService: WatchModelService
+  ) { }
 
   ngOnInit() {
     this.watchService.getWatches().then((data) => {
@@ -35,7 +42,8 @@ export class SheetsComponent implements OnInit {
     this.brandService.getBrands().subscribe({
       next: (brands) => {
         this.brandOptions = brands;
-        this.sortOption = this.brandOptions[0];
+        this.brandOption = this.brandOptions[0];
+        this.updateModels();
       }
     })
 
@@ -57,6 +65,19 @@ export class SheetsComponent implements OnInit {
 
   markWatchAsSold(watch: WatchRecord) {
     watch.isSold = true;
+  }
+
+  onBrandChange() {
+    this.updateModels();
+  }
+
+  updateModels() {
+    this.watchModelService.getWatchModelsByBrandId(this.brandOption.id).subscribe({
+      next: (models) => {
+        this.modelOptions = models;
+        this.modelOption = this.modelOptions[0];
+      }
+    })
   }
 
   onAddWatch(watch: WatchRecord) {

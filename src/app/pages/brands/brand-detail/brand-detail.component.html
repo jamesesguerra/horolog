@@ -30,7 +30,7 @@
             <h1 class="text-center">{{ brand.name }}</h1>
 
             <div>
-                @if (watches.length > 0) {
+                @if (filteredWatches.length > 0) {
                     @for (watch of filteredWatches; track watch.id) {
                         <a class="text-base py-4 block" [routerLink]="['/sheets']">
                             <div class="flex justify-content-between">
