@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
+import { Brand } from 'src/app/demo/api/brand';
 import { WatchRecord } from 'src/app/demo/api/watch-record';
+import { BrandService } from 'src/app/services/brand.service';
 import { WatchService } from 'src/app/services/watch.service';
 
 @Component({
@@ -15,22 +17,12 @@ export class SheetsComponent implements OnInit {
   selectedWatch!: WatchRecord;
   searchTerm = ''
   
-  brandOptions = [
-    { name: "Rolex", code: "Default" },
-    { name: "Patek Philippe", code: "Date" },
-    { name: "Audemars Piguet", code: "Name" },
-    { name: "Vacheron Constantin", code: "Rating" },
-    { name: "Jaeger-LeCoultre", code: "Rating" },
-    { name: "Omega", code: "Rating" },
-    { name: "Breguet", code: "Rating" },
-    { name: "Richard Mille", code: "Rating" },
-  ];
-
-  sortOption = this.brandOptions[0];
+  brandOptions: Brand[];
+  sortOption: Brand;
 
   isAddModalVisible = false;
 
-  constructor(private watchService: WatchService) {
+  constructor(private watchService: WatchService, private brandService: BrandService) {
 
   }
 
@@ -39,6 +31,13 @@ export class SheetsComponent implements OnInit {
         this.watches = data;
         this.filteredWatches = data;
     });
+
+    this.brandService.getBrands().subscribe({
+      next: (brands) => {
+        this.brandOptions = brands;
+        this.sortOption = this.brandOptions[0];
+      }
+    })
 
     this.items = [
       { label: 'Mark as sold', icon: 'pi pi-fw pi-tag', command: () => this.markWatchAsSold(this.selectedWatch) },
