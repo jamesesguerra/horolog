@@ -1,26 +1,22 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment as env } from 'src/environments/environment';
 import { Brand } from '../demo/api/brand';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BrandService {
+  private apiUrl = `${env.baseApiUrl}/api/brands`;
 
   constructor(private http: HttpClient) { }
 
   getBrands() {
-    return this.http.get<any>('assets/demo/data/brands.json')
-              .toPromise()
-              .then(res => res.data as Brand[])
-              .then(data => data);
+    return this.http.get<Brand[]>(this.apiUrl);
   }
 
   getBrandById(brandId: number) {
-    return this.http.get<any>('assets/demo/data/brands.json')
-              .toPromise()
-              .then(res => res.data.find(x => x.id === brandId) as Brand)
-              .then(data => data);
+    return this.http.get<Brand>(`${this.apiUrl}/${brandId}`);
   }
 
   addBrand(brand: Brand) {

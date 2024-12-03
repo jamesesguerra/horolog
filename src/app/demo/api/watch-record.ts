@@ -1,6 +1,6 @@
-export interface Watch {
+export interface WatchRecord {
     id?: number;
-    brandId?: number;
+    modelId?: number;
     imageUrl?: string;
     description?: string;
     material?: string;

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Watch } from '../demo/api/watch';
+import { WatchRecord } from '../demo/api/watch-record';
 
 @Injectable({
   providedIn: 'root'
@@ -9,19 +9,14 @@ export class WatchService {
 
   constructor(private http: HttpClient) { }
 
-  getWatches(brandId?: number) {
+  getWatches() {
     return this.http.get<any>('assets/demo/data/watches.json')
               .toPromise()
-              .then(res => res.data as Watch[])
-              .then(data => {
-                if (brandId) {
-                  return data.filter(x => x.brandId === brandId);
-                }
-                return data;
-              });
+              .then(res => res.data as WatchRecord[])
+              .then(data => data);
   }
 
-  addWatch(watch: Watch) {
+  addWatch(watch: WatchRecord) {
     return watch;
   }
 }

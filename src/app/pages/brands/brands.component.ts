@@ -18,10 +18,12 @@ export class BrandsComponent implements OnInit {
   }
   
   ngOnInit(): void {
-    this.brandService.getBrands().then((data) => {
-      this.brands = data;
-      this.filteredBrands = data;
-    });
+    this.brandService.getBrands().subscribe({
+      next: (brands) => {
+        this.brands = brands;
+        this.filteredBrands = brands;
+      }
+    })
   }
 
   filterBrands() {

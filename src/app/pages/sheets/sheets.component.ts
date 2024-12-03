@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
-import { Watch } from 'src/app/demo/api/watch';
+import { WatchRecord } from 'src/app/demo/api/watch-record';
 import { WatchService } from 'src/app/services/watch.service';
 
 @Component({
@@ -9,10 +9,10 @@ import { WatchService } from 'src/app/services/watch.service';
   styleUrl: './sheets.component.scss'
 })
 export class SheetsComponent implements OnInit {
-  watches!: Watch[];
-  filteredWatches!: Watch[];
+  watches!: WatchRecord[];
+  filteredWatches!: WatchRecord[];
   items!: MenuItem[];
-  selectedWatch!: Watch;
+  selectedWatch!: WatchRecord;
   searchTerm = ''
   
   brandOptions = [
@@ -52,15 +52,15 @@ export class SheetsComponent implements OnInit {
     );
   }
 
-  deleteWatch(watch: Watch) {
+  deleteWatch(watch: WatchRecord) {
     this.filteredWatches = this.filteredWatches.filter(x => x.id !== watch.id);
   }
 
-  markWatchAsSold(watch: Watch) {
+  markWatchAsSold(watch: WatchRecord) {
     watch.isSold = true;
   }
 
-  onAddWatch(watch: Watch) {
+  onAddWatch(watch: WatchRecord) {
     this.isAddModalVisible = false;
     this.filteredWatches = [...this.filteredWatches, watch];
   }

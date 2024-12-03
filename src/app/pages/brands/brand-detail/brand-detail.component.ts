@@ -3,9 +3,10 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
 import { Brand } from 'src/app/demo/api/brand';
-import { Watch } from 'src/app/demo/api/watch';
+import { WatchModel } from 'src/app/demo/api/watch-model';
+import { ToastService } from 'src/app/layout/service/toast.service';
 import { BrandService } from 'src/app/services/brand.service';
-import { WatchService } from 'src/app/services/watch.service';
+import { WatchModelService } from 'src/app/services/watch-model.service';
 
 @Component({
   selector: 'app-brand-detail',
@@ -14,12 +15,12 @@ import { WatchService } from 'src/app/services/watch.service';
 })
 export class BrandDetailComponent implements OnInit {
   searchTerm = '';
-  watches: Watch[];
-  filteredWatches: Watch[];
+  watches: WatchModel[];
+  filteredWatches: WatchModel[];
   brand: Brand;
   isAddModalVisible = false;
 
-  watchForm: FormGroup = new FormGroup({
+  watchModelForm: FormGroup = new FormGroup({
     name: new FormControl('', Validators.required)
   })
 
@@ -28,8 +29,9 @@ export class BrandDetailComponent implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private watchService: WatchService,
-    private brandService: BrandService
+    private watchModelService: WatchModelService,
+    private brandService: BrandService,
+    private toastService: ToastService
   )
   {
     this.isLoadingSubject = new BehaviorSubject<boolean>(false);
@@ -38,16 +40,27 @@ export class BrandDetailComponent implements OnInit {
 
   filterWatches() {
     this.filteredWatches = this.watches.filter(watch => 
-      watch.description.toLowerCase().includes(this.searchTerm.toLowerCase())
+      watch.name.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
   }
 
   onCancel() {
-
+    this.isAddModalVisible = false;
   }
 
   onSubmit() {
-    
+    const name = this.watchModelForm.value.name;
+
+    this.watchModelService.addWatchModel({ brandId: this.brand.id, name }).subscribe({
+      next: (watchModel) => {
+        this.filteredWatches = [...this.filteredWatches, watchModel];
+        this.toastService.showSuccess("Success!", "New watch model added");
+        this.isAddModalVisible = false;
+      },
+      error: (err) => {
+        this.toastService.showError("Error", err);
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -57,10 +70,20 @@ export class BrandDetailComponent implements OnInit {
 
         this.isLoadingSubject.next(true);
 
-        this.brandService.getBrandById(brandId).then((brand) => {
-          this.brand = brand;
-          this.isLoadingSubject.next(false);
-        })
+        forkJoin({
+          watchModels: this.watchModelService.getWatchModelsByBrandId(brandId),
+          brand: this.brandService.getBrandById(brandId),
+        }).subscribe({
+          next: ({ watchModels, brand }) => {
+            this.watches = watchModels;
+            this.filteredWatches = watchModels;
+            this.brand = brand;
+            this.isLoadingSubject.next(false);
+          },
+          error: (err) => {
+            this.toastService.showError("Error", err);
+          },
+        });
       }
     })
   }

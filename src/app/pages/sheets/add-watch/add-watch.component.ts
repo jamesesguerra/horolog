@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Watch } from 'src/app/demo/api/watch';
+import { WatchRecord } from 'src/app/demo/api/watch-record';
 import { ToastService } from 'src/app/layout/service/toast.service';
 
 @Component({
@@ -9,7 +9,7 @@ import { ToastService } from 'src/app/layout/service/toast.service';
   styleUrl: './add-watch.component.scss'
 })
 export class AddWatchComponent {
-  @Output() add = new EventEmitter<Watch>();
+  @Output() add = new EventEmitter<WatchRecord>();
   @Output() cancel = new EventEmitter();
 
   watchForm: FormGroup;
