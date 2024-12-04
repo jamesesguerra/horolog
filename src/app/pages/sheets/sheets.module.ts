@@ -16,6 +16,8 @@ import { InputTextareaModule } from "primeng/inputtextarea";
 import { CalendarModule } from "primeng/calendar";
 import { InputNumberModule } from "primeng/inputnumber";
 import { ContextMenuModule } from "primeng/contextmenu";
+import { FilterSidebarComponent } from "./filter-sidebar/filter-sidebar.component";
+import { SidebarModule } from "primeng/sidebar";
 
 @NgModule({
     imports: [
@@ -34,8 +36,13 @@ import { ContextMenuModule } from "primeng/contextmenu";
         InputNumberModule,
         CalendarModule,
         ContextMenuModule,
+        SidebarModule,
         CommonModule
     ],
-    declarations: [SheetsComponent, AddWatchComponent]
+    declarations: [
+        SheetsComponent,
+        AddWatchComponent,
+        FilterSidebarComponent
+    ]
 })
 export class SheetsModule {}

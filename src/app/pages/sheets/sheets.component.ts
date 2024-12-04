@@ -26,6 +26,7 @@ export class SheetsComponent implements OnInit {
   modelOption: WatchModel;
 
   isAddModalVisible = false;
+  isFilterSidebarVisible = false;
 
   constructor(
     private watchService: WatchService,
@@ -87,5 +88,14 @@ export class SheetsComponent implements OnInit {
 
   onAddCancel() {
     this.isAddModalVisible = false;
+  }
+
+  onShowFilter() {
+    console.log(this.isFilterSidebarVisible);
+    this.isFilterSidebarVisible = true;
+  }
+
+  onHideFilter() {
+    this.isFilterSidebarVisible = false;
   }
 }

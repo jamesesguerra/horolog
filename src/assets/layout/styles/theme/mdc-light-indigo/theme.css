@@ -2110,16 +2110,16 @@
   .p-button.p-button-secondary,
 .p-buttonset.p-button-secondary > .p-button,
 .p-splitbutton.p-button-secondary > .p-button {
-    color: #ffffff;
-    background: #ff4081;
-    border: 0 none;
+    color: #475569;
+    background: #f1f5f9;
+    border: 1px solid #f1f5f9;
   }
   .p-button.p-button-secondary:not(:disabled):hover,
 .p-buttonset.p-button-secondary > .p-button:not(:disabled):hover,
 .p-splitbutton.p-button-secondary > .p-button:not(:disabled):hover {
-    background: rgba(255, 64, 129, 0.92);
-    color: #ffffff;
-    border-color: transparent;
+    background: #e2e8f0;
+    color: #334155;
+    border-color: #e2e8f0;
   }
   .p-button.p-button-secondary:not(:disabled):focus,
 .p-buttonset.p-button-secondary > .p-button:not(:disabled):focus,
@@ -2129,9 +2129,7 @@
   .p-button.p-button-secondary:not(:disabled):active,
 .p-buttonset.p-button-secondary > .p-button:not(:disabled):active,
 .p-splitbutton.p-button-secondary > .p-button:not(:disabled):active {
-    background: rgba(255, 64, 129, 0.68);
-    color: #ffffff;
-    border-color: transparent;
+    box-shadow: none;
   }
   .p-button.p-button-secondary.p-button-outlined,
 .p-buttonset.p-button-secondary > .p-button.p-button-outlined,
@@ -6470,10 +6468,10 @@
   }
 
   .p-button.p-button-secondary:enabled:focus, .p-buttonset.p-button-secondary > .p-button:enabled:focus, .p-splitbutton.p-button-secondary > .p-button:enabled:focus {
-    background: rgba(255, 64, 129, 0.76);
+    background: #e2e8f0;
   }
   .p-button.p-button-secondary:enabled:active, .p-buttonset.p-button-secondary > .p-button:enabled:active, .p-splitbutton.p-button-secondary > .p-button:enabled:active {
-    background: rgba(255, 64, 129, 0.68);
+    box-shadow: #e2e8f0;
   }
   .p-button.p-button-secondary.p-button-text:enabled:focus, .p-button.p-button-secondary.p-button-outlined:enabled:focus, .p-buttonset.p-button-secondary > .p-button.p-button-text:enabled:focus, .p-buttonset.p-button-secondary > .p-button.p-button-outlined:enabled:focus, .p-splitbutton.p-button-secondary > .p-button.p-button-text:enabled:focus, .p-splitbutton.p-button-secondary > .p-button.p-button-outlined:enabled:focus {
     background: rgba(255, 64, 129, 0.12);
