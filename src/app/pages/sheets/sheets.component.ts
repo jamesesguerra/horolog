@@ -8,6 +8,7 @@ import { BrandService } from 'src/app/services/brand.service';
 import { WatchModelService } from 'src/app/services/watch-model.service';
 import { WatchRecordService } from 'src/app/services/watch-record.service';
 import { DateService } from 'src/app/services/date.service';
+import { ToastService } from 'src/app/layout/service/toast.service';
 
 @Component({
   selector: 'app-sheets',
@@ -37,6 +38,7 @@ export class SheetsComponent implements OnInit {
     private watchRecordService: WatchRecordService,
     private brandService: BrandService,
     private watchModelService: WatchModelService,
+    private toastService: ToastService,
     private dateService: DateService
   )
   {
@@ -67,7 +69,15 @@ export class SheetsComponent implements OnInit {
   }
 
   deleteWatch(watch: WatchRecord) {
-    this.filteredRecords = this.filteredRecords.filter(x => x.id !== watch.id);
+    this.watchRecordService.deleteWatchRecord(watch.id).subscribe({
+      next: () => {
+        this.filteredRecords = this.filteredRecords.filter(x => x.id !== watch.id);
+        this.toastService.showInfo("Record Deleted", "The watch record has been successfully removed");
+      },
+      error: () => {
+        // TODO
+      }
+    })
   }
 
   markWatchAsSold(watch: WatchRecord) {

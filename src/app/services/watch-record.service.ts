@@ -29,4 +29,8 @@ export class WatchRecordService {
   patchWatchRecord(watchRecord: WatchRecord) {
     return this.http.patch(`${this.apiUrl}/${watchRecord.id}`, watchRecord); 
   }
+
+  deleteWatchRecord(id: number) {
+    return this.http.delete(`${this.apiUrl}/${id}`);
+  }
 }
