@@ -1,3 +1,77 @@
 <p-sidebar [(visible)]="isVisible" position="right" (onHide)="onHide()">
+    <ng-template pTemplate="header">
+        <span class="font-semibold text-xl pb-3">Apply Filters</span>
+    </ng-template>
 
+    <ng-template pTemplate="content">
+        <form [formGroup]="filterForm">
+            <div class="flex flex-column gap-2 mb-4">
+                <label for="serialNumber" class="font-semibold">Serial Number</label>
+                <input
+                    pInputText
+                    id="serialNumber"
+                    class="flex-auto"
+                    autocomplete="off"
+                    formControlName="serialNumber"
+                />
+            </div>
+
+            <div class="flex flex-column gap-2 mb-4 align-items-stretch flex-grow-1">
+                <label for="datePurchased" class="font-semibold">Date Purchased</label>
+                <p-calendar 
+                    [iconDisplay]="'input'" 
+                    class="w-full"
+                    [showIcon]="true" 
+                    inputId="datePurchased"
+                    selectionMode="range"
+                    appendTo="body"
+                    formControlName="datePurchased" 
+                />
+            </div>
+
+            <div class="flex flex-column gap-2 mb-4 align-items-stretch flex-grow-1">
+                <label for="dateSold" class="font-semibold">Date Sold</label>
+                <p-calendar 
+                    [iconDisplay]="'input'" 
+                    class="w-full"
+                    [showIcon]="true" 
+                    inputId="dateSold"
+                    selectionMode="range"
+                    appendTo="body"
+                    formControlName="dateSold" 
+                />
+            </div>
+
+            <div class="flex flex-column gap-2 mb-4 align-items-stretch flex-grow-1">
+                <label for="dateReceived" class="font-semibold">Date Received</label>
+                <p-calendar 
+                    [iconDisplay]="'input'" 
+                    class="w-full"
+                    [showIcon]="true" 
+                    inputId="dateReceived"
+                    selectionMode="range"
+                    appendTo="body"
+                    formControlName="dateReceived" 
+                />
+            </div>
+
+            <div class="flex align-items-center">
+                <p-checkbox 
+                    label="Is Sold" 
+                    name="isSold" 
+                    value="isSold"
+                    [binary]="true"
+                    formControlName="isSold"
+                />
+            </div>
+            
+        </form>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <div class="flex justify-content-end gap-2 mt-4">
+            <p-button label="Clear All" [plain]="true" [text]="true" (click)="onClearFilters()" />
+            <p-button label="Apply" severity="success" (click)="onApplyFilters()" />
+        </div>
+    </ng-template>
 </p-sidebar>

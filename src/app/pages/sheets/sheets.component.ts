@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Brand } from 'src/app/demo/api/brand';
@@ -9,6 +9,7 @@ import { WatchModelService } from 'src/app/services/watch-model.service';
 import { WatchRecordService } from 'src/app/services/watch-record.service';
 import { DateService } from 'src/app/services/date.service';
 import { ToastService } from 'src/app/layout/service/toast.service';
+import { FilterSidebarComponent } from './filter-sidebar/filter-sidebar.component';
 
 @Component({
   selector: 'app-sheets',
@@ -16,6 +17,8 @@ import { ToastService } from 'src/app/layout/service/toast.service';
   styleUrl: './sheets.component.scss'
 })
 export class SheetsComponent implements OnInit {
+  @ViewChild(FilterSidebarComponent) filterComponent!: FilterSidebarComponent;
+
   records!: WatchRecord[];
   filteredRecords!: WatchRecord[];
   items!: MenuItem[];
@@ -33,6 +36,8 @@ export class SheetsComponent implements OnInit {
   isSoldModalVisible = false;
   isFilterSidebarVisible = false;
   isAllBrands = false;
+
+  filterCount = 0;
 
   private isLoadingSubject: BehaviorSubject<boolean>;
   isLoading$: Observable<boolean>;
@@ -109,6 +114,9 @@ export class SheetsComponent implements OnInit {
   }
 
   updateRecords() {
+    this.filterComponent.filterForm.reset();
+    this.filterCount = 0;
+
     this.watchRecordService.getWatchRecords(this.modelOption?.id).subscribe({
       next: (watchRecords) => {
         this.records = watchRecords;
@@ -167,5 +175,54 @@ export class SheetsComponent implements OnInit {
         console.log(error);
       }
     });
+  }
+
+  onApplyFilter(e: any) {
+    this.isFilterSidebarVisible = false;
+    this.filteredRecords = this.records;
+    this.filterCount = 0;
+
+    if (e.serialNumber !== null && e.serialNumber.length > 0) {
+      this.filteredRecords = this.filteredRecords.filter(x => x.serialNumber === e.serialNumber);
+      this.filterCount++;
+    }
+
+    if (e.datePurchased != null) {
+      this.filteredRecords = this.dateService.applyDateFilter(
+        this.filteredRecords,
+        "datePurchased",
+        e.datePurchased
+      );
+      this.filterCount++;
+    }
+  
+    if (e.dateSold != null) {
+      this.filteredRecords = this.dateService.applyDateFilter(
+        this.filteredRecords,
+        "dateSold",
+        e.dateSold
+      );
+      this.filterCount++;
+    }
+
+    if (e.dateReceived != null) {
+      this.filteredRecords = this.dateService.applyDateFilter(
+        this.filteredRecords,
+        "dateReceived",
+        e.dateReceived
+      );
+      this.filterCount++;
+    }
+
+    if (e.isSold) {
+      this.filteredRecords = this.filteredRecords.filter(x => x.dateSold !== null);
+      this.filterCount++;
+    }
+  }
+
+  onClearFilter() {
+    this.isFilterSidebarVisible = false;
+    this.filterCount = 0;
+    this.filteredRecords = this.records;
   }
 }

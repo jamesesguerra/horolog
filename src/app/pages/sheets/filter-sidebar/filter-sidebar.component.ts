@@ -1,13 +1,43 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-filter-sidebar',
   templateUrl: './filter-sidebar.component.html',
   styleUrl: './filter-sidebar.component.scss'
 })
-export class FilterSidebarComponent {
+export class FilterSidebarComponent implements OnInit {
   @Input({ required: true }) isVisible: boolean;
   @Output() hide = new EventEmitter();
+  @Output() applyFilter = new EventEmitter<any>();
+  @Output() clearFilter = new EventEmitter();
+
+  filterForm: FormGroup;
+
+  ngOnInit(): void {
+      this.initForm();
+  }
+
+  initForm() {
+    this.filterForm = new FormGroup({
+      serialNumber: new FormControl(''),
+      datePurchased: new FormControl(null),
+      dateSold: new FormControl(null),
+      dateReceived: new FormControl(null),
+      isSold: new FormControl(false)
+    })
+  }
+
+  onClearFilters() {
+    this.filterForm.reset();
+    this.clearFilter.emit();
+  }
+
+  onApplyFilters() {
+    const { serialNumber, datePurchased, dateSold, dateReceived, isSold } = this.filterForm.value;
+    const filters = { serialNumber, datePurchased, dateSold, dateReceived, isSold };
+    this.applyFilter.emit(filters);
+  }
 
   onHide() {
     this.hide.emit();
