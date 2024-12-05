@@ -76,7 +76,7 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-watch let-editing="editing">
                     <tr [pContextMenuRow]="watch" [class.sold]="watch.isSold">
-                        <td>
+                        <td class="flex justify-content-center">
                             <div class="md:w-10rem md:h-9rem relative image-container">
                                 <img class="block xl:block mx-auto border-round w-full responsive-image" [src]="watch.imageUrl" [alt]="watch.description" />
                             </div>
