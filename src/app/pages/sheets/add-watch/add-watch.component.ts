@@ -11,7 +11,7 @@ import { WatchRecordService } from 'src/app/services/watch-record.service';
   styleUrl: './add-watch.component.scss'
 })
 export class AddWatchComponent {
-  @Input({ required: true }) modelId: number;
+  @Input({ required: true }) modelId?: number;
   @Output() add = new EventEmitter<WatchRecord>();
   @Output() cancel = new EventEmitter();
 

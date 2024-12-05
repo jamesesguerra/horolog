@@ -26,7 +26,8 @@
                     [(ngModel)]="modelOption" 
                     optionLabel="name"
                     placeholder="Model"
-                    (onChange)="updateRecords()" />
+                    (onChange)="updateRecords()"
+                    [disabled]="isAllBrands" />
 
                 <p-button icon="pi pi-filter" severity="secondary" (click)="onShowFilter()" />
             </div>
@@ -36,6 +37,7 @@
                     label="Add"
                     severity="success"
                     (click)="isAddModalVisible = true"
+                    [disabled]="isAllBrands"
                 />
                 <p-button icon="pi pi-file-export" routerLink="add" label="Export" severity="help" />
             </div>
@@ -301,7 +303,7 @@
         (hide)="onAddCancel()"
     >
         <app-add-watch
-            [modelId]="modelOption.id"
+            [modelId]="modelOption?.id"
             (cancel)="onAddCancel()"
             (add)="onAddWatch($event)"
         />

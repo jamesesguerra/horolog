@@ -11,15 +11,14 @@ export class WatchRecordService {
 
   constructor(private http: HttpClient) { }
 
-  getWatches() {
-    return this.http.get<any>('assets/demo/data/watches.json')
-              .toPromise()
-              .then(res => res.data as WatchRecord[])
-              .then(data => data);
-  }
+  getWatchRecords(modelId?: number, serialNumber?: string, datePurchased?: Date, dateSold?: Date) {
+    var url = `${this.apiUrl}?`;
+    if (modelId !== undefined) url += `modelId=${modelId}&`;
+    if (serialNumber != undefined) url += `serialNumber=${serialNumber}&`;
+    if (datePurchased != undefined) url += `datePurchased=${datePurchased}&`;
+    if (dateSold != undefined) url += `dateSold=${dateSold}&`;
 
-  getWatchRecordsByModelId(id: number) {
-    return this.http.get<WatchRecord[]>(`${this.apiUrl}?modelId=${id}`);
+    return this.http.get<WatchRecord[]>(url);
   }
 
   addWatchRecord(watchRecord: WatchRecord) {

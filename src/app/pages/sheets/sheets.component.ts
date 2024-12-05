@@ -23,7 +23,7 @@ export class SheetsComponent implements OnInit {
   searchTerm = ''
   dateSold: Date;
   
-  brandOptions: Brand[];
+  brandOptions: Brand[] = [{ id: 0, name: 'All' }];
   brandOption: Brand;
 
   modelOptions: WatchModel[];
@@ -32,6 +32,7 @@ export class SheetsComponent implements OnInit {
   isAddModalVisible = false;
   isSoldModalVisible = false;
   isFilterSidebarVisible = false;
+  isAllBrands = false;
 
   private isLoadingSubject: BehaviorSubject<boolean>;
   isLoading$: Observable<boolean>;
@@ -52,14 +53,14 @@ export class SheetsComponent implements OnInit {
     this.isLoadingSubject.next(true);
     this.brandService.getBrands().subscribe({
       next: (brands) => {
-        this.brandOptions = brands;
-        this.brandOption = this.brandOptions[0];
+        this.brandOptions = [...this.brandOptions, ...brands];
+        this.brandOption = this.brandOptions[1];
         this.updateModels();
       }
     })
 
     this.items = [
-      { label: 'Mark as sold', icon: 'pi pi-fw pi-tag', command: () => this.markWatchAsSold(this.selectedWatch) },
+      { label: 'Mark as sold', icon: 'pi pi-fw pi-tag', command: () => this.markWatchAsSold() },
       { label: 'Delete', icon: 'pi pi-fw pi-times', command: () => this.deleteWatch(this.selectedWatch) }
   ];
   }
@@ -82,11 +83,20 @@ export class SheetsComponent implements OnInit {
     })
   }
 
-  markWatchAsSold(watch: WatchRecord) {
+  markWatchAsSold() {
     this.isSoldModalVisible = true;
   }
 
   updateModels() {
+    if (this.brandOption.id == 0) {
+      this.modelOption = null;
+      this.isAllBrands = true;
+      this.updateRecords();
+      return;
+    }
+
+    this.isAllBrands = false;
+
     this.watchModelService.getWatchModelsByBrandId(this.brandOption.id).subscribe({
       next: (models) => {
         this.modelOptions = models;
@@ -99,12 +109,12 @@ export class SheetsComponent implements OnInit {
   }
 
   updateRecords() {
-    this.watchRecordService.getWatchRecordsByModelId(this.modelOption.id).subscribe({
+    this.watchRecordService.getWatchRecords(this.modelOption?.id).subscribe({
       next: (watchRecords) => {
         this.records = watchRecords;
         this.filteredRecords = watchRecords;
       }
-    });
+    })
   }
 
   onAddWatch(watch: WatchRecord) {
@@ -147,12 +157,11 @@ export class SheetsComponent implements OnInit {
     if (e.data instanceof Date) {
       e.data =  this.dateService.convertToISOString(e.data);
     }
-    
+
     editedRecord.id = e.index;
     editedRecord[e.field] = e.data;
 
     if (e.data === null) return;
-
     this.watchRecordService.patchWatchRecord(editedRecord).subscribe({
       error: (error) => {
         console.log(error);
