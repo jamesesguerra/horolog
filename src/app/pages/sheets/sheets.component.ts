@@ -21,6 +21,7 @@ export class SheetsComponent implements OnInit {
   items!: MenuItem[];
   selectedWatch!: WatchRecord;
   searchTerm = ''
+  dateSold: Date;
   
   brandOptions: Brand[];
   brandOption: Brand;
@@ -29,6 +30,7 @@ export class SheetsComponent implements OnInit {
   modelOption: WatchModel;
 
   isAddModalVisible = false;
+  isSoldModalVisible = false;
   isFilterSidebarVisible = false;
 
   private isLoadingSubject: BehaviorSubject<boolean>;
@@ -81,7 +83,7 @@ export class SheetsComponent implements OnInit {
   }
 
   markWatchAsSold(watch: WatchRecord) {
-    // watch.isSold = true;
+    this.isSoldModalVisible = true;
   }
 
   updateModels() {
@@ -122,19 +124,36 @@ export class SheetsComponent implements OnInit {
     this.isFilterSidebarVisible = false;
   }
 
+  onConfirmSold() {
+    const editedRecord: WatchRecord = {};
+    editedRecord.id = this.selectedWatch.id;
+    editedRecord.dateSold = this.dateService.convertToISOString(this.dateSold);
+
+    this.watchRecordService.patchWatchRecord(editedRecord).subscribe({
+      next: () => {
+        this.selectedWatch.dateSold = editedRecord.dateSold;
+        this.isSoldModalVisible = false;
+        this.dateSold = null;
+        this.toastService.showSuccess("Success!", "The watch record has been marked as sold");
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    });
+  }
+
   onCellEditComplete(e: any) {
     const editedRecord: WatchRecord = {};
-    editedRecord.id = e.index;
     if (e.data instanceof Date) {
       e.data =  this.dateService.convertToISOString(e.data);
     }
+    
+    editedRecord.id = e.index;
     editedRecord[e.field] = e.data;
 
     if (e.data === null) return;
 
     this.watchRecordService.patchWatchRecord(editedRecord).subscribe({
-      next: () => {
-      },
       error: (error) => {
         console.log(error);
       }

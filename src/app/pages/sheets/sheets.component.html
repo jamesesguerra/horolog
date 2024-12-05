@@ -74,7 +74,7 @@
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-watch let-editing="editing">
-                    <tr [pContextMenuRow]="watch" [class.sold]="watch.isSold">
+                    <tr [pContextMenuRow]="watch" [class.sold]="watch.dateSold">
                         <td class="flex justify-content-center">
                             <div class="md:w-10rem md:h-9rem relative image-container">
                                 <img class="block xl:block mx-auto border-round w-full responsive-image" [src]="watch.imageUrl" [alt]="watch.description" />
@@ -131,6 +131,7 @@
                                         class="w-full"
                                         [showIcon]="true" 
                                         inputId="datePurchased"
+                                        appendTo="body"
                                         [(ngModel)]="watch.datePurchased"
                                     />
                                 </ng-template>
@@ -296,7 +297,6 @@
 @if (!(isLoading$ | async)) {
     <app-modal
         [isVisible]="isAddModalVisible"
-        (hide)="isAddModalVisible = false"
         [title]="'Add a watch record'"
         (hide)="onAddCancel()"
     >
@@ -307,5 +307,24 @@
         />
     </app-modal>
 }
+
+<app-modal
+    [isVisible]="isSoldModalVisible"
+    (hide)="isSoldModalVisible = false"
+    [title]="'Date Sold'"
+>
+    <p-calendar 
+        [iconDisplay]="'input'" 
+        class="w-full"
+        [showIcon]="true" 
+        appendTo="body"
+        [(ngModel)]="dateSold"
+    />
+
+    <div class="flex justify-content-end gap-2 mt-4">
+        <p-button label="Cancel" [plain]="true" [text]="true" (click)="isSoldModalVisible = false" />
+        <p-button label="Save" severity="success" (click)="onConfirmSold()" />
+    </div>
+</app-modal>
 
 <app-filter-sidebar [isVisible]="isFilterSidebarVisible" (hide)="onHideFilter()" />
