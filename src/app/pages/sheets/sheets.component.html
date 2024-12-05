@@ -18,14 +18,15 @@
                     [(ngModel)]="brandOption" 
                     optionLabel="name"
                     placeholder="Brand"
-                    (onChange)="onBrandChange()" />
+                    (onChange)="updateModels()" />
 
                 <p-dropdown 
                     class="w-12rem"
                     [options]="modelOptions" 
                     [(ngModel)]="modelOption" 
                     optionLabel="name"
-                    placeholder="Model" />
+                    placeholder="Model"
+                    (onChange)="updateRecords()" />
 
                 <p-button icon="pi pi-filter" severity="secondary" (click)="onShowFilter()" />
             </div>
@@ -47,13 +48,15 @@
         <div class="card">
             <p-contextMenu #cm [model]="items" />
             <p-table
-                [value]="filteredWatches"
+                [value]="filteredRecords"
                 [tableStyle]="{ 'min-width': '50rem' }"
                 [paginator]="true"
                 [rows]="5"
                 [rowsPerPageOptions]="[5, 10, 20]"
                 [(contextMenuSelection)]="selectedWatch" 
                 [contextMenu]="cm" 
+                dataKey="id"
+                (onEditComplete)="onCellEditComplete($event)"
                 styleClass="p-datatable-gridlines" 
             >
                 <ng-template pTemplate="header">
@@ -79,7 +82,11 @@
                             </div>
                         </td>
                         
-                        <td [pEditableColumn]="watch.description" pEditableColumnField="description">
+                        <td
+                            [pEditableColumn]="watch.description"
+                            pEditableColumnField="description"
+                            [pEditableColumnRowIndex]="watch.id"
+                        >
                             <p-cellEditor>
                                 <ng-template pTemplate="input">
                                     <input 
@@ -94,7 +101,11 @@
                             </p-cellEditor>
                         </td>
 
-                        <td [pEditableColumn]="watch.material" pEditableColumnField="material">
+                        <td
+                            [pEditableColumn]="watch.material"
+                            pEditableColumnField="material"
+                            [pEditableColumnRowIndex]="watch.id"
+                        >
                             <p-cellEditor>
                                 <ng-template pTemplate="input">
                                     <input 
@@ -109,24 +120,32 @@
                             </p-cellEditor>
                         </td>
 
-                        <td [pEditableColumn]="watch.dateOfPurchase" pEditableColumnField="dateOfPurchase">
+                        <td
+                            [pEditableColumn]="watch.datePurchased"
+                            pEditableColumnField="datePurchased"
+                            [pEditableColumnRowIndex]="watch.id"
+                        >
                             <p-cellEditor>
                                 <ng-template pTemplate="input">
                                     <p-calendar 
                                         [iconDisplay]="'input'" 
                                         class="w-full"
                                         [showIcon]="true" 
-                                        inputId="dateOfPurchase"
-                                        [(ngModel)]="watch.dateOfPurchase"
+                                        inputId="datePurchased"
+                                        [(ngModel)]="watch.datePurchased"
                                     />
                                 </ng-template>
                                 <ng-template pTemplate="output">
-                                    {{ watch.dateOfPurchase | date:'M/d/yyyy' }}
+                                    {{ watch.datePurchased | date:'M/d/yyyy' }}
                                 </ng-template>
                             </p-cellEditor>
                         </td>
 
-                        <td [pEditableColumn]="watch.referenceNumber" pEditableColumnField="referenceNumber">
+                        <td
+                            [pEditableColumn]="watch.referenceNumber"
+                            pEditableColumnField="referenceNumber"
+                            [pEditableColumnRowIndex]="watch.id"
+                        >
                             <p-cellEditor>
                                 <ng-template pTemplate="input">
                                     <input 
@@ -141,7 +160,11 @@
                             </p-cellEditor>
                         </td>
 
-                        <td [pEditableColumn]="watch.serialNumber" pEditableColumnField="serialNumber">
+                        <td
+                            [pEditableColumn]="watch.serialNumber"
+                            pEditableColumnField="serialNumber"
+                            [pEditableColumnRowIndex]="watch.id"
+                        >
                             <p-cellEditor>
                                 <ng-template pTemplate="input">
                                     <input 
@@ -156,7 +179,11 @@
                             </p-cellEditor>
                         </td>
 
-                        <td [pEditableColumn]="watch.location" pEditableColumnField="location">
+                        <td
+                            [pEditableColumn]="watch.location"
+                            pEditableColumnField="location"
+                            [pEditableColumnRowIndex]="watch.id"
+                        >
                             <p-cellEditor>
                                 <ng-template pTemplate="input">
                                     <input 
@@ -171,16 +198,21 @@
                             </p-cellEditor>
                         </td>
 
-                        <td [pEditableColumn]="watch.box" pEditableColumnField="box" class="text-center">
+                        <td
+                            [pEditableColumn]="watch.hasBox"
+                            pEditableColumnField="hasBox"
+                            [pEditableColumnRowIndex]="watch.id"
+                            class="text-center"
+                        >
                             <p-cellEditor>
                                 <ng-template pTemplate="input">
                                     <p-checkbox 
                                         [binary]="true"
-                                        [(ngModel)]="watch.box"
+                                        [(ngModel)]="watch.hasBox"
                                     />
                                 </ng-template>
                                 <ng-template pTemplate="output">
-                                    @if (watch.box) {
+                                    @if (watch.hasBox) {
                                         <i class="pi true-icon pi-check-circle text-green-500"></i>
                                     } @else {
                                         <i class="pi false-icon pi-times-circle text-pink-500"></i>
@@ -189,16 +221,21 @@
                             </p-cellEditor>
                         </td>
                         
-                        <td [pEditableColumn]="watch.papers" pEditableColumnField="papers" class="text-center">
+                        <td
+                            [pEditableColumn]="watch.hasPapers"
+                            pEditableColumnField="hasPapers"
+                            [pEditableColumnRowIndex]="watch.id"
+                            class="text-center"
+                        >
                             <p-cellEditor>
                                 <ng-template pTemplate="input">
                                     <p-checkbox 
                                         [binary]="true"
-                                        [(ngModel)]="watch.papers"
+                                        [(ngModel)]="watch.hasPapers"
                                     />
                                 </ng-template>
                                 <ng-template pTemplate="output">
-                                    @if (watch.papers) {
+                                    @if (watch.hasPapers) {
                                         <i class="pi true-icon pi-check-circle text-green-500"></i>
                                     } @else {
                                         <i class="pi false-icon pi-times-circle text-pink-500"></i>
@@ -207,7 +244,11 @@
                             </p-cellEditor>
                         </td>
 
-                        <td [pEditableColumn]="watch.cost" pEditableColumnField="cost">
+                        <td
+                            [pEditableColumn]="watch.cost"
+                            pEditableColumnField="cost"
+                            [pEditableColumnRowIndex]="watch.id"
+                        >
                             <p-cellEditor>
                                 <ng-template pTemplate="input">
                                     <p-inputNumber
@@ -221,7 +262,11 @@
                             </p-cellEditor>
                         </td>
 
-                        <td [pEditableColumn]="watch.remarks" pEditableColumnField="remarks">
+                        <td
+                            [pEditableColumn]="watch.remarks"
+                            pEditableColumnField="remarks"
+                            [pEditableColumnRowIndex]="watch.id"
+                        >
                             <p-cellEditor>
                                 <ng-template pTemplate="input">
                                     <textarea
@@ -244,13 +289,19 @@
     </div>
 </div>
 
-<app-modal
-    [isVisible]="isAddModalVisible"
-    (hide)="isAddModalVisible = false"
-    [title]="'Add a watch record'"
-    (hide)="onAddCancel()"
->
-    <app-add-watch (cancel)="onAddCancel()" (add)="onAddWatch($event)" />
-</app-modal>
+@if (!(isLoading$ | async)) {
+    <app-modal
+        [isVisible]="isAddModalVisible"
+        (hide)="isAddModalVisible = false"
+        [title]="'Add a watch record'"
+        (hide)="onAddCancel()"
+    >
+        <app-add-watch
+            [modelId]="modelOption.id"
+            (cancel)="onAddCancel()"
+            (add)="onAddWatch($event)"
+        />
+    </app-modal>
+}
 
 <app-filter-sidebar [isVisible]="isFilterSidebarVisible" (hide)="onHideFilter()" />

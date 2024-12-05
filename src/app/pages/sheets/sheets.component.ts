@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Brand } from 'src/app/demo/api/brand';
 import { WatchModel } from 'src/app/demo/api/watch-model';
 import { WatchRecord } from 'src/app/demo/api/watch-record';
 import { BrandService } from 'src/app/services/brand.service';
 import { WatchModelService } from 'src/app/services/watch-model.service';
-import { WatchService } from 'src/app/services/watch.service';
+import { WatchRecordService } from 'src/app/services/watch-record.service';
+import { DateTime } from 'luxon';
 
 @Component({
   selector: 'app-sheets',
@@ -13,8 +15,8 @@ import { WatchService } from 'src/app/services/watch.service';
   styleUrl: './sheets.component.scss'
 })
 export class SheetsComponent implements OnInit {
-  watches!: WatchRecord[];
-  filteredWatches!: WatchRecord[];
+  records!: WatchRecord[];
+  filteredRecords!: WatchRecord[];
   items!: MenuItem[];
   selectedWatch!: WatchRecord;
   searchTerm = ''
@@ -28,18 +30,21 @@ export class SheetsComponent implements OnInit {
   isAddModalVisible = false;
   isFilterSidebarVisible = false;
 
+  private isLoadingSubject: BehaviorSubject<boolean>;
+  isLoading$: Observable<boolean>;
+
   constructor(
-    private watchService: WatchService,
+    private watchRecordService: WatchRecordService,
     private brandService: BrandService,
     private watchModelService: WatchModelService
-  ) { }
+  )
+  {
+    this.isLoadingSubject = new BehaviorSubject<boolean>(false);
+    this.isLoading$ = this.isLoadingSubject.asObservable();
+  }
 
   ngOnInit() {
-    this.watchService.getWatches().then((data) => {
-        this.watches = data;
-        this.filteredWatches = data;
-    });
-
+    this.isLoadingSubject.next(true);
     this.brandService.getBrands().subscribe({
       next: (brands) => {
         this.brandOptions = brands;
@@ -55,21 +60,17 @@ export class SheetsComponent implements OnInit {
   }
 
   filterWatches() {
-    this.filteredWatches = this.watches.filter(watch => 
+    this.filteredRecords = this.records.filter(watch => 
       watch.description.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
   }
 
   deleteWatch(watch: WatchRecord) {
-    this.filteredWatches = this.filteredWatches.filter(x => x.id !== watch.id);
+    this.filteredRecords = this.filteredRecords.filter(x => x.id !== watch.id);
   }
 
   markWatchAsSold(watch: WatchRecord) {
-    watch.isSold = true;
-  }
-
-  onBrandChange() {
-    this.updateModels();
+    // watch.isSold = true;
   }
 
   updateModels() {
@@ -77,13 +78,25 @@ export class SheetsComponent implements OnInit {
       next: (models) => {
         this.modelOptions = models;
         this.modelOption = this.modelOptions[0];
+
+        this.isLoadingSubject.next(false);
+        this.updateRecords();
       }
     })
   }
 
+  updateRecords() {
+    this.watchRecordService.getWatchRecordsByModelId(this.modelOption.id).subscribe({
+      next: (watchRecords) => {
+        this.records = watchRecords;
+        this.filteredRecords = watchRecords;
+      }
+    });
+  }
+
   onAddWatch(watch: WatchRecord) {
     this.isAddModalVisible = false;
-    this.filteredWatches = [...this.filteredWatches, watch];
+    this.filteredRecords = [...this.filteredRecords, watch];
   }
 
   onAddCancel() {
@@ -91,11 +104,31 @@ export class SheetsComponent implements OnInit {
   }
 
   onShowFilter() {
-    console.log(this.isFilterSidebarVisible);
     this.isFilterSidebarVisible = true;
   }
 
   onHideFilter() {
     this.isFilterSidebarVisible = false;
+  }
+
+  onCellEditComplete(e: any) {
+    const editedRecord: WatchRecord = {};
+    editedRecord.id = e.index;
+    if (e.data instanceof Date) {
+      e.data =  DateTime.fromJSDate(e.data)
+      .setZone('Asia/Manila')
+      .toISO(); 
+    }
+    editedRecord[e.field] = e.data;
+
+    if (e.data === null) return;
+
+    this.watchRecordService.patchWatchRecord(editedRecord).subscribe({
+      next: () => {
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    });
   }
 }

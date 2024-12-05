@@ -4,13 +4,15 @@ export interface WatchRecord {
     imageUrl?: string;
     description?: string;
     material?: string;
-    dateOfPurchase?: Date;
+    datePurchased?: Date;
+    dateReceived?: Date;
+    dateSold?: Date;
     referenceNumber?: string;
     serialNumber?: string;
     location?: string;
-    box?: boolean;
-    papers?: boolean;
+    hasBox?: boolean;
+    hasPapers?: boolean;
     cost?: number;
     remarks?: string
-    isSold?: boolean;
+    createdAt?: Date;
 }

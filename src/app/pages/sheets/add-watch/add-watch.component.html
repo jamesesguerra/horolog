@@ -1,5 +1,5 @@
 <form [formGroup]="watchForm" (ngSubmit)="onSubmit()">
-    <div class="flex flex-column gap-2 mb-4">
+    <div class="flex flex-column gap-2 mb-3">
         <label for="description" class="font-semibold w-6rem">Description</label>
         <input
             pInputText
@@ -11,18 +11,43 @@
     </div>
 
     <div class="md:flex gap-4">
-        <div class="flex flex-column gap-2 mb-4 align-items-stretch flex-grow-1">
-            <label for="dateOfPurchase" class="font-semibold">Date of Purchase</label>
+        <div class="flex flex-column gap-2 mb-3 align-items-stretch flex-grow-1">
+            <label for="dateReceived" class="font-semibold">Date Received</label>
             <p-calendar 
                 [iconDisplay]="'input'" 
                 class="w-full"
                 [showIcon]="true" 
-                inputId="dateOfPurchase"
-                formControlName="dateOfPurchase" 
+                inputId="dateReceived"
+                formControlName="dateReceived" 
             />
         </div>
 
-        <div class="flex flex-column gap-2 mb-4 flex-grow-1">
+        <div class="flex flex-column gap-2 mb-3 align-items-stretch flex-grow-1">
+            <label for="datePurchased" class="font-semibold">Date of Purchase</label>
+            <p-calendar 
+                [iconDisplay]="'input'" 
+                class="w-full"
+                [showIcon]="true" 
+                inputId="datePurchased"
+                formControlName="datePurchased" 
+                appendTo="body"
+            />
+        </div>
+    </div>
+
+    <div class="md:flex gap-4">
+        <div class="flex flex-column gap-2 mb-3 align-items-stretch flex-grow-1">
+            <label for="dateSold" class="font-semibold">Date Sold</label>
+            <p-calendar 
+                [iconDisplay]="'input'" 
+                class="w-full"
+                [showIcon]="true" 
+                inputId="dateSold"
+                formControlName="dateSold" 
+            />
+        </div>
+
+        <div class="flex flex-column gap-2 mb-3 flex-grow-1">
             <label for="material" class="font-semibold">Material</label>
             <input
                 pInputText
@@ -35,7 +60,7 @@
     </div>
 
     <div class="md:flex gap-4">
-        <div class="flex flex-column gap-2 mb-4 flex-grow-1">
+        <div class="flex flex-column gap-2 mb-3 flex-grow-1">
             <label for="referenceNumber" class="font-semibold">Reference No.</label>
             <input
                 pInputText
@@ -46,7 +71,7 @@
             />
         </div>
     
-        <div class="flex flex-column gap-2 mb-4 flex-grow-1">
+        <div class="flex flex-column gap-2 mb-3 flex-grow-1">
             <label for="serialNumber" class="font-semibold w-6rem">Serial No.</label>
             <input
                 pInputText
@@ -59,7 +84,7 @@
     </div>
 
     <div class="md:flex gap-4">
-        <div class="flex flex-column gap-2 mb-4 flex-grow-1">
+        <div class="flex flex-column gap-2 mb-3 flex-grow-1">
             <label for="location" class="font-semibold">Location</label>
             <input
                 pInputText
@@ -70,7 +95,7 @@
             />
         </div>
     
-        <div class="flex flex-column gap-2 mb-4 flex-grow-1">
+        <div class="flex flex-column gap-2 mb-3 flex-grow-1">
             <label for="cost" class="font-semibold w-6rem">Cost</label>
             <p-inputNumber inputId="integeronly" formControlName="cost" />
         </div>
