@@ -7,7 +7,7 @@ import { WatchRecord } from 'src/app/demo/api/watch-record';
 import { BrandService } from 'src/app/services/brand.service';
 import { WatchModelService } from 'src/app/services/watch-model.service';
 import { WatchRecordService } from 'src/app/services/watch-record.service';
-import { DateTime } from 'luxon';
+import { DateService } from 'src/app/services/date.service';
 
 @Component({
   selector: 'app-sheets',
@@ -36,7 +36,8 @@ export class SheetsComponent implements OnInit {
   constructor(
     private watchRecordService: WatchRecordService,
     private brandService: BrandService,
-    private watchModelService: WatchModelService
+    private watchModelService: WatchModelService,
+    private dateService: DateService
   )
   {
     this.isLoadingSubject = new BehaviorSubject<boolean>(false);
@@ -115,9 +116,7 @@ export class SheetsComponent implements OnInit {
     const editedRecord: WatchRecord = {};
     editedRecord.id = e.index;
     if (e.data instanceof Date) {
-      e.data =  DateTime.fromJSDate(e.data)
-      .setZone('Asia/Manila')
-      .toISO(); 
+      e.data =  this.dateService.convertToISOString(e.data);
     }
     editedRecord[e.field] = e.data;
 

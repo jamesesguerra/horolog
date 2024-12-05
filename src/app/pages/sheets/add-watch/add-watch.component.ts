@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { WatchRecord } from 'src/app/demo/api/watch-record';
 import { ToastService } from 'src/app/layout/service/toast.service';
+import { DateService } from 'src/app/services/date.service';
 import { WatchRecordService } from 'src/app/services/watch-record.service';
 
 @Component({
@@ -18,7 +19,8 @@ export class AddWatchComponent {
 
   constructor(
     private toastService: ToastService,
-    private watchRecordService: WatchRecordService
+    private watchRecordService: WatchRecordService,
+    private dateService: DateService
   ) {
     this.initForm();
   }
@@ -49,9 +51,9 @@ export class AddWatchComponent {
       "modelId": this.modelId,
       "description": formValues.description,
       "material": formValues.material,
-      "datePurchased": formValues.datePurchased,
-      "dateReceived": formValues.dateReceived,
-      "dateSold": formValues.dateSold,
+      "datePurchased": this.dateService.convertToISOString(formValues.datePurchased),
+      "dateReceived": this.dateService.convertToISOString(formValues.dateReceived),
+      "dateSold": this.dateService.convertToISOString(formValues.dateSold),
       "referenceNumber": formValues.referenceNumber,
       "serialNumber": formValues.serialNumber,
       "location": formValues.location,
