@@ -7,6 +7,8 @@ export interface WatchRecord {
     datePurchased?: Date;
     dateReceived?: Date;
     dateSold?: Date;
+    dateBorrowed?: Date;
+    dateReturned?: Date;
     referenceNumber?: string;
     serialNumber?: string;
     location?: string;

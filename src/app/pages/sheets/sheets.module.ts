@@ -18,6 +18,7 @@ import { InputNumberModule } from "primeng/inputnumber";
 import { ContextMenuModule } from "primeng/contextmenu";
 import { FilterSidebarComponent } from "./filter-sidebar/filter-sidebar.component";
 import { SidebarModule } from "primeng/sidebar";
+import { DateModalComponent } from "./date-modal/date-modal.component";
 
 @NgModule({
     imports: [
@@ -42,7 +43,8 @@ import { SidebarModule } from "primeng/sidebar";
     declarations: [
         SheetsComponent,
         AddWatchComponent,
-        FilterSidebarComponent
+        FilterSidebarComponent,
+        DateModalComponent
     ]
 })
 export class SheetsModule {}

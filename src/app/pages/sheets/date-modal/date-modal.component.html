@@ -1,0 +1,18 @@
+<app-modal
+    [isVisible]="isVisible"
+    (hide)="onCancel()"
+    [title]="title"
+>
+    <p-calendar 
+        [iconDisplay]="'input'" 
+        class="w-full"
+        [showIcon]="true" 
+        appendTo="body"
+        [(ngModel)]="dateSelected"
+    />
+
+    <div class="flex justify-content-end gap-2 mt-4">
+        <p-button label="Cancel" [plain]="true" [text]="true" (click)="onCancel()" />
+        <p-button label="Save" severity="success" (click)="onSave()" />
+    </div>
+</app-modal>
