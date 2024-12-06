@@ -24,7 +24,6 @@ export class SheetsComponent implements OnInit {
   items!: MenuItem[];
   selectedWatch!: WatchRecord;
   searchTerm = ''
-  dateSold: Date;
   
   brandOptions: Brand[] = [{ id: 0, name: 'All' }];
   brandOption: Brand;
@@ -135,24 +134,6 @@ export class SheetsComponent implements OnInit {
     this.isFilterSidebarVisible = false;
   }
 
-  onConfirmSold() {
-    const editedRecord: WatchRecord = {};
-    editedRecord.id = this.selectedWatch.id;
-    editedRecord.dateSold = this.dateService.convertToISOString(this.dateSold);
-
-    this.watchRecordService.patchWatchRecord(editedRecord).subscribe({
-      next: () => {
-        this.selectedWatch.dateSold = editedRecord.dateSold;
-        this.isSoldModalVisible = false;
-        this.dateSold = null;
-        this.toastService.showSuccess("Success!", "The watch record has been marked as sold");
-      },
-      error: (error) => {
-        console.log(error);
-      }
-    });
-  }
-
   onCellEditComplete(e: any) {
     const editedRecord: WatchRecord = {};
     if (e.data instanceof Date) {
@@ -209,6 +190,11 @@ export class SheetsComponent implements OnInit {
 
     if (e.isSold) {
       this.filteredRecords = this.filteredRecords.filter(x => x.dateSold !== null);
+      this.filterCount++;
+    }
+
+    if (e.isBorrowed) {
+      this.filteredRecords = this.filteredRecords.filter(x => x.dateBorrowed !== null);
       this.filterCount++;
     }
   }
