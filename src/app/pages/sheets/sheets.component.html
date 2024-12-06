@@ -71,13 +71,17 @@
                         <th class="text-center">Image</th>
                         <th>Description</th>
                         <th>Material</th>
-                        <th>Date of Purchase</th>
+                        <th pSortableColumn="datePurchased">
+                            Date of Purchase <p-sortIcon field="datePurchased" />
+                        </th>
                         <th>Reference No.</th>
                         <th>Serial No.</th>
                         <th>Location</th>
                         <th>Box</th>
                         <th>Papers</th>
-                        <th>Cost</th>
+                        <th pSortableColumn="cost">
+                            Cost <p-sortIcon field="cost" />
+                        </th>
                         <th>Remarks</th>
                     </tr>
                 </ng-template>
