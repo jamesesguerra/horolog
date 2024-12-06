@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Brand } from 'src/app/demo/api/brand';
-import { WatchModel } from 'src/app/demo/api/watch-model';
-import { WatchRecord } from 'src/app/demo/api/watch-record';
+import { Brand } from 'src/app/models/brand';
+import { WatchModel } from 'src/app/models/watch-model';
+import { WatchRecord } from 'src/app/models/watch-record';
 import { BrandService } from 'src/app/services/brand.service';
 import { WatchModelService } from 'src/app/services/watch-model.service';
 import { WatchRecordService } from 'src/app/services/watch-record.service';

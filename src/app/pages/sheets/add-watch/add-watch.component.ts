@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { WatchRecord } from 'src/app/demo/api/watch-record';
+import { WatchRecord } from 'src/app/models/watch-record';
 import { ToastService } from 'src/app/layout/service/toast.service';
 import { DateService } from 'src/app/services/date.service';
 import { WatchRecordService } from 'src/app/services/watch-record.service';

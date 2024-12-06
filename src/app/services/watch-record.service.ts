@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment as env } from 'src/environments/environment';
-import { WatchRecord } from '../demo/api/watch-record';
+import { WatchRecord } from '../models/watch-record';
 import { DateService } from './date.service';
 
 @Injectable({

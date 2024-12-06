@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment as env } from 'src/environments/environment';
-import { WatchModel } from '../demo/api/watch-model';
+import { WatchModel } from '../models/watch-model';
 
 @Injectable({
   providedIn: 'root'
