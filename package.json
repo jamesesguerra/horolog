@@ -27,6 +27,8 @@
         "@fullcalendar/interaction": "^6.0.3",
         "@fullcalendar/timegrid": "^6.0.3",
         "chart.js": "^3.3.2",
+        "jspdf": "^2.5.2",
+        "jspdf-autotable": "^3.8.4",
         "luxon": "^3.5.0",
         "primeflex": "^3.3.1",
         "primeicons": "6.0.1",

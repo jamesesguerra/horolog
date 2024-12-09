@@ -10,6 +10,7 @@ import { WatchRecordService } from 'src/app/services/watch-record.service';
 import { DateService } from 'src/app/services/date.service';
 import { ToastService } from 'src/app/layout/service/toast.service';
 import { FilterSidebarComponent } from './filter-sidebar/filter-sidebar.component';
+import { ExportService } from 'src/app/services/export.service';
 
 @Component({
   selector: 'app-sheets',
@@ -48,7 +49,8 @@ export class SheetsComponent implements OnInit {
     private brandService: BrandService,
     private watchModelService: WatchModelService,
     private toastService: ToastService,
-    private dateService: DateService
+    private dateService: DateService,
+    private exportService: ExportService
   )
   {
     this.isLoadingSubject = new BehaviorSubject<boolean>(false);
@@ -269,5 +271,10 @@ export class SheetsComponent implements OnInit {
         this.toastService.showSuccess("Success!", "The watch record has been marked as returned");
       }
     });
+  }
+
+  onExport() {
+    this.exportService.exportTableAsPDF(this.filteredRecords);
+    this.toastService.showSuccess("Success!", "Exported watch data");
   }
 }

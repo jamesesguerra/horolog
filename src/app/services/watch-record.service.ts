@@ -46,4 +46,8 @@ export class WatchRecordService {
 
     return this.patchWatchRecord(editedRecord);
   }
+
+  getWatchRecordsCount() {
+    return this.http.get<number>(`${this.apiUrl}/count`);
+  }
 }

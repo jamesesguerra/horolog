@@ -45,7 +45,12 @@
                     (click)="isAddModalVisible = true"
                     [disabled]="isAllBrands"
                 />
-                <p-button icon="pi pi-file-export" routerLink="add" label="Export" severity="help" />
+                <p-button
+                    icon="pi pi-file-export"
+                    label="Export"
+                    severity="help"
+                    (click)="onExport()"
+                />
             </div>
         </div>
 
