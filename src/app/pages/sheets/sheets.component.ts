@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MenuItem } from 'primeng/api';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
 import { Brand } from 'src/app/models/brand';
 import { WatchModel } from 'src/app/models/watch-model';
 import { WatchRecord } from 'src/app/models/watch-record';
@@ -11,6 +11,7 @@ import { DateService } from 'src/app/services/date.service';
 import { ToastService } from 'src/app/layout/service/toast.service';
 import { FilterSidebarComponent } from './filter-sidebar/filter-sidebar.component';
 import { ExportService } from 'src/app/services/export.service';
+import { FileService } from 'src/app/services/file.service';
 
 @Component({
   selector: 'app-sheets',
@@ -50,7 +51,8 @@ export class SheetsComponent implements OnInit {
     private watchModelService: WatchModelService,
     private toastService: ToastService,
     private dateService: DateService,
-    private exportService: ExportService
+    private exportService: ExportService,
+    private fileService: FileService
   )
   {
     this.isLoadingSubject = new BehaviorSubject<boolean>(false);
@@ -75,13 +77,16 @@ export class SheetsComponent implements OnInit {
   }
 
   deleteWatch(watch: WatchRecord) {
-    this.watchRecordService.deleteWatchRecord(watch.id).subscribe({
+    forkJoin({
+      image: this.fileService.deleteFile(this.fileService.getBlobName(watch.imageUrl)),
+      watch: this.watchRecordService.deleteWatchRecord(watch.id)
+    }).subscribe({
       next: () => {
         this.filteredRecords = this.filteredRecords.filter(x => x.id !== watch.id);
         this.toastService.showInfo("Record Deleted", "The watch record has been successfully removed");
       },
-      error: () => {
-        // TODO
+      error: (error) => {
+        this.toastService.showError("Error", error);
       }
     })
   }
@@ -127,7 +132,7 @@ export class SheetsComponent implements OnInit {
 
   onAddWatch(watch: WatchRecord) {
     this.isAddModalVisible = false;
-    this.filteredRecords = [...this.filteredRecords, watch];
+    this.filteredRecords = [watch, ...this.filteredRecords];
   }
 
   onAddCancel() {
