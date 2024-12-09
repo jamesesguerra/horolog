@@ -102,7 +102,13 @@ export class SheetsComponent implements OnInit {
         this.modelOption = this.modelOptions[0];
 
         this.isLoadingSubject.next(false);
-        this.updateRecords();
+
+        if (this.modelOption != null) {
+          this.updateRecords();
+        } else {
+          this.records = [];
+          this.filteredRecords = [];
+        }
       }
     })
   }
