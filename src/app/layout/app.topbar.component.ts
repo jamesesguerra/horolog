@@ -1,6 +1,8 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { LayoutService } from "./service/app.layout.service";
+import { UserService } from '../services/user.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-topbar',
@@ -35,7 +37,11 @@ export class AppTopBarComponent {
 
     @ViewChild('topbarmenu') menu!: ElementRef;
 
-    constructor(public layoutService: LayoutService) { }
+    constructor(
+        public layoutService: LayoutService,
+        private userService: UserService,
+        private router: Router
+    ) { }
 
     changeTheme(theme: string, colorScheme: string) {
         this.theme = theme;
@@ -47,5 +53,10 @@ export class AppTopBarComponent {
         this.colorScheme = this.colorScheme === 'light' ? 'dark' : 'light';
 
         localStorage.setItem('horolog-theme', this.colorScheme);
+    }
+
+    onLogout() {
+        this.userService.logout();
+        this.router.navigate(['/login']);
     }
 }
