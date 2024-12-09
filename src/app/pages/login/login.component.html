@@ -9,7 +9,9 @@
                     <span class="text-600 font-medium">Sign in to continue</span>
                 </div>
 
-                <p class="text-red-500">{{ errorMessage }}</p>
+                @if (showErrorMessage) {
+                    <p class="text-red-500">Invalid username or password</p>
+                }
 
                 <div>
                     <label for="username" class="block text-900 text-xl font-medium mb-2">Username</label>
@@ -34,7 +36,22 @@
                         [feedback]="false"
                     ></p-password>
 
-                    <button pButton pRipple label="Sign In" class="w-full p-3 text-xl" (click)="onLogin()"></button>
+                    @if (!(isLoading$ | async)) {
+                        <p-button
+                            icon="pi pi-sign-in"
+                            label="Sign In"
+                            type="submit"
+                            (click)="onLogin()"
+                        />
+                    } @else {
+                        <p-button
+                            icon="pi pi-spin pi-spinner"
+                            label="Sign In"
+                            type="submit"
+                            class="w-full p-3 text-xl"
+                            [disabled]="true"
+                        />
+                    }
                 </div>
             </div>
         </div>
