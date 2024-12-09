@@ -18,4 +18,8 @@ export class WatchReportService {
   getTotalValue() {
     return this.http.get<number>(`${this.apiUrl}/total-value`);
   }
+
+  getAverageValue() {
+    return this.http.get<number>(`${this.apiUrl}/average-value`);
+  }
 }

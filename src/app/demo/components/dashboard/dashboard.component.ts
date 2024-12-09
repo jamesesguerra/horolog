@@ -21,6 +21,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     recordCount: number = 0;
     totalValue: number = 0;
+    averageValue: number = 0;
 
     constructor(
         private productService: ProductService,
@@ -45,6 +46,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.watchReportService.getTotalValue().subscribe({
             next: (value) => this.totalValue = value
         });
+
+        this.watchReportService.getAverageValue().subscribe({
+            next: (value) => this.averageValue = value
+        })
     }
 
     ngOnInit() {
@@ -64,14 +69,22 @@ export class DashboardComponent implements OnInit, OnDestroy {
         const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
 
         this.chartData = {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+            labels: [
+                'January',
+                'February',
+                'March',
+                'April',
+                'May',
+                'June',
+                'July',
+            ],
             datasets: [
                 {
                     label: 'Total Sales',
-                    data: [65, 59, 80, 81, 56, 55, 40],
+                    data: [65, 59, 80, 81, 56, 55, 40, 34],
                     fill: false,
-                    backgroundColor: documentStyle.getPropertyValue('--bluegray-700'),
-                    borderColor: documentStyle.getPropertyValue('--bluegray-700'),
+                    backgroundColor: '#21c55e',
+                    borderColor: '#21c55e',
                     tension: .4
                 }
             ]
