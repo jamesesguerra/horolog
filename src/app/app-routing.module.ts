@@ -14,7 +14,6 @@ import { authGuard } from './guards/auth.guard';
                     { path: 'sheets', loadChildren: () => import('./pages/sheets/sheets.module').then(m => m.SheetsModule) },
                     { path: 'brands', loadChildren: () => import('./pages/brands/brands.module').then(m => m.BrandsModule) },
                     { path: 'blocks', loadChildren: () => import('./demo/components/primeblocks/primeblocks.module').then(m => m.PrimeBlocksModule) },
-                    { path: 'pages', loadChildren: () => import('./demo/components/pages/pages.module').then(m => m.PagesModule) }
                 ],
                 canActivate: [authGuard]
             },

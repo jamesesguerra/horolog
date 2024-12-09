@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { ToastService } from 'src/app/layout/service/toast.service';
 import { UserService } from 'src/app/services/user.service';
@@ -16,8 +17,11 @@ export class LoginComponent {
     constructor(
         public layoutService: LayoutService,
         private userService: UserService,
-        private toastService: ToastService
-    ) { }
+        private router: Router
+    )
+    { 
+        if (this.userService.currentUser()) this.router.navigate(['/']);
+    }
 
     onLogin() {
         this.userService.login({ username: this.username, password: this.password }).subscribe({
