@@ -60,7 +60,10 @@ export class AddWatchComponent {
 
     if (this.fileToUpload != null) {
       this.fileService.uploadFile(this.fileToUpload).subscribe({
-        next: (result: any) => this.addWatch(result.uri),
+        next: (result: any) => {
+          this.addWatch(result.uri);
+          this.fileUpload.clear();
+        },
         error: (error) => {
           this.toastService.showError("Error", error);
           this.isLoadingSubject.next(false);
