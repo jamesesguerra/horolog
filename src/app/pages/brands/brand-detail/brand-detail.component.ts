@@ -54,6 +54,7 @@ export class BrandDetailComponent implements OnInit {
     this.watchModelService.addWatchModel({ brandId: this.brand.id, name }).subscribe({
       next: (watchModel) => {
         this.filteredWatches = [...this.filteredWatches, watchModel];
+        this.watchModelForm.reset();
         this.toastService.showSuccess("Success!", "New watch model added");
         this.isAddModalVisible = false;
       },
