@@ -19,6 +19,8 @@ import { ContextMenuModule } from "primeng/contextmenu";
 import { FilterSidebarComponent } from "./filter-sidebar/filter-sidebar.component";
 import { SidebarModule } from "primeng/sidebar";
 import { DateModalComponent } from "./date-modal/date-modal.component";
+import { GalleryModalComponent } from "./gallery-modal/gallery-modal.component";
+import { GalleriaModule } from "primeng/galleria";
 
 @NgModule({
     imports: [
@@ -38,13 +40,15 @@ import { DateModalComponent } from "./date-modal/date-modal.component";
         CalendarModule,
         ContextMenuModule,
         SidebarModule,
+        GalleriaModule,
         CommonModule
     ],
     declarations: [
         SheetsComponent,
         AddWatchComponent,
         FilterSidebarComponent,
-        DateModalComponent
+        DateModalComponent,
+        GalleryModalComponent
     ]
 })
 export class SheetsModule {}

@@ -6,7 +6,9 @@ import { DateService } from 'src/app/services/date.service';
 import { WatchRecordService } from 'src/app/services/watch-record.service';
 import { FileUpload } from 'primeng/fileupload';
 import { FileService } from 'src/app/services/file.service';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
+import { WatchImageService } from 'src/app/services/watch-image.service';
+import { Xmb } from '@angular/compiler';
 
 @Component({
   selector: 'app-add-watch',
@@ -20,7 +22,7 @@ export class AddWatchComponent {
   @Output() cancel = new EventEmitter();
 
   watchForm: FormGroup;
-  fileToUpload: any;
+  filesToUpload: any = [];
 
   private isLoadingSubject: BehaviorSubject<boolean>;
   isLoading$: Observable<boolean>;
@@ -28,6 +30,7 @@ export class AddWatchComponent {
   constructor(
     private toastService: ToastService,
     private watchRecordService: WatchRecordService,
+    private watchImageService: WatchImageService,
     private dateService: DateService,
     private fileService: FileService
   )
@@ -58,11 +61,16 @@ export class AddWatchComponent {
     this.fileUpload.upload();
     this.isLoadingSubject.next(true);
 
-    if (this.fileToUpload != null) {
-      this.fileService.uploadFile(this.fileToUpload).subscribe({
+    const uploadRequests  = this.filesToUpload.map(image => {
+      return this.fileService.uploadFile(image);
+    });
+
+    if (uploadRequests.length > 0) {
+      forkJoin(uploadRequests).subscribe({
         next: (result: any) => {
-          this.addWatch(result.uri);
+          this.filesToUpload = [];
           this.fileUpload.clear();
+          this.addWatch(result[0].uri, result);
         },
         error: (error) => {
           this.toastService.showError("Error", error);
@@ -76,19 +84,20 @@ export class AddWatchComponent {
 
   onCancel() {
     this.watchForm.reset();
+    this.fileUpload.clear();
     this.cancel.emit();
   }
 
   onUpload(e: any) {
-    this.fileToUpload = e.files[0];
+    this.filesToUpload = e.files;
   }
 
-  private addWatch(imageUri?: string) {
+  private addWatch(imageUri?: string, watchImages?: any[]) {
     const formValues = this.watchForm.value;
 
     const record =
     {
-      "imageUrl": imageUri ?? "https://media.istockphoto.com/id/920345886/vector/classic-wristwatch-icon.jpg?s=612x612&w=0&k=20&c=MbgyLy52hlVIOqppuIpML4XSuxFUJozffHVH0Q5jMZ4=",
+      "imageUrl": imageUri,
       "modelId": this.modelId,
       "description": formValues.description,
       "material": formValues.material,
@@ -109,12 +118,22 @@ export class AddWatchComponent {
         this.watchForm.reset();
         this.add.emit(watchRecord);
         this.toastService.showSuccess("Success!", "New watch record added");
-        this.isLoadingSubject.next(false);
+
+        if (watchImages.length > 0) {
+          watchImages = watchImages.map((x) => {
+            return { ...x, recordId: watchRecord.id };
+          });
+
+          this.watchImageService.addImages(watchImages).subscribe();
+        }
+
+        this.isLoadingSubject.next(false)
       },
       error: (error) => {
         this.toastService.showError("Error", error);
         this.isLoadingSubject.next(false);
       }
-    })
+    });
   }
+
 }

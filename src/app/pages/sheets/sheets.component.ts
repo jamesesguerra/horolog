@@ -12,6 +12,7 @@ import { ToastService } from 'src/app/layout/service/toast.service';
 import { FilterSidebarComponent } from './filter-sidebar/filter-sidebar.component';
 import { ExportService } from 'src/app/services/export.service';
 import { FileService } from 'src/app/services/file.service';
+import { GalleryModalComponent } from './gallery-modal/gallery-modal.component';
 
 @Component({
   selector: 'app-sheets',
@@ -20,6 +21,7 @@ import { FileService } from 'src/app/services/file.service';
 })
 export class SheetsComponent implements OnInit {
   @ViewChild(FilterSidebarComponent) filterComponent!: FilterSidebarComponent;
+  @ViewChild(GalleryModalComponent) galleryModal!: GalleryModalComponent;
 
   records!: WatchRecord[];
   filteredRecords!: WatchRecord[];
@@ -37,6 +39,7 @@ export class SheetsComponent implements OnInit {
   isSoldModalVisible = false;
   isBorrowedModalVisible = false;
   isReturnedModalVisible = false;
+  isGalleryModalVisible = false;
   isFilterSidebarVisible = false;
   isAllBrands = false;
 
@@ -78,7 +81,7 @@ export class SheetsComponent implements OnInit {
 
   deleteWatch(watch: WatchRecord) {
     forkJoin({
-      image: this.fileService.deleteFile(this.fileService.getBlobName(watch.imageUrl)),
+      image: this.fileService.deleteFile(this.fileService.getBlobName(watch?.imageUrl)),
       watch: this.watchRecordService.deleteWatchRecord(watch.id)
     }).subscribe({
       next: () => {
@@ -287,5 +290,10 @@ export class SheetsComponent implements OnInit {
   onExport() {
     this.exportService.exportTableAsPDF(this.filteredRecords);
     this.toastService.showSuccess("Success!", "Exported watch data");
+  }
+
+  onOpenGalleryModal(recordId: number) {
+    this.isGalleryModalVisible = true;
+    this.galleryModal.setImages(recordId);
   }
 }

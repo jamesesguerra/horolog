@@ -92,9 +92,16 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-watch let-editing="editing">
                     <tr [pContextMenuRow]="watch" [class.sold]="watch.dateSold" [class.borrowed]="watch.dateBorrowed">
-                        <td class="flex justify-content-center">
+                        <td
+                            class="flex justify-content-center cursor-pointer"
+                            (click)="onOpenGalleryModal(watch.id)"
+                        >
                             <div class="md:w-10rem md:h-9rem relative image-container">
-                                <img class="block xl:block mx-auto border-round w-full responsive-image" [src]="watch.imageUrl" [alt]="watch.description" />
+                                <img
+                                    class="block xl:block mx-auto border-round w-full responsive-image"
+                                    [src]="watch.imageUrl ?? 'https://media.istockphoto.com/id/920345886/vector/classic-wristwatch-icon.jpg?s=612x612&w=0&k=20&c=MbgyLy52hlVIOqppuIpML4XSuxFUJozffHVH0Q5jMZ4='"
+                                    [alt]="watch.description"
+                                />
                             </div>
                         </td>
                         
@@ -274,7 +281,7 @@
                                     />
                                 </ng-template>
                                 <ng-template pTemplate="output">
-                                    {{ watch.cost | priceTruncate }}
+                                    {{ watch?.cost | priceTruncate }}
                                 </ng-template>
                             </p-cellEditor>
                         </td>
@@ -344,6 +351,12 @@
     [title]="'Date Returned'"
     (cancel)="isBorrowedModalVisible = false"
     (save)="onReturned($event)"
+/>
+
+<app-gallery-modal
+    [isVisible]="isGalleryModalVisible"
+    [title]=""
+    (cancel)="isGalleryModalVisible = false"
 />
 
 <app-filter-sidebar

@@ -20,7 +20,9 @@ export class FileService {
     return this.http.delete(`${this.apiUrl}?blobName=${blob}`);
   }
 
-  getBlobName(uri) {
+  getBlobName(uri: string | undefined) {
+    if (uri == undefined) return '';
+
     const url = new URL(uri);
     const pathSegments = url.pathname.split('/');
     return decodeURIComponent(pathSegments[pathSegments.length - 1]);
