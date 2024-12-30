@@ -8,7 +8,6 @@ import { FileUpload } from 'primeng/fileupload';
 import { FileService } from 'src/app/services/file.service';
 import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
 import { WatchImageService } from 'src/app/services/watch-image.service';
-import { Xmb } from '@angular/compiler';
 
 @Component({
   selector: 'app-add-watch',
@@ -132,8 +131,10 @@ export class AddWatchComponent {
       error: (error) => {
         this.toastService.showError("Error", error);
         this.isLoadingSubject.next(false);
+      },
+      complete: () => {
+        this.isLoadingSubject.next(false);
       }
     });
   }
-
 }
