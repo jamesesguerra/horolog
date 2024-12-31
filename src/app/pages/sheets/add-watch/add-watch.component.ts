@@ -71,8 +71,8 @@ export class AddWatchComponent {
           this.fileUpload.clear();
           this.addWatch(result[0].uri, result);
         },
-        error: (error) => {
-          this.toastService.showError("Error", error);
+        error: ({ error }) => {
+          this.toastService.showError("Error", error.detail);
           this.isLoadingSubject.next(false);
         }
       })
@@ -131,7 +131,7 @@ export class AddWatchComponent {
         this.add.emit(watchRecord);
         this.toastService.showSuccess("Success!", "New watch record added");
 
-        if (watchImages.length > 0) {
+        if (watchImages?.length > 0) {
           watchImages = watchImages.map((x) => {
             return { ...x, recordId: watchRecord.id };
           });
@@ -141,8 +141,8 @@ export class AddWatchComponent {
 
         this.isLoadingSubject.next(false)
       },
-      error: (error) => {
-        this.toastService.showError("Error", error);
+      error: ({ error }) => {
+        this.toastService.showError("Error", error.detail);
         this.isLoadingSubject.next(false);
       },
       complete: () => {
