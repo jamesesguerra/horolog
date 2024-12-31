@@ -12,6 +12,6 @@ export class PriceTruncatePipe implements PipeTransform {
     } else if (value >= 1_000) {
       return `${(value / 1_000).toFixed(1).replace(/\.0$/, '')}K`;
     }
-    return value.toString();
+    return value?.toString();
   }
 }
