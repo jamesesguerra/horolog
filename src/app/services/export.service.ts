@@ -15,7 +15,7 @@ export class ExportService {
     const data = tableData.map(item => [
       item.description,
       item.serialNumber,
-      new Date(item.dateReceived).toISOString().split('T')[0],
+      item.dateReceived ? new Date(item.dateReceived).toISOString().split('T')[0] : "",
       item.remarks
     ]);
 
