@@ -114,7 +114,20 @@ export class AddWatchComponent {
 
     this.watchRecordService.addWatchRecord(record).subscribe({
       next: (watchRecord) => {
-        this.watchForm.reset();
+        this.watchForm.reset({
+          description: '',
+          material: '',
+          datePurchased: null,
+          dateReceived: null,
+          dateSold: null,
+          referenceNumber: '',
+          serialNumber: '',
+          location: '',
+          box: false, 
+          papers: false,
+          cost: null,
+          remarks: '',
+        });
         this.add.emit(watchRecord);
         this.toastService.showSuccess("Success!", "New watch record added");
 
