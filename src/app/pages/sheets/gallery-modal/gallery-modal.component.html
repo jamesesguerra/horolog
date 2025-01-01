@@ -4,10 +4,65 @@
     (hide)="onCancel()"
 >
 <div class="card">
-    <p-galleria [(value)]="images" [numVisible]="5" [circular]="true" [showItemNavigators]="true" [showThumbnails]="false" [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '640px' }">
-        <ng-template pTemplate="item" let-item>
-            <img [src]="item.uri" style="width: 100%; display: block;" />
-        </ng-template>
-    </p-galleria>
+    @if (images.length > 0) {
+        <p-galleria
+            [(value)]="images"
+            [numVisible]="5"
+            [circular]="true"
+            [showItemNavigators]="true"
+            [showThumbnails]="false"
+            [activeIndex]="currentIndex"
+            [responsiveOptions]="responsiveOptions"
+            [containerStyle]="{ 'max-width': '640px' }"
+            (activeIndexChange)="onIndexChange($event)"
+        >
+            <ng-template pTemplate="item" let-item>
+                <img [src]="item?.uri" style="width: 100%; display: block;" />
+            </ng-template>
+        </p-galleria>
+    } @else {
+        <p>No images added.</p>
+    }
+
 </div>
+<div class="flex justify-content-between mt-4">
+    <div>
+        <p-button
+            icon="pi pi-trash"
+            (click)="onDeleteImage()"
+            severity="danger"
+            [disabled]="images.length == 0"
+        />
+    </div>
+
+    <div class="flex gap-2">
+        <p-fileUpload 
+            #fileUpload
+            mode="basic" 
+            chooseLabel="Choose an image" 
+            chooseIcon="pi pi-upload"
+            customUpload="true"
+            accept="image/*" n
+            maxFileSize="2000000"
+            [multiple]="true"
+            (uploadHandler)="onUpload($event)"
+        />
+    
+        @if (!(isLoading$ | async)) {
+            <p-button
+                icon="pi pi-save"
+                label="Save"
+                (click)="onSubmit()"
+                severity="success"
+            />
+        } @else {
+            <p-button
+                icon="pi pi-spin pi-spinner"
+                label="Save"
+                [disabled]="true"
+            />
+        }
+    </div>
+</div>
+
 </app-modal>

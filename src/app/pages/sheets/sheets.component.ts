@@ -292,8 +292,13 @@ export class SheetsComponent implements OnInit {
     this.toastService.showSuccess("Success!", "Exported watch data");
   }
 
-  onOpenGalleryModal(recordId: number) {
+  onOpenGalleryModal(watch: WatchRecord) {
     this.isGalleryModalVisible = true;
-    this.galleryModal.setImages(recordId);
+    this.galleryModal.setImages(watch);
+  }
+
+  onDeleteImage() {
+    this.isGalleryModalVisible = false;
+    this.updateRecords();
   }
 }

@@ -94,7 +94,7 @@
                     <tr [pContextMenuRow]="watch" [class.sold]="watch.dateSold" [class.borrowed]="watch.dateBorrowed">
                         <td
                             class="flex justify-content-center cursor-pointer"
-                            (click)="onOpenGalleryModal(watch.id)"
+                            (click)="onOpenGalleryModal(watch)"
                         >
                             <div class="md:w-10rem md:h-9rem relative image-container">
                                 <img
@@ -357,6 +357,7 @@
     [isVisible]="isGalleryModalVisible"
     [title]=""
     (cancel)="isGalleryModalVisible = false"
+    (delete)="onDeleteImage()"
 />
 
 <app-filter-sidebar

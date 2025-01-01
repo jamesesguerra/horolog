@@ -19,20 +19,7 @@ export class WatchImageService {
     return this.http.get(`${this.apiUrl}?recordId=${recordId}`);
   }
 
-  getImages() {
-    return [
-      {
-        "itemImageSrc": "https://primefaces.org/cdn/primeng/images/galleria/galleria1.jpg",
-        "thumbnailImageSrc": "https://primefaces.org/cdn/primeng/images/galleria/galleria1s.jpg",
-        "alt": "description",
-        "title": "Image 1"
-      },
-      {
-        "itemImageSrc": "https://primefaces.org/cdn/primeng/images/galleria/galleria2.jpg",
-        "thumbnailImageSrc": "https://primefaces.org/cdn/primeng/images/galleria/galleria2s.jpg",
-        "alt": "description",
-        "title": "Image 1"
-      },
-    ];
+  deleteWatchImage(id: number) {
+    return this.http.delete(`${this.apiUrl}/${id}`);
   }
 }
