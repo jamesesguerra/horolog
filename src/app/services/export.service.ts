@@ -37,6 +37,6 @@ export class ExportService {
       margin: { top: 25 }
     })
 
-    doc.save(`watch-data-${new Date().toLocaleDateString()}`);
+    doc.save(`watch-data-${new Date().toLocaleString()}`);
   }
 }
