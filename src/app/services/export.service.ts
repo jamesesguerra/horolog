@@ -15,7 +15,10 @@ export class ExportService {
     const data = tableData.map(item => [
       item.description,
       item.serialNumber,
-      item.dateReceived ? new Date(item.dateReceived).toISOString().split('T')[0] : "",
+      item.dateReceived ? new Date(item.dateReceived).toLocaleDateString() : "",
+      item.datePurchased ? new Date(item.datePurchased).toLocaleDateString() : "",
+      item.hasBox ? "Y" : "N",
+      item.hasPapers ? "Y" : "N",
       item.remarks
     ]);
 
@@ -28,7 +31,7 @@ export class ExportService {
     doc.text(title, xPos, 20);
 
     autoTable(doc, {
-      head: [['Item', 'Serial Number', 'Date', 'Remarks']],
+      head: [['Item', 'Serial Number', 'Date Received', 'Date Purchased', 'Box', 'Papers', 'Remarks']],
       body: data,
       theme: 'grid',
       margin: { top: 25 }
