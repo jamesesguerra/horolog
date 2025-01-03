@@ -177,6 +177,11 @@ export class SheetsComponent implements OnInit {
       this.filterCount++;
     }
 
+    if (e.referenceNumber !== null && e.referenceNumber.length > 0) {
+      this.filteredRecords = this.filteredRecords.filter(x => x.referenceNumber === e.referenceNumber);
+      this.filterCount++;
+    }
+
     if (e.datePurchased != null) {
       this.filteredRecords = this.dateService.applyDateFilter(
         this.filteredRecords,
