@@ -21,6 +21,7 @@ import { SidebarModule } from "primeng/sidebar";
 import { DateModalComponent } from "./date-modal/date-modal.component";
 import { GalleryModalComponent } from "./gallery-modal/gallery-modal.component";
 import { GalleriaModule } from "primeng/galleria";
+import { ProgressSpinnerModule } from "primeng/progressspinner";
 
 @NgModule({
     imports: [
@@ -41,6 +42,7 @@ import { GalleriaModule } from "primeng/galleria";
         ContextMenuModule,
         SidebarModule,
         GalleriaModule,
+        ProgressSpinnerModule,
         CommonModule
     ],
     declarations: [

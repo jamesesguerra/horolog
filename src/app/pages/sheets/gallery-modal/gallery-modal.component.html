@@ -1,68 +1,76 @@
-<app-modal
-    [isVisible]="isVisible"
-    [title]="title"
-    (hide)="onCancel()"
->
-<div class="card">
-    @if (images.length > 0) {
-        <p-galleria
-            [(value)]="images"
-            [numVisible]="5"
-            [circular]="true"
-            [showItemNavigators]="true"
-            [showThumbnails]="false"
-            [activeIndex]="currentIndex"
-            [responsiveOptions]="responsiveOptions"
-            [containerStyle]="{ 'max-width': '640px' }"
-            (activeIndexChange)="onIndexChange($event)"
-        >
-            <ng-template pTemplate="item" let-item>
-                <img [src]="item?.uri" style="width: 100%; display: block;" />
-            </ng-template>
-        </p-galleria>
-    } @else {
-        <p>No images added.</p>
-    }
-
-</div>
-<div class="flex justify-content-between mt-4">
-    <div>
-        <p-button
-            icon="pi pi-trash"
-            (click)="onDeleteImage()"
-            severity="danger"
-            [disabled]="images.length == 0"
-        />
-    </div>
-
-    <div class="flex gap-2">
-        <p-fileUpload 
-            #fileUpload
-            mode="basic" 
-            chooseLabel="Choose an image" 
-            chooseIcon="pi pi-upload"
-            customUpload="true"
-            accept="image/*" n
-            maxFileSize="10000000"
-            [multiple]="true"
-            (uploadHandler)="onUpload($event)"
-        />
-    
+    <app-modal
+        [isVisible]="isVisible"
+        [title]="title"
+        (hide)="onCancel()"
+    >
+    <div class="card">
         @if (!(isLoading$ | async)) {
-            <p-button
-                icon="pi pi-save"
-                label="Save"
-                (click)="onSubmit()"
-                severity="success"
-            />
+            <div class="flex justify-content-center">
+                <p-progressSpinner styleClass="w-4rem h-4rem" 
+                strokeWidth="8" 
+                fill="var(--surface-ground)" 
+                animationDuration=".5s" />
+            </div>
         } @else {
-            <p-button
-                icon="pi pi-spin pi-spinner"
-                label="Save"
-                [disabled]="true"
-            />
+            @if (images.length > 0) {
+                <p-galleria
+                    [(value)]="images"
+                    [numVisible]="5"
+                    [circular]="true"
+                    [showItemNavigators]="true"
+                    [showThumbnails]="false"
+                    [activeIndex]="currentIndex"
+                    [responsiveOptions]="responsiveOptions"
+                    [containerStyle]="{ 'max-width': '640px' }"
+                    (activeIndexChange)="onIndexChange($event)"
+                >
+                    <ng-template pTemplate="item" let-item>
+                        <img [src]="item?.uri" style="width: 100%; display: block;" />
+                    </ng-template>
+                </p-galleria>
+            } @else {
+                <p>No images added.</p>
+            }
         }
     </div>
-</div>
+    <div class="flex justify-content-between mt-4">
+        <div>
+            <p-button
+                icon="pi pi-trash"
+                (click)="onDeleteImage()"
+                severity="danger"
+                [disabled]="images.length == 0"
+            />
+        </div>
 
-</app-modal>
+        <div class="flex gap-2">
+            <p-fileUpload 
+                #fileUpload
+                mode="basic" 
+                chooseLabel="Choose an image" 
+                chooseIcon="pi pi-upload"
+                customUpload="true"
+                accept="image/*" n
+                maxFileSize="10000000"
+                [multiple]="true"
+                (uploadHandler)="onUpload($event)"
+            />
+        
+            @if (!(isLoading$ | async)) {
+                <p-button
+                    icon="pi pi-save"
+                    label="Save"
+                    (click)="onSubmit()"
+                    severity="success"
+                />
+            } @else {
+                <p-button
+                    icon="pi pi-spin pi-spinner"
+                    label="Save"
+                    [disabled]="true"
+                />
+            }
+        </div>
+    </div>
+
+    </app-modal>
