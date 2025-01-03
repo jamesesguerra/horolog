@@ -4,7 +4,7 @@
         (hide)="onCancel()"
     >
     <div class="card">
-        @if (!(isLoading$ | async)) {
+        @if ((isLoading$ | async)) {
             <div class="flex justify-content-center">
                 <p-progressSpinner styleClass="w-4rem h-4rem" 
                 strokeWidth="8" 

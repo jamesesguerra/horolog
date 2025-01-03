@@ -51,10 +51,14 @@ export class GalleryModalComponent implements OnInit {
   }
 
   setImages(watch: WatchRecord) {
+    this.isLoadingSubject.next(true)
     this.watchRecord = watch;
     
     this.watchImageService.getWatchImagesByRecordId(watch.id).subscribe({
-      next: (images: any) => this.images = images
+      next: (images: any) => {
+        this.images = images;
+        this.isLoadingSubject.next(false);
+      }
     });
   }
 
@@ -70,8 +74,6 @@ export class GalleryModalComponent implements OnInit {
     });
 
     if (uploadRequests.length > 0) {
-      this.isLoadingSubject.next(true);
-
       forkJoin(uploadRequests).subscribe({
         next: (result: any) => {
           this.filesToUpload = [];
@@ -80,7 +82,6 @@ export class GalleryModalComponent implements OnInit {
         },
         error: ({ error }) => {
           this.toastService.showError("Error", error.detail);
-          this.isLoadingSubject.next(false);
         }
       })
     } else {
