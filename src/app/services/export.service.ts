@@ -9,7 +9,7 @@ export class ExportService {
 
   constructor() { }
 
-  async exportTableAsPDF(tableData: any[], filename = 'table.pdf') {
+  async exportTableAsPDF(tableData: any[]) {
     const doc = new jsPDF('l', 'mm', 'a4');
 
     const data = tableData.map(item => [
@@ -37,6 +37,6 @@ export class ExportService {
       margin: { top: 25 }
     })
 
-    doc.save(filename);
+    doc.save(`watch-data-${new Date().toLocaleDateString()}`);
   }
 }
