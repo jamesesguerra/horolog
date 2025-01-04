@@ -34,7 +34,15 @@ export class ExportService {
       head: [['Item', 'Serial Number', 'Date Received', 'Date Purchased', 'Box', 'Papers', 'Remarks']],
       body: data,
       theme: 'grid',
-      margin: { top: 25 }
+      margin: { top: 25 },
+      willDrawCell: (data) => {
+        const currentItem = tableData[data.row.index];
+
+        if (currentItem.dateSold !== null && data.section === "body") {
+          doc.setFillColor(255, 244, 190);
+          doc.rect(data.cell.x, data.cell.y, data.cell.width, data.cell.height, 'F');
+        }
+      }
     })
 
     doc.save(`watch-data-${new Date().toLocaleString()}`);
