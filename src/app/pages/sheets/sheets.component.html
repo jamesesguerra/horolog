@@ -76,17 +76,14 @@
                         <th class="text-center">Image</th>
                         <th>Description</th>
                         <th>Material</th>
-                        <th pSortableColumn="datePurchased">
-                            Date of Purchase <p-sortIcon field="datePurchased" />
-                        </th>
+                        <th>Date of Purchase</th>
+                        <th>Date Sold</th>
                         <th>Reference No.</th>
                         <th>Serial No.</th>
                         <th>Location</th>
                         <th>Box</th>
                         <th>Papers</th>
-                        <th pSortableColumn="cost">
-                            Cost <p-sortIcon field="cost" />
-                        </th>
+                        <th>Cost</th>
                         <th>Remarks</th>
                     </tr>
                 </ng-template>
@@ -161,6 +158,28 @@
                                 </ng-template>
                                 <ng-template pTemplate="output">
                                     {{ watch.datePurchased | date:'M/d/yyyy' }}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+
+                        <td
+                            [pEditableColumn]="watch.dateSold"
+                            pEditableColumnField="dateSold"
+                            [pEditableColumnRowIndex]="watch.id"
+                        >
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <p-calendar 
+                                        [iconDisplay]="'input'" 
+                                        class="w-full"
+                                        [showIcon]="true" 
+                                        inputId="dateSold"
+                                        appendTo="body"
+                                        [(ngModel)]="watch.dateSold"
+                                    />
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{ watch.dateSold | date:'M/d/yyyy' }}
                                 </ng-template>
                             </p-cellEditor>
                         </td>
