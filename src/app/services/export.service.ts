@@ -52,7 +52,7 @@ export class ExportService {
       willDrawCell: (data) => {
         const currentItem = tableData[data.row.index];
 
-        if (currentItem.dateSold !== null && data.section === "body") {
+        if (currentItem?.dateSold !== null && data.section === "body") {
           doc.setFillColor(255, 244, 190);
           doc.rect(data.cell.x, data.cell.y, data.cell.width, data.cell.height, 'F');
         }
