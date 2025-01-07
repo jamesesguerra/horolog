@@ -18,4 +18,8 @@ export class WatchModelService {
   addWatchModel(watchModel: WatchModel) {
     return this.http.post<WatchModel>(this.apiUrl, watchModel);
   }
+
+  getIndependentBrandWatchModelIds() {
+    return this.http.get<number[]>(`${this.apiUrl}/independent-brands`); 
+  }
 }

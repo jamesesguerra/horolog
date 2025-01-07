@@ -218,6 +218,16 @@ export class SheetsComponent implements OnInit {
       this.filteredRecords = this.filteredRecords.filter(x => x.dateBorrowed !== null);
       this.filterCount++;
     }
+
+    if (e.isIndependentBrand) {
+      this.watchModelService.getIndependentBrandWatchModelIds().subscribe({
+        next: (modelIds) => {
+          const modelIdsSet = new Set(modelIds);
+          this.filteredRecords = this.filteredRecords.filter(x => modelIdsSet.has(x.modelId));
+          this.filterCount++;
+        }
+      });
+    }
   }
 
   onClearFilter() {
