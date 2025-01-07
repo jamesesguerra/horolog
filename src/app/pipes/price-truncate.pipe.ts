@@ -1,17 +1,13 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { inject, Pipe, PipeTransform } from '@angular/core';
+import { PriceFormatterService } from '../services/price-formatter.service';
 
 @Pipe({
   name: 'priceTruncate',
 })
 export class PriceTruncatePipe implements PipeTransform {
+  private priceFormatterService = inject(PriceFormatterService);
+
   transform(value: number): string {
-    if (value >= 1_000_000_000) {
-      return `${(value / 1_000_000_000).toFixed(1).replace(/\.0$/, '')}B`;
-    } else if (value >= 1_000_000) {
-      return `${(value / 1_000_000).toFixed(1).replace(/\.0$/, '')}M`;
-    } else if (value >= 1_000) {
-      return `${(value / 1_000).toFixed(1).replace(/\.0$/, '')}K`;
-    }
-    return value?.toString();
+    return this.priceFormatterService.format(value);
   }
 }

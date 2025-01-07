@@ -1,13 +1,13 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import { PriceFormatterService } from './price-formatter.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ExportService {
-
-  constructor() { }
+  private priceFormatterService = inject(PriceFormatterService);
 
   async exportTableAsPDF(tableData: any[]) {
     const doc = new jsPDF('l', 'mm', 'a4');
@@ -17,8 +17,10 @@ export class ExportService {
       item.serialNumber,
       item.dateReceived ? new Date(item.dateReceived).toLocaleDateString() : "",
       item.datePurchased ? new Date(item.datePurchased).toLocaleDateString() : "",
+      item.location,
       item.hasBox ? "Y" : "N",
       item.hasPapers ? "Y" : "N",
+      this.priceFormatterService.format(item.cost),
       item.remarks
     ]);
 
@@ -31,7 +33,19 @@ export class ExportService {
     doc.text(title, xPos, 20);
 
     autoTable(doc, {
-      head: [['Item', 'Serial Number', 'Date Received', 'Date Purchased', 'Box', 'Papers', 'Remarks']],
+      head: [
+        [
+          'Item',
+          'Serial Number',
+          'Date Received',
+          'Date Purchased',
+          'Location',
+          'Box',
+          'Papers',
+          'Cost',
+          'Remarks'
+        ]
+      ],
       body: data,
       theme: 'grid',
       margin: { top: 25 },
