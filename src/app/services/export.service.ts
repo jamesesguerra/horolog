@@ -14,8 +14,8 @@ export class ExportService {
 
     const data = tableData.map(item => [
       item.description,
+      item.referenceNumber,
       item.serialNumber,
-      item.dateReceived ? new Date(item.dateReceived).toLocaleDateString() : "",
       item.datePurchased ? new Date(item.datePurchased).toLocaleDateString() : "",
       item.location,
       item.hasBox ? "Y" : "N",
@@ -36,8 +36,8 @@ export class ExportService {
       head: [
         [
           'Item',
+          'Reference Number',
           'Serial Number',
-          'Date Received',
           'Date Purchased',
           'Location',
           'Box',
