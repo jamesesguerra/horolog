@@ -18,8 +18,4 @@ export class BrandService {
   getBrandById(brandId: number) {
     return this.http.get<Brand>(`${this.apiUrl}/${brandId}`);
   }
-
-  addBrand(brand: Brand) {
-    return brand;
-  }
 }
