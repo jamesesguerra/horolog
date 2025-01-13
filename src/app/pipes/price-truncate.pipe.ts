@@ -1,13 +1,11 @@
-import { inject, Pipe, PipeTransform } from '@angular/core';
-import { PriceFormatterService } from '../services/price-formatter.service';
+import { Pipe, PipeTransform } from '@angular/core';
+import { PriceHelper } from '../helpers/price-helper';
 
 @Pipe({
   name: 'priceTruncate',
 })
 export class PriceTruncatePipe implements PipeTransform {
-  private priceFormatterService = inject(PriceFormatterService);
-
   transform(value: number): string {
-    return this.priceFormatterService.format(value);
+    return PriceHelper.format(value);
   }
 }

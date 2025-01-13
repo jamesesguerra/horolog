@@ -1,14 +1,12 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
-import { PriceFormatterService } from './price-formatter.service';
+import { PriceHelper } from '../helpers/price-helper';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ExportService {
-  private priceFormatterService = inject(PriceFormatterService);
-
   async exportTableAsPDF(tableData: any[]) {
     const doc = new jsPDF('l', 'mm', 'a4');
 
@@ -20,7 +18,7 @@ export class ExportService {
       item.location,
       item.hasBox ? "Y" : "N",
       item.hasPapers ? "Y" : "N",
-      this.priceFormatterService.format(item.cost),
+      PriceHelper.format(item.cost),
       item.remarks
     ]);
 
