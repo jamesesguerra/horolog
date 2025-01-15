@@ -70,7 +70,7 @@ export class SheetsComponent implements OnInit {
         this.brandOption = this.brandOptions[1];
         this.updateModels();
       }
-    })
+    });
   }
 
   filterWatches() {
@@ -238,14 +238,23 @@ export class SheetsComponent implements OnInit {
 
   onShowContextMenu() {
     this.items = [];
-    let items = [{ label: 'Delete', icon: 'pi pi-fw pi-times', command: () => this.deleteWatch(this.selectedWatch) }];
+
+    let items = [
+      {
+        label: 'Delete', 
+        icon: 'pi pi-fw pi-times',
+        command: () => this.deleteWatch(this.selectedWatch),
+        items: []
+      },
+    ];
     
     if (this.selectedWatch.dateBorrowed === null) {
       items = [
         {
           label: 'Mark as borrowed',
           icon: 'pi pi-fw pi-stopwatch',
-          command: () => this.isBorrowedModalVisible = true
+          command: () => this.isBorrowedModalVisible = true,
+          items: []
         }, ...items
       ];
     } else {
@@ -253,7 +262,8 @@ export class SheetsComponent implements OnInit {
         {
           label: 'Mark as returned',
           icon: 'pi pi-fw pi-arrow-circle-left',
-          command: () => this.isReturnedModalVisible = true
+          command: () => this.isReturnedModalVisible = true,
+          items: []
         }, ...items
       ]
     }
@@ -263,9 +273,36 @@ export class SheetsComponent implements OnInit {
         {
           label: 'Mark as sold',
           icon: 'pi pi-fw pi-tag',
-          command: () => this.isSoldModalVisible = true
+          command: () => this.isSoldModalVisible = true,
+          items: []
         }, ...items
       ];
+    }
+
+    if (this.brandOption.name === 'Rolex') {
+      items = [
+        ...items,
+        {
+          label: 'Move to',
+          icon: 'pi pi-fw pi-arrow-right',
+          command: () => {},
+          items: this.modelOptions.map(option => {
+            return {
+              label: option.name,
+              command: () => {
+                const movedWatch: WatchRecord = {};
+                movedWatch.id = this.selectedWatch.id;
+                movedWatch.modelId = option.id;
+                this.watchRecordService.patchWatchRecord(movedWatch).subscribe({
+                  next: () => {
+                    this.filteredRecords = this.filteredRecords.filter(x => x.id !== this.selectedWatch.id);
+                  }
+                })
+              }
+            }
+          })
+        }
+      ]
     }
 
     this.items = items;
