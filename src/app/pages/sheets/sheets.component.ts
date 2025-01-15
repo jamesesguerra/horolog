@@ -295,6 +295,7 @@ export class SheetsComponent implements OnInit {
                 movedWatch.modelId = option.id;
                 this.watchRecordService.patchWatchRecord(movedWatch).subscribe({
                   next: () => {
+                    this.toastService.showInfo("Record moved", "The record has been moved to another model");
                     this.filteredRecords = this.filteredRecords.filter(x => x.id !== this.selectedWatch.id);
                   }
                 })
