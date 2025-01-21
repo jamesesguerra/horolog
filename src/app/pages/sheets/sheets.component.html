@@ -88,7 +88,12 @@
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-watch let-editing="editing">
-                    <tr [pContextMenuRow]="watch" [class.sold]="watch.dateSold" [class.borrowed]="watch.dateBorrowed">
+                    <tr
+                        [pContextMenuRow]="watch"
+                        [class.sold]="watch.dateSold"
+                        [class.borrowed]="watch.dateBorrowed"
+                        [class.picked-up]="watch.datePickedUp"
+                    >
                         <td
                             class="flex justify-content-center cursor-pointer"
                             (click)="onOpenGalleryModal(watch)"
@@ -370,6 +375,13 @@
     [title]="'Date Returned'"
     (cancel)="isBorrowedModalVisible = false"
     (save)="onReturned($event)"
+/>
+
+<app-date-modal
+    [isVisible]="isPickedUpModalVisible"
+    [title]="'Date Picked Up'"
+    (cancel)="isPickedUpModalVisible = false"
+    (save)="onPickedUp($event)"
 />
 
 <app-gallery-modal

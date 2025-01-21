@@ -39,6 +39,7 @@ export class SheetsComponent implements OnInit {
   isSoldModalVisible = false;
   isBorrowedModalVisible = false;
   isReturnedModalVisible = false;
+  isPickedUpModalVisible = false;
   isGalleryModalVisible = false;
   isFilterSidebarVisible = false;
   isAllBrands = false;
@@ -245,9 +246,20 @@ export class SheetsComponent implements OnInit {
         icon: 'pi pi-fw pi-times',
         command: () => this.deleteWatch(this.selectedWatch),
         items: []
-      },
+      }
     ];
-    
+
+    if (this.selectedWatch.datePickedUp === null) {
+      items = [
+        {
+          label: 'Mark as picked up',
+          icon: 'pi pi-fw pi-shopping-bag',
+          command: () => this.isPickedUpModalVisible = true,
+          items: []
+        }, ...items
+      ]
+    }
+
     if (this.selectedWatch.dateBorrowed === null) {
       items = [
         {
@@ -336,6 +348,16 @@ export class SheetsComponent implements OnInit {
         this.selectedWatch.dateReturned = e;
         this.isReturnedModalVisible = false;
         this.toastService.showSuccess("Success!", "The watch record has been marked as returned");
+      }
+    });
+  }
+
+  onPickedUp(e: Date) {
+    this.watchRecordService.patchRecordDate("datePickedUp", e, this.selectedWatch.id).subscribe({
+      next: () => {
+        this.selectedWatch.datePickedUp = e;
+        this.isPickedUpModalVisible = false;
+        this.toastService.showSuccess("Success!", "The watch record has been marked as picked up");
       }
     });
   }
