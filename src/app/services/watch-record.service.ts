@@ -31,6 +31,10 @@ export class WatchRecordService {
     return this.http.patch(`${this.apiUrl}/date-borrowed/${id}`, {});
   }
 
+  setDateSoldToNull(id: number) {
+    return this.http.patch(`${this.apiUrl}/date-sold/${id}`, {});
+  }
+
   deleteWatchRecord(id: number) {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }

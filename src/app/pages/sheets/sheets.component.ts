@@ -289,6 +289,20 @@ export class SheetsComponent implements OnInit {
           items: []
         }, ...items
       ];
+    } else {
+      items = [
+        {
+          label: 'Mark as unsold',
+          icon: 'pi pi-fw pi-arrow-circle-left',
+          command: () => this.watchRecordService.setDateSoldToNull(this.selectedWatch.id).subscribe({
+            next: () => {
+              this.selectedWatch.dateSold = null;
+              this.toastService.showInfo("Watch unsold", "The watch has been marked as unsold")
+            }
+          }),
+          items: []
+        }, ...items
+      ];
     }
 
     if (this.brandOption.name === 'Rolex') {
