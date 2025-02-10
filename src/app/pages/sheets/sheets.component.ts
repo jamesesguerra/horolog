@@ -224,7 +224,8 @@ export class SheetsComponent implements OnInit {
       this.watchModelService.getIndependentBrandWatchModelIds().subscribe({
         next: (modelIds) => {
           const modelIdsSet = new Set(modelIds);
-          this.filteredRecords = this.filteredRecords.filter(x => modelIdsSet.has(x.modelId));
+          this.filteredRecords = this.filteredRecords.filter(x => 
+            modelIdsSet.has(x.modelId) || x.modelId === 4);
           this.filterCount++;
         }
       });
