@@ -225,7 +225,7 @@ export class SheetsComponent implements OnInit {
         next: (modelIds) => {
           const modelIdsSet = new Set(modelIds);
           this.filteredRecords = this.filteredRecords.filter(x => 
-            modelIdsSet.has(x.modelId) || x.modelId === 4);
+            modelIdsSet.has(x.modelId) || x.modelId === 4 || x.modelId === 44);
           this.filterCount++;
         }
       });
