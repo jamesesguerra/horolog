@@ -25,7 +25,7 @@
                     (activeIndexChange)="onIndexChange($event)"
                 >
                     <ng-template pTemplate="item" let-item>
-                        <img [src]="item?.uri" style="width: 100%; display: block;" />
+                        <img [src]="baseStorageDomain + item?.uri" style="width: 100%; display: block;" />
                     </ng-template>
                 </p-galleria>
             } @else {

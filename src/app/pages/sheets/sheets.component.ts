@@ -13,6 +13,7 @@ import { FilterSidebarComponent } from './filter-sidebar/filter-sidebar.componen
 import { ExportService } from 'src/app/services/export.service';
 import { FileService } from 'src/app/services/file.service';
 import { GalleryModalComponent } from './gallery-modal/gallery-modal.component';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-sheets',
@@ -22,6 +23,8 @@ import { GalleryModalComponent } from './gallery-modal/gallery-modal.component';
 export class SheetsComponent implements OnInit {
   @ViewChild(FilterSidebarComponent) filterComponent!: FilterSidebarComponent;
   @ViewChild(GalleryModalComponent) galleryModal!: GalleryModalComponent;
+
+  baseStorageDomain = environment.baseStorageDomain;
 
   records!: WatchRecord[];
   filteredRecords!: WatchRecord[];

@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { MenuItem } from 'primeng/api';
 import { FileUpload } from 'primeng/fileupload';
 import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
 import { ToastService } from 'src/app/layout/service/toast.service';
 import { WatchRecord } from 'src/app/models/watch-record';
 import { FileService } from 'src/app/services/file.service';
 import { WatchImageService } from 'src/app/services/watch-image.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-gallery-modal',
@@ -18,6 +18,8 @@ export class GalleryModalComponent implements OnInit {
   @Input({ required: true }) title!: string;
   @Output() cancel = new EventEmitter();
   @Output() delete = new EventEmitter();
+
+  baseStorageDomain = environment.baseStorageDomain;
 
   images: any[] | undefined = [];
   responsiveOptions: any[] | undefined;
