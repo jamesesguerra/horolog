@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment as env } from 'src/environments/environment';
 import { WatchRecord } from '../models/watch-record';
 import { DateService } from './date.service';
+import { DateTime } from 'luxon';
 
 @Injectable({
   providedIn: 'root'
@@ -42,8 +43,8 @@ export class WatchRecordService {
   patchRecordDate(type: string, date: Date, recordId: number) {
     const editedRecord: WatchRecord = {};
     editedRecord.id = recordId;
-    editedRecord[type] = this.dateService.convertToISOString(date);
-
+    editedRecord[type] = DateTime.fromISO(date.toISOString()).toFormat("yyyy-MM-dd'T'HH:mm:ss");
+    
     if (type === "dateReturned") {
       this.setDateBorrowedToNull(recordId).subscribe();
     }

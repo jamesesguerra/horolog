@@ -14,6 +14,7 @@ import { ExportService } from 'src/app/services/export.service';
 import { FileService } from 'src/app/services/file.service';
 import { GalleryModalComponent } from './gallery-modal/gallery-modal.component';
 import { environment } from 'src/environments/environment';
+import { DateTime } from 'luxon';
 
 @Component({
   selector: 'app-sheets',
@@ -157,7 +158,7 @@ export class SheetsComponent implements OnInit {
   onCellEditComplete(e: any) {
     const editedRecord: WatchRecord = {};
     if (e.data instanceof Date) {
-      e.data =  this.dateService.convertToISOString(e.data);
+      e.data = DateTime.fromISO(e.data.toISOString()).toFormat("yyyy-MM-dd'T'HH:mm:ss");
     }
 
     editedRecord.id = e.index;
