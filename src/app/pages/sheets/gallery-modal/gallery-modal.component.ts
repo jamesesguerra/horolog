@@ -117,7 +117,7 @@ export class GalleryModalComponent implements OnInit {
     const imageToDelete = this.images[this.currentIndex];
 
     forkJoin({
-      blob: this.fileService.deleteFile(this.fileService.getBlobName(imageToDelete?.uri)),
+      blob: this.fileService.deleteFile(imageToDelete?.uri),
       imageRecord: this.watchImageService.deleteWatchImage(imageToDelete.id)
     }).subscribe({
       next: () => {

@@ -1,5 +1,5 @@
 export const environment = {
   production: false,
-  baseApiUrl: 'http://localhost:5228',
-  baseStorageDomain: 'https://img.chrono24.com'
+  baseApiUrl: 'http://localhost/horolog',
+  baseStorageDomain: 'http://localhost/blobs'
 };

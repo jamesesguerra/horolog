@@ -85,7 +85,7 @@ export class SheetsComponent implements OnInit {
 
   deleteWatch(watch: WatchRecord) {
     forkJoin({
-      image: this.fileService.deleteFile(this.fileService.getBlobName(watch?.imageUrl)),
+      image: this.fileService.deleteFile(watch?.imageUrl),
       watch: this.watchRecordService.deleteWatchRecord(watch.id)
     }).subscribe({
       next: () => {

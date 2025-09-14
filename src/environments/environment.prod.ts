@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  baseApiUrl: 'https://horolog-h8ddhmadd4evgzax.southeastasia-01.azurewebsites.net',
-  baseStorageDomain: 'https://img.chrono24.com'
+  baseApiUrl: 'https://tunnel.james-esg.com/horolog',
+  baseStorageDomain: 'https://tunnel.james-esg.com/blobs'
 };
