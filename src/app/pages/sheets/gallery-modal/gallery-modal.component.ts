@@ -132,6 +132,7 @@ export class GalleryModalComponent implements OnInit {
   }
 
   onCancel() {
+    this.currentIndex = 0;
     this.images = [];
     this.cancel.emit();
   }
