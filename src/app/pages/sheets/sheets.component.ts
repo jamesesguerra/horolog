@@ -74,6 +74,9 @@ export class SheetsComponent implements OnInit {
         this.brandOptions = [...this.brandOptions, ...brands];
         this.brandOption = this.brandOptions[1];
         this.updateModels();
+      },
+      error: (error) => {
+        this.toastService.showError("Error", error);
       }
     });
   }
@@ -114,26 +117,33 @@ export class SheetsComponent implements OnInit {
         this.modelOptions = models;
         this.modelOption = this.modelOptions[0];
 
-        this.isLoadingSubject.next(false);
-
         if (this.modelOption != null) {
           this.updateRecords();
         } else {
           this.records = [];
           this.filteredRecords = [];
         }
+      },
+      error: (error) => {
+        this.toastService.showError("Error", error);
       }
     })
   }
 
   updateRecords() {
+    this.isLoadingSubject.next(true);
     this.filterComponent.filterForm.reset();
     this.filterCount = 0;
 
     this.watchRecordService.getWatchRecords(this.modelOption?.id).subscribe({
       next: (watchRecords) => {
+        this.isLoadingSubject.next(false);
         this.records = watchRecords;
         this.filteredRecords = watchRecords;
+      },
+      error: (error) => {
+        this.isLoadingSubject.next(false);
+        this.toastService.showError("Error", error);
       }
     })
   }

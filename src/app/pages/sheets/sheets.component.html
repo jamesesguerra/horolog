@@ -18,8 +18,14 @@
             </div>
             <div class="col-12 md:col-4 flex justify-content-end gap-2">
                 <p-button icon="pi pi-plus" label="Add" severity="success" (click)="isAddModalVisible = true"
-                    [disabled]="isAllBrands" />
-                <p-button icon="pi pi-file-export" label="Export" severity="info" (click)="onExport()" />
+                    [disabled]="isAllBrands || (isLoading$ | async)" />
+                <p-button
+                    icon="pi pi-file-export"
+                    label="Export"
+                    severity="info"
+                    (click)="onExport()"
+                    [disabled]="(isLoading$ | async)"
+                />
             </div>
         </div>
 
@@ -28,188 +34,196 @@
     <div class="col-12">
         <div class="card">
             <p-contextMenu #cm [model]="items" (onShow)="onShowContextMenu()" />
-            <p-table [value]="filteredRecords" [tableStyle]="{ 'min-width': '50rem' }" [paginator]="true" [rows]="150"
-                [rowsPerPageOptions]="[150, 200, 250]" [(contextMenuSelection)]="selectedWatch" [contextMenu]="cm"
-                dataKey="id" (onEditComplete)="onCellEditComplete($event)" styleClass="p-datatable-gridlines">
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th class="text-center">Image</th>
-                        <th>Description</th>
-                        <th>Material</th>
-                        <th>Date of Purchase</th>
-                        <th>Date Sold</th>
-                        <th>Reference No.</th>
-                        <th>Serial No.</th>
-                        <th>Location</th>
-                        <th>Box</th>
-                        <th>Papers</th>
-                        <th>Cost</th>
-                        <th>Remarks</th>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-watch let-editing="editing">
-                    <tr [pContextMenuRow]="watch" [class.sold]="watch.dateSold" [class.borrowed]="watch.dateBorrowed"
-                        [class.picked-up]="watch.datePickedUp">
-                        <td class="flex justify-content-center cursor-pointer" (click)="onOpenGalleryModal(watch)">
-                            <div class="md:w-10rem md:h-9rem relative image-container">
-                                <img class="block xl:block mx-auto border-round w-full responsive-image"
-                                    [src]="watch.imageUrl 
-            ? baseStorageDomain + watch.imageUrl 
-            : 'https://media.istockphoto.com/id/920345886/vector/classic-wristwatch-icon.jpg?s=612x612&w=0&k=20&c=MbgyLy52hlVIOqppuIpML4XSuxFUJozffHVH0Q5jMZ4='"
-                                    [alt]="watch.description" />
-                            </div>
-                        </td>
-
-                        <td [pEditableColumn]="watch.description" pEditableColumnField="description"
-                            [pEditableColumnRowIndex]="watch.id">
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <input pInputText type="text" [(ngModel)]="watch.description" required />
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    {{ watch.description }}
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-
-                        <td [pEditableColumn]="watch.material" pEditableColumnField="material"
-                            [pEditableColumnRowIndex]="watch.id">
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <input pInputText type="text" [(ngModel)]="watch.material" />
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    {{ watch.material }}
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-
-                        <td [pEditableColumn]="watch.datePurchased" pEditableColumnField="datePurchased"
-                            [pEditableColumnRowIndex]="watch.id">
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <p-calendar [iconDisplay]="'input'" class="w-full" [showIcon]="true"
-                                        inputId="datePurchased" appendTo="body" [(ngModel)]="watch.datePurchased" />
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    {{ watch.datePurchased | date:'M/d/yyyy' }}
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-
-                        <td [pEditableColumn]="watch.dateSold" pEditableColumnField="dateSold"
-                            [pEditableColumnRowIndex]="watch.id">
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <p-calendar [iconDisplay]="'input'" class="w-full" [showIcon]="true"
-                                        inputId="dateSold" appendTo="body" [(ngModel)]="watch.dateSold" />
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    {{ watch.dateSold | date:'M/d/yyyy' }}
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-
-                        <td [pEditableColumn]="watch.referenceNumber" pEditableColumnField="referenceNumber"
-                            [pEditableColumnRowIndex]="watch.id">
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <input pInputText type="text" [(ngModel)]="watch.referenceNumber" />
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    {{ watch.referenceNumber }}
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-
-                        <td [pEditableColumn]="watch.serialNumber" pEditableColumnField="serialNumber"
-                            [pEditableColumnRowIndex]="watch.id">
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <input pInputText type="text" [(ngModel)]="watch.serialNumber" required />
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    {{ watch.serialNumber }}
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-
-                        <td [pEditableColumn]="watch.location" pEditableColumnField="location"
-                            [pEditableColumnRowIndex]="watch.id">
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <input pInputText type="text" [(ngModel)]="watch.location" />
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    {{ watch.location }}
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-
-                        <td [pEditableColumn]="watch.hasBox" pEditableColumnField="hasBox"
-                            [pEditableColumnRowIndex]="watch.id" class="text-center">
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <p-checkbox [binary]="true" [(ngModel)]="watch.hasBox" />
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    @if (watch.hasBox) {
-                                    <i class="pi true-icon pi-check-circle text-green-500"></i>
-                                    } @else {
-                                    <i class="pi false-icon pi-times-circle text-pink-500"></i>
-                                    }
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-
-                        <td [pEditableColumn]="watch.hasPapers" pEditableColumnField="hasPapers"
-                            [pEditableColumnRowIndex]="watch.id" class="text-center">
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <p-checkbox [binary]="true" [(ngModel)]="watch.hasPapers" />
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    @if (watch.hasPapers) {
-                                    <i class="pi true-icon pi-check-circle text-green-500"></i>
-                                    } @else {
-                                    <i class="pi false-icon pi-times-circle text-pink-500"></i>
-                                    }
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-
-                        <td [pEditableColumn]="watch.cost" pEditableColumnField="cost"
-                            [pEditableColumnRowIndex]="watch.id">
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <p-inputNumber inputId="integeronly" [(ngModel)]="watch.cost" />
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    {{ watch?.cost | priceTruncate }}
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-
-                        <td [pEditableColumn]="watch.remarks" pEditableColumnField="remarks"
-                            [pEditableColumnRowIndex]="watch.id">
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <textarea id="remarks" rows="3" cols="45" pInputTextarea
-                                        [(ngModel)]="watch.remarks"></textarea>
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    {{ watch.remarks }}
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="emptymessage">
-                    <tr>
-                        <td colspan="12" class="text-center">No records found.</td>
-                    </tr>
-                </ng-template>
-            </p-table>
+            @if (isLoading$ | async) {
+            <div class="flex justify-content-center">
+                <p-progressSpinner styleClass="w-4rem h-4rem" 
+                strokeWidth="8" 
+                animationDuration=".5s" />
+            </div>
+            } @else {
+                <p-table [value]="filteredRecords" [tableStyle]="{ 'min-width': '50rem' }" [paginator]="true" [rows]="150"
+                    [rowsPerPageOptions]="[150, 200, 250]" [(contextMenuSelection)]="selectedWatch" [contextMenu]="cm"
+                    dataKey="id" (onEditComplete)="onCellEditComplete($event)" styleClass="p-datatable-gridlines">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th class="text-center">Image</th>
+                            <th>Description</th>
+                            <th>Material</th>
+                            <th>Date of Purchase</th>
+                            <th>Date Sold</th>
+                            <th>Reference No.</th>
+                            <th>Serial No.</th>
+                            <th>Location</th>
+                            <th>Box</th>
+                            <th>Papers</th>
+                            <th>Cost</th>
+                            <th>Remarks</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-watch let-editing="editing">
+                        <tr [pContextMenuRow]="watch" [class.sold]="watch.dateSold" [class.borrowed]="watch.dateBorrowed"
+                            [class.picked-up]="watch.datePickedUp">
+                            <td class="flex justify-content-center cursor-pointer" (click)="onOpenGalleryModal(watch)">
+                                <div class="md:w-10rem md:h-9rem relative image-container">
+                                    <img class="block xl:block mx-auto border-round w-full responsive-image"
+                                        [src]="watch.imageUrl 
+                ? baseStorageDomain + watch.imageUrl 
+                : 'https://media.istockphoto.com/id/920345886/vector/classic-wristwatch-icon.jpg?s=612x612&w=0&k=20&c=MbgyLy52hlVIOqppuIpML4XSuxFUJozffHVH0Q5jMZ4='"
+                                        [alt]="watch.description" />
+                                </div>
+                            </td>
+    
+                            <td [pEditableColumn]="watch.description" pEditableColumnField="description"
+                                [pEditableColumnRowIndex]="watch.id">
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <input pInputText type="text" [(ngModel)]="watch.description" required />
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{ watch.description }}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+    
+                            <td [pEditableColumn]="watch.material" pEditableColumnField="material"
+                                [pEditableColumnRowIndex]="watch.id">
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <input pInputText type="text" [(ngModel)]="watch.material" />
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{ watch.material }}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+    
+                            <td [pEditableColumn]="watch.datePurchased" pEditableColumnField="datePurchased"
+                                [pEditableColumnRowIndex]="watch.id">
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <p-calendar [iconDisplay]="'input'" class="w-full" [showIcon]="true"
+                                            inputId="datePurchased" appendTo="body" [(ngModel)]="watch.datePurchased" />
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{ watch.datePurchased | date:'M/d/yyyy' }}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+    
+                            <td [pEditableColumn]="watch.dateSold" pEditableColumnField="dateSold"
+                                [pEditableColumnRowIndex]="watch.id">
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <p-calendar [iconDisplay]="'input'" class="w-full" [showIcon]="true"
+                                            inputId="dateSold" appendTo="body" [(ngModel)]="watch.dateSold" />
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{ watch.dateSold | date:'M/d/yyyy' }}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+    
+                            <td [pEditableColumn]="watch.referenceNumber" pEditableColumnField="referenceNumber"
+                                [pEditableColumnRowIndex]="watch.id">
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <input pInputText type="text" [(ngModel)]="watch.referenceNumber" />
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{ watch.referenceNumber }}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+    
+                            <td [pEditableColumn]="watch.serialNumber" pEditableColumnField="serialNumber"
+                                [pEditableColumnRowIndex]="watch.id">
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <input pInputText type="text" [(ngModel)]="watch.serialNumber" required />
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{ watch.serialNumber }}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+    
+                            <td [pEditableColumn]="watch.location" pEditableColumnField="location"
+                                [pEditableColumnRowIndex]="watch.id">
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <input pInputText type="text" [(ngModel)]="watch.location" />
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{ watch.location }}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+    
+                            <td [pEditableColumn]="watch.hasBox" pEditableColumnField="hasBox"
+                                [pEditableColumnRowIndex]="watch.id" class="text-center">
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <p-checkbox [binary]="true" [(ngModel)]="watch.hasBox" />
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        @if (watch.hasBox) {
+                                        <i class="pi true-icon pi-check-circle text-green-500"></i>
+                                        } @else {
+                                        <i class="pi false-icon pi-times-circle text-pink-500"></i>
+                                        }
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+    
+                            <td [pEditableColumn]="watch.hasPapers" pEditableColumnField="hasPapers"
+                                [pEditableColumnRowIndex]="watch.id" class="text-center">
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <p-checkbox [binary]="true" [(ngModel)]="watch.hasPapers" />
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        @if (watch.hasPapers) {
+                                        <i class="pi true-icon pi-check-circle text-green-500"></i>
+                                        } @else {
+                                        <i class="pi false-icon pi-times-circle text-pink-500"></i>
+                                        }
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+    
+                            <td [pEditableColumn]="watch.cost" pEditableColumnField="cost"
+                                [pEditableColumnRowIndex]="watch.id">
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <p-inputNumber inputId="integeronly" [(ngModel)]="watch.cost" />
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{ watch?.cost | priceTruncate }}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+    
+                            <td [pEditableColumn]="watch.remarks" pEditableColumnField="remarks"
+                                [pEditableColumnRowIndex]="watch.id">
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <textarea id="remarks" rows="3" cols="45" pInputTextarea
+                                            [(ngModel)]="watch.remarks"></textarea>
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{ watch.remarks }}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="12" class="text-center">No records found.</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            }
         </div>
     </div>
 </div>
