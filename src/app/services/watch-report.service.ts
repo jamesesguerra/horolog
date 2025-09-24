@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment as env } from 'src/environments/environment';
 import { WatchSalesReport } from '../models/watch-sales-report';
+import { BrandWatchSumaryDto } from '../models/brand-watch-summary';
 
 @Injectable({
   providedIn: 'root'
@@ -21,5 +22,9 @@ export class WatchReportService {
 
   getAverageValue() {
     return this.http.get<number>(`${this.apiUrl}/average-value`);
+  }
+
+  getBrandWatchSummary() {
+    return this.http.get<BrandWatchSumaryDto[]>(`${this.apiUrl}/brand-watch-summary`);
   }
 }

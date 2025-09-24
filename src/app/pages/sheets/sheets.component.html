@@ -23,9 +23,10 @@
                     icon="pi pi-file-export"
                     label="Export"
                     severity="info"
-                    (click)="onExport()"
+                    (click)="exportMenu.toggle($event)"
                     [disabled]="(isLoading$ | async)"
                 />
+                <p-tieredMenu #exportMenu [model]="exportOptions" [popup]="true" />
             </div>
         </div>
 

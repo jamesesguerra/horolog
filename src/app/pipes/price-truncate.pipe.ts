@@ -6,6 +6,6 @@ import { PriceHelper } from '../helpers/price-helper';
 })
 export class PriceTruncatePipe implements PipeTransform {
   transform(value: number): string {
-    return PriceHelper.format(value);
+    return PriceHelper.formatPriceShort(value);
   }
 }

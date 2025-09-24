@@ -2,12 +2,52 @@ import { Injectable } from '@angular/core';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { PriceHelper } from '../helpers/price-helper';
+import { BrandWatchSumaryDto } from '../models/brand-watch-summary';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ExportService {
-  async exportTableAsPDF(tableData: any[]) {
+  async exportReportsAsPdf(summary: BrandWatchSumaryDto[]) {
+    const doc = new jsPDF('l', 'mm', 'a4');
+
+    const title = 'Summary Report';
+    const titleWidth = doc.getStringUnitWidth(title) * doc.getFontSize() / doc.internal.scaleFactor;
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const xPos = (pageWidth - titleWidth) / 2;
+
+    const data = summary.map(x => {
+      return {
+        ...x,
+        totalCost: x.totalCost === 0 ? '' : `Php ${x.totalCost.toLocaleString()}`
+      };
+    });
+
+    doc.setFontSize(14);
+    doc.text(title, xPos, 20);
+
+    autoTable(doc, {
+      head: [
+        [
+          'Brand',
+          'Quantity',
+          'Total Cost'
+        ]
+      ],
+      body: data.map(x => [x.brand, x.quantity, x.totalCost]),
+      theme: 'grid',
+      margin: { top: 25 },
+      didParseCell: function (data) {
+        if (data.section === 'body' && data.row.index === data.table.body.length - 1) {
+          data.cell.styles.fontStyle = 'bold';
+        }
+      }
+    });
+
+    doc.save(`watch-report-${new Date().toLocaleString()}`);
+  }
+
+  async exportSheetsAsPdf(tableData: any[]) {
     const doc = new jsPDF('l', 'mm', 'a4');
 
     const data = tableData.map(item => [
@@ -18,7 +58,7 @@ export class ExportService {
       item.location,
       item.hasBox ? "Y" : "N",
       item.hasPapers ? "Y" : "N",
-      PriceHelper.format(item.cost),
+      PriceHelper.formatPriceShort(item.cost),
       item.remarks
     ]);
 

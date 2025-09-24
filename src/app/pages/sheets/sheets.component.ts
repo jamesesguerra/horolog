@@ -15,6 +15,7 @@ import { FileService } from 'src/app/services/file.service';
 import { GalleryModalComponent } from './gallery-modal/gallery-modal.component';
 import { environment } from 'src/environments/environment';
 import { DateTime } from 'luxon';
+import { WatchReportService } from 'src/app/services/watch-report.service';
 
 @Component({
   selector: 'app-sheets',
@@ -30,9 +31,21 @@ export class SheetsComponent implements OnInit {
   records!: WatchRecord[];
   filteredRecords!: WatchRecord[];
   items!: MenuItem[];
+  exportOptions: MenuItem[] = [
+    {
+      label: 'Sheets',
+      icon: 'pi pi-fw pi-table',
+      command: () => this.onExportSheets()
+    },
+    {
+      label: 'Reports',
+      icon: 'pi pi-fw pi-dollar',
+      command: () => this.onExportReports()
+    },
+  ];
   selectedWatch!: WatchRecord;
   searchTerm = ''
-  
+
   brandOptions: Brand[] = [{ id: 0, name: 'All' }];
   brandOption: Brand;
 
@@ -60,7 +73,8 @@ export class SheetsComponent implements OnInit {
     private toastService: ToastService,
     private dateService: DateService,
     private exportService: ExportService,
-    private fileService: FileService
+    private fileService: FileService,
+    private watchReportService: WatchReportService
   )
   {
     this.isLoadingSubject = new BehaviorSubject<boolean>(false);
@@ -391,9 +405,18 @@ export class SheetsComponent implements OnInit {
     });
   }
 
-  onExport() {
-    this.exportService.exportTableAsPDF(this.filteredRecords);
+  onExportSheets() {
+    this.exportService.exportSheetsAsPdf(this.filteredRecords);
     this.toastService.showSuccess("Success!", "Exported watch data");
+  }
+
+  onExportReports() {
+    this.watchReportService.getBrandWatchSummary().subscribe({
+      next: (summary) => {
+        this.exportService.exportReportsAsPdf(summary);
+        this.toastService.showSuccess("Success!", "Exported summary report");
+      },
+    })
   }
 
   onOpenGalleryModal(watch: WatchRecord) {
