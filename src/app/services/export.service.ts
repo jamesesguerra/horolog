@@ -16,12 +16,17 @@ export class ExportService {
     const pageWidth = doc.internal.pageSize.getWidth();
     const xPos = (pageWidth - titleWidth) / 2;
 
-    const data = summary.map(x => {
-      return {
+    const data = summary
+      .map(x => ({
         ...x,
         totalCost: x.totalCost === 0 ? '' : `Php ${x.totalCost.toLocaleString()}`
-      };
-    });
+      }))
+      .sort((a, b) => {
+        if (a.brand === 'ALL BRANDS') return 1; 
+        if (b.brand === 'ALL BRANDS') return -1;
+        return 0;
+      });
+
 
     doc.setFontSize(14);
     doc.text(title, xPos, 20);
