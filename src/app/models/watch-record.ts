@@ -15,6 +15,7 @@ export interface WatchRecord {
     location?: string;
     hasBox?: boolean;
     hasPapers?: boolean;
+    isConsigned?: boolean;
     cost?: number;
     remarks?: string
     createdAt?: Date;

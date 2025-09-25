@@ -63,7 +63,7 @@
                     </ng-template>
                     <ng-template pTemplate="body" let-watch let-editing="editing">
                         <tr [pContextMenuRow]="watch" [class.sold]="watch.dateSold" [class.borrowed]="watch.dateBorrowed"
-                            [class.picked-up]="watch.datePickedUp">
+                            [class.picked-up]="watch.datePickedUp" [class.consigned]="watch.isConsigned">
                             <td class="flex justify-content-center cursor-pointer" (click)="onOpenGalleryModal(watch)">
                                 <div class="md:w-10rem md:h-9rem relative image-container">
                                     <img class="block xl:block mx-auto border-round w-full responsive-image"

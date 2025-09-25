@@ -309,6 +309,49 @@ export class SheetsComponent implements OnInit {
       ]
     }
 
+    if (!this.selectedWatch.isConsigned) {
+      items = [
+        {
+          label: 'Mark as consigned',
+          icon: 'pi pi-fw pi-flag',
+          command: () => {
+            const editedRecord: WatchRecord = {
+              id: this.selectedWatch.id,
+              isConsigned: true
+            };
+            this.watchRecordService.patchWatchRecord(editedRecord).subscribe({
+              next: () => {
+                this.toastService.showSuccess("Success!", "Watch marked as consigned.")
+                this.selectedWatch.isConsigned = true;
+              }
+            });
+          },
+          items: []
+        }, ...items
+      ];
+    } else {
+       items = [
+        {
+          label: 'Mark as unconsigned',
+          icon: 'pi pi-fw pi-flag',
+          command: () => {
+            const editedRecord: WatchRecord = {
+              id: this.selectedWatch.id,
+              isConsigned: false
+            };
+            this.watchRecordService.patchWatchRecord(editedRecord).subscribe({
+              next: () =>
+              {
+                this.toastService.showSuccess("Success!", "Watch marked as unconsigned.")
+                this.selectedWatch.isConsigned = false;
+              }  
+            });
+          },
+          items: []
+        }, ...items
+      ];
+    }
+
     if (this.selectedWatch.dateSold === null) {
       items = [
         {
