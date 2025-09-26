@@ -16,6 +16,7 @@ export interface WatchRecord {
     hasBox?: boolean;
     hasPapers?: boolean;
     isConsigned?: boolean;
+    isWatchVault?: boolean;
     cost?: number;
     remarks?: string
     createdAt?: Date;

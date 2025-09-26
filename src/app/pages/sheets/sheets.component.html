@@ -63,7 +63,7 @@
                     </ng-template>
                     <ng-template pTemplate="body" let-watch let-editing="editing">
                         <tr [pContextMenuRow]="watch" [class.sold]="watch.dateSold" [class.borrowed]="watch.dateBorrowed"
-                            [class.picked-up]="watch.datePickedUp" [class.consigned]="watch.isConsigned">
+                            [class.picked-up]="watch.datePickedUp" [class.consigned]="watch.isConsigned" [class.returned]="watch.dateReturned">
                             <td class="flex justify-content-center cursor-pointer" (click)="onOpenGalleryModal(watch)">
                                 <div class="md:w-10rem md:h-9rem relative image-container">
                                     <img class="block xl:block mx-auto border-round w-full responsive-image"
@@ -237,12 +237,6 @@
 
 <app-date-modal [isVisible]="isSoldModalVisible" [title]="'Date Sold'" (cancel)="isSoldModalVisible = false"
     (save)="onSold($event)" />
-
-<app-date-modal [isVisible]="isBorrowedModalVisible" [title]="'Date Borrowed'" (cancel)="isBorrowedModalVisible = false"
-    (save)="onBorrowed($event)" />
-
-<app-date-modal [isVisible]="isReturnedModalVisible" [title]="'Date Returned'" (cancel)="isBorrowedModalVisible = false"
-    (save)="onReturned($event)" />
 
 <app-date-modal [isVisible]="isPickedUpModalVisible" [title]="'Date Picked Up'"
     (cancel)="isPickedUpModalVisible = false" (save)="onPickedUp($event)" />

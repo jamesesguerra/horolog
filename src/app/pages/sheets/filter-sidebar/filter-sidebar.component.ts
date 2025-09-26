@@ -26,8 +26,9 @@ export class FilterSidebarComponent implements OnInit {
       dateSold: new FormControl(null),
       dateReceived: new FormControl(null),
       isSold: new FormControl(false),
-      isBorrowed: new FormControl(false),
-      isIndependentBrand: new FormControl(false)
+      isIndependentBrand: new FormControl(false),
+      isConsigned: new FormControl(false),
+      isWatchVault: new FormControl(false)
     })
   }
 
@@ -44,8 +45,9 @@ export class FilterSidebarComponent implements OnInit {
       dateSold,
       dateReceived,
       isSold,
-      isBorrowed,
-      isIndependentBrand
+      isIndependentBrand,
+      isConsigned,
+      isWatchVault
     } = this.filterForm.value;
 
     const filters = {
@@ -55,8 +57,9 @@ export class FilterSidebarComponent implements OnInit {
       dateSold,
       dateReceived,
       isSold,
-      isBorrowed,
-      isIndependentBrand
+      isIndependentBrand,
+      isConsigned,
+      isWatchVault
     };
     this.applyFilter.emit(filters);
   }

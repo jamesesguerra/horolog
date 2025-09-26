@@ -78,16 +78,6 @@
 
             <div class="flex align-items-center mb-3">
                 <p-checkbox 
-                    label="Is Borrowed" 
-                    name="isBorrowed" 
-                    value="isBorrowed"
-                    [binary]="true"
-                    formControlName="isBorrowed"
-                />
-            </div>
-
-            <div class="flex align-items-center">
-                <p-checkbox 
                     label="Is Independent Brand" 
                     name="isIndependentBrand" 
                     value="isIndependentBrand"
@@ -95,7 +85,26 @@
                     formControlName="isIndependentBrand"
                 />
             </div>
-            
+
+            <div class="flex align-items-center mb-3">
+                <p-checkbox 
+                    label="Is Consigned" 
+                    name="isConsigned" 
+                    value="isConsigned"
+                    [binary]="true"
+                    formControlName="isConsigned"
+                />
+            </div>
+
+            <div class="flex align-items-center">
+                <p-checkbox 
+                    label="Is Watch Vault" 
+                    name="isWatchVault" 
+                    value="isWatchVault"
+                    [binary]="true"
+                    formControlName="isWatchVault"
+                />
+            </div>
         </form>
     </ng-template>
 

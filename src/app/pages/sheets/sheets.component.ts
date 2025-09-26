@@ -54,8 +54,6 @@ export class SheetsComponent implements OnInit {
 
   isAddModalVisible = false;
   isSoldModalVisible = false;
-  isBorrowedModalVisible = false;
-  isReturnedModalVisible = false;
   isPickedUpModalVisible = false;
   isGalleryModalVisible = false;
   isFilterSidebarVisible = false;
@@ -243,11 +241,6 @@ export class SheetsComponent implements OnInit {
       this.filterCount++;
     }
 
-    if (e.isBorrowed) {
-      this.filteredRecords = this.filteredRecords.filter(x => x.dateBorrowed !== null);
-      this.filterCount++;
-    }
-
     if (e.isIndependentBrand) {
       this.watchModelService.getIndependentBrandWatchModelIds().subscribe({
         next: (modelIds) => {
@@ -257,6 +250,16 @@ export class SheetsComponent implements OnInit {
           this.filterCount++;
         }
       });
+    }
+
+    if (e.isConsigned) {
+      this.filteredRecords = this.filteredRecords.filter(x => x.isConsigned !== false);
+      this.filterCount++;
+    }
+
+    if (e.isWatchVault) {
+      this.filteredRecords = this.filteredRecords.filter(x => x.isWatchVault !== false);
+      this.filterCount++;
     }
   }
 
@@ -278,35 +281,37 @@ export class SheetsComponent implements OnInit {
       }
     ];
 
-    if (this.selectedWatch.datePickedUp === null) {
-      items = [
+    if (!this.selectedWatch.isWatchVault) {
+       items = [
         {
-          label: 'Mark as picked up',
-          icon: 'pi pi-fw pi-shopping-bag',
-          command: () => this.isPickedUpModalVisible = true,
-          items: []
-        }, ...items
-      ]
-    }
-
-    if (this.selectedWatch.dateBorrowed === null) {
-      items = [
-        {
-          label: 'Mark as borrowed',
-          icon: 'pi pi-fw pi-stopwatch',
-          command: () => this.isBorrowedModalVisible = true,
+          label: 'Mark as Watch Vault',
+          icon: 'pi pi-fw pi-lock',
+          command: () => {
+            const editedRecord: WatchRecord = {
+              id: this.selectedWatch.id,
+              isWatchVault: true
+            };
+            this.watchRecordService.patchWatchRecord(editedRecord).subscribe({
+              next: () => {
+                this.toastService.showSuccess("Success!", "Watch marked as Watch Vault.")
+                this.selectedWatch.isWatchVault = true;
+              }
+            });
+          },
           items: []
         }, ...items
       ];
-    } else {
+    }
+
+    if (!this.selectedWatch.dateReturned) {
       items = [
         {
           label: 'Mark as returned',
           icon: 'pi pi-fw pi-arrow-circle-left',
-          command: () => this.isReturnedModalVisible = true,
+          command: () => this.onReturned(new Date()),
           items: []
         }, ...items
-      ]
+      ];
     }
 
     if (!this.selectedWatch.isConsigned) {
@@ -421,7 +426,6 @@ export class SheetsComponent implements OnInit {
     this.watchRecordService.patchRecordDate("dateBorrowed", e, this.selectedWatch.id).subscribe({
       next: () => {
         this.selectedWatch.dateBorrowed = e;
-        this.isBorrowedModalVisible = false;
         this.toastService.showSuccess("Success!", "The watch record has been marked as borrowed");
       }
     });
@@ -432,7 +436,6 @@ export class SheetsComponent implements OnInit {
       next: () => {
         this.selectedWatch.dateBorrowed = null;
         this.selectedWatch.dateReturned = e;
-        this.isReturnedModalVisible = false;
         this.toastService.showSuccess("Success!", "The watch record has been marked as returned");
       }
     });
