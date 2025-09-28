@@ -7,13 +7,13 @@ import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { WatchRecordService } from 'src/app/services/watch-record.service';
 import { WatchSalesReport } from 'src/app/models/watch-sales-report';
 import { WatchReportService } from 'src/app/services/watch-report.service';
+import { MonthlySales } from 'src/app/models/monthly-sales';
 
 @Component({
     templateUrl: './dashboard.component.html',
 })
 export class DashboardComponent implements OnInit, OnDestroy {
     items!: MenuItem[];
-    products!: Product[];
     chartData: any;
     chartOptions: any;
     subscription!: Subscription;
@@ -54,12 +54,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.initChart();
-        this.productService.getProductsSmall().then(data => this.products = data);
-
-        this.items = [
-            { label: 'Add New', icon: 'pi pi-fw pi-plus' },
-            { label: 'Remove', icon: 'pi pi-fw pi-minus' }
-        ];
     }
 
     initChart() {
@@ -68,57 +62,51 @@ export class DashboardComponent implements OnInit, OnDestroy {
         const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
         const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
 
-        this.chartData = {
-            labels: [
-                'January',
-                'February',
-                'March',
-                'April',
-                'May',
-                'June',
-                'July',
-            ],
-            datasets: [
-                {
-                    label: 'Total Sales',
-                    data: [65, 59, 80, 81, 56, 55, 40, 34],
-                    fill: false,
-                    backgroundColor: '#21c55e',
-                    borderColor: '#21c55e',
-                    tension: .4
-                }
-            ]
-        };
-
-        this.chartOptions = {
-            plugins: {
-                legend: {
-                    labels: {
-                        color: textColor
+        this.watchReportService.getMonthlySales().subscribe((monthlySales) => {
+            this.chartData = {
+                labels: monthlySales.map(s => s.monthName),
+                datasets: [
+                    {
+                        label: 'Total Sales',
+                        data: monthlySales.map(s => s.totalSold),
+                        fill: false,
+                        backgroundColor: '#21c55e',
+                        borderColor: '#21c55e',
+                        tension: .4
                     }
-                }
-            },
-            scales: {
-                x: {
-                    ticks: {
-                        color: textColorSecondary
-                    },
-                    grid: {
-                        color: surfaceBorder,
-                        drawBorder: false
+                ]
+            };
+    
+            this.chartOptions = {
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: textColor
+                        }
                     }
                 },
-                y: {
-                    ticks: {
-                        color: textColorSecondary
+                scales: {
+                    x: {
+                        ticks: {
+                            color: textColorSecondary
+                        },
+                        grid: {
+                            color: surfaceBorder,
+                            drawBorder: false
+                        }
                     },
-                    grid: {
-                        color: surfaceBorder,
-                        drawBorder: false
+                    y: {
+                        ticks: {
+                            color: textColorSecondary
+                        },
+                        grid: {
+                            color: surfaceBorder,
+                            drawBorder: false
+                        }
                     }
                 }
-            }
-        };
+            };
+        });
     }
 
     ngOnDestroy() {

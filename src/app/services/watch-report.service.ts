@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment as env } from 'src/environments/environment';
 import { WatchSalesReport } from '../models/watch-sales-report';
 import { BrandWatchSumaryDto } from '../models/brand-watch-summary';
+import { MonthlySales } from '../models/monthly-sales';
 
 @Injectable({
   providedIn: 'root'
@@ -26,5 +27,9 @@ export class WatchReportService {
 
   getBrandWatchSummary() {
     return this.http.get<BrandWatchSumaryDto[]>(`${this.apiUrl}/brand-watch-summary`);
+  }
+
+  getMonthlySales() {
+    return this.http.get<MonthlySales[]>(`${this.apiUrl}/monthly-sales`);
   }
 }
