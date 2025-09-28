@@ -301,6 +301,26 @@ export class SheetsComponent implements OnInit {
           items: []
         }, ...items
       ];
+    } else {
+      items = [
+        {
+          label: 'Unmark as Watch Vault',
+          icon: 'pi pi-fw pi-unlock',
+          command: () => {
+            const editedRecord: WatchRecord = {
+              id: this.selectedWatch.id,
+              isWatchVault: false
+            };
+            this.watchRecordService.patchWatchRecord(editedRecord).subscribe({
+              next: () => {
+                this.toastService.showSuccess("Success!", "Watch unmarked as Watch Vault.")
+                this.selectedWatch.isWatchVault = false;
+              }
+            });
+          },
+          items: []
+        }, ...items
+      ];
     }
 
     if (!this.selectedWatch.dateReturned) {
