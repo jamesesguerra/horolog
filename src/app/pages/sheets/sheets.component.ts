@@ -200,7 +200,7 @@ export class SheetsComponent implements OnInit {
     this.filterCount = 0;
 
     if (e.serialNumber !== null && e.serialNumber.length > 0) {
-      this.filteredRecords = this.filteredRecords.filter(x => x.serialNumber === e.serialNumber);
+      this.filteredRecords = this.filteredRecords.filter(x => x.serialNumber.toLowerCase().includes(e.serialNumber.toLowerCase()));
       this.filterCount++;
     }
 
