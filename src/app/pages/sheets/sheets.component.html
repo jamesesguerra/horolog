@@ -199,7 +199,7 @@
                                         <p-inputNumber inputId="integeronly" [(ngModel)]="watch.cost" />
                                     </ng-template>
                                     <ng-template pTemplate="output">
-                                        {{ watch?.cost | priceTruncate }}
+                                        {{ watch?.cost | number }}
                                     </ng-template>
                                 </p-cellEditor>
                             </td>
