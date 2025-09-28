@@ -63,7 +63,7 @@ export class ExportService {
       item.location,
       item.hasBox ? "Y" : "N",
       item.hasPapers ? "Y" : "N",
-      PriceHelper.formatPriceShort(item.cost),
+      item.cost?.toLocaleString(),
       item.remarks
     ]);
 
