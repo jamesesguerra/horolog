@@ -28,12 +28,12 @@ export class WatchRecordService {
     return this.http.patch(`${this.apiUrl}/${watchRecord.id}`, watchRecord); 
   }
 
-  setDateBorrowedToNull(id: number) {
-    return this.http.patch(`${this.apiUrl}/date-borrowed/${id}`, {});
-  }
-
   setDateSoldToNull(id: number) {
     return this.http.patch(`${this.apiUrl}/date-sold/${id}`, {});
+  }
+
+  setFieldToNull(fieldName: string, id: number) {
+    return this.http.patch<void>(`${this.apiUrl}/setFieldToNull/${id}?fieldName=${fieldName}`, {});
   }
 
   deleteWatchRecord(id: number) {
@@ -46,7 +46,7 @@ export class WatchRecordService {
     editedRecord[type] = DateTime.fromISO(date.toISOString()).toFormat("yyyy-MM-dd'T'HH:mm:ss");
     
     if (type === "dateReturned") {
-      this.setDateBorrowedToNull(recordId).subscribe();
+      this.setFieldToNull('dateBorrowed', recordId).subscribe();
     }
 
     return this.patchWatchRecord(editedRecord);

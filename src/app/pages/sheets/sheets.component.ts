@@ -186,7 +186,12 @@ export class SheetsComponent implements OnInit {
     editedRecord.id = e.index;
     editedRecord[e.field] = e.data;
 
-    if (e.data === null) return;
+    if (e.data === null && e.field === 'cost') {
+      this.watchRecordService.setFieldToNull("cost", editedRecord.id).subscribe();
+    } else if (e.data === null) {
+      return;
+    }
+
     this.watchRecordService.patchWatchRecord(editedRecord).subscribe({
       error: (error) => {
         console.log(error);
@@ -391,7 +396,7 @@ export class SheetsComponent implements OnInit {
         {
           label: 'Mark as unsold',
           icon: 'pi pi-fw pi-arrow-circle-left',
-          command: () => this.watchRecordService.setDateSoldToNull(this.selectedWatch.id).subscribe({
+          command: () => this.watchRecordService.setFieldToNull('dateSold', this.selectedWatch.id).subscribe({
             next: () => {
               this.selectedWatch.dateSold = null;
               this.toastService.showInfo("Watch unsold", "The watch has been marked as unsold")
