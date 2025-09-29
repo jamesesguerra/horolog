@@ -136,7 +136,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
         this.watchReportService.getInventoryBreakdown().subscribe((breakdown) => {
             this.inventoryBreakdownData = {
-                labels: ['Unsold', 'Sold', 'Consigned'],
+                labels: ['In Stock', 'Sold', 'Consigned'],
                 datasets: [
                     {
                         data: [breakdown.unsoldCount, breakdown.soldCount, breakdown.consignedCount],
