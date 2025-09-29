@@ -1,13 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MenuItem } from 'primeng/api';
-import { Product } from '../../api/product';
-import { ProductService } from '../../service/product.service';
 import { Subscription, debounceTime } from 'rxjs';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
-import { WatchRecordService } from 'src/app/services/watch-record.service';
 import { WatchSalesReport } from 'src/app/models/watch-sales-report';
 import { WatchReportService } from 'src/app/services/watch-report.service';
-import { MonthlySales } from 'src/app/models/monthly-sales';
+import { WatchMetrics } from 'src/app/models/watch-metrics';
 
 @Component({
     templateUrl: './dashboard.component.html',
@@ -19,14 +16,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
     subscription!: Subscription;
     bestSellingWatches: WatchSalesReport[] = [];
 
-    recordCount: number = 0;
-    totalValue: number = 0;
-    averageValue: number = 0;
+    watchMetrics: WatchMetrics;
 
     constructor(
-        private productService: ProductService,
         public layoutService: LayoutService,
-        private watchRecordService: WatchRecordService,
         private watchReportService: WatchReportService
     ) {
         this.subscription = this.layoutService.configUpdate$
@@ -35,21 +28,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.initChart();
         });
 
-        this.watchRecordService.getWatchRecordsCount().subscribe({
-            next: (count) => this.recordCount = count
-        });
-
         this.watchReportService.getBestSellingWatches().subscribe({
             next: (watches) => this.bestSellingWatches = watches
         });
 
-        this.watchReportService.getTotalValue().subscribe({
-            next: (value) => this.totalValue = value
+        this.watchReportService.getWatchMetrics().subscribe({
+            next: (metrics) => this.watchMetrics = metrics,
+            error: (error) => console.error(error)
         });
-
-        this.watchReportService.getAverageValue().subscribe({
-            next: (value) => this.averageValue = value
-        })
     }
 
     ngOnInit() {
@@ -69,8 +55,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     {
                         label: 'Total Sales',
                         data: monthlySales.map(s => s.totalSold),
-                        fill: false,
-                        backgroundColor: '#21c55e',
+                        fill: true,
+                        backgroundColor: 'rgba(185, 248, 207, 0.2)',
                         borderColor: '#21c55e',
                         tension: .4
                     }

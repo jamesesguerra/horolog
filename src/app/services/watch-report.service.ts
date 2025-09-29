@@ -4,6 +4,7 @@ import { environment as env } from 'src/environments/environment';
 import { WatchSalesReport } from '../models/watch-sales-report';
 import { BrandWatchSumaryDto } from '../models/brand-watch-summary';
 import { MonthlySales } from '../models/monthly-sales';
+import { WatchMetrics } from '../models/watch-metrics';
 
 @Injectable({
   providedIn: 'root'
@@ -17,12 +18,8 @@ export class WatchReportService {
     return this.http.get<WatchSalesReport[]>(`${this.apiUrl}/best-selling`);
   }
 
-  getTotalValue() {
-    return this.http.get<number>(`${this.apiUrl}/total-value`);
-  }
-
-  getAverageValue() {
-    return this.http.get<number>(`${this.apiUrl}/average-value`);
+  getWatchMetrics() {
+    return this.http.get<WatchMetrics>(`${this.apiUrl}/watch-metrics`);
   }
 
   getBrandWatchSummary() {
