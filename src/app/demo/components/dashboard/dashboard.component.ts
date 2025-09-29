@@ -5,17 +5,27 @@ import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { WatchSalesReport } from 'src/app/models/watch-sales-report';
 import { WatchReportService } from 'src/app/services/watch-report.service';
 import { WatchMetrics } from 'src/app/models/watch-metrics';
+import { brandColors } from 'src/app/helpers/color-helper';
 
 @Component({
     templateUrl: './dashboard.component.html',
+    styles: `
+        ::ng-deep p-chart.pie-chart div {
+            padding: 50px 80px;
+        }
+    `
 })
 export class DashboardComponent implements OnInit, OnDestroy {
     items!: MenuItem[];
-    chartData: any;
-    chartOptions: any;
+
+    // chart data
+    salesOverviewData: any;
+    salesOverviewChartOptions: any;
+    watchesByBrandData: any;
+    watchesByBrandChartOptions: any;
+
     subscription!: Subscription;
     bestSellingWatches: WatchSalesReport[] = [];
-
     watchMetrics: WatchMetrics;
 
     constructor(
@@ -23,76 +33,106 @@ export class DashboardComponent implements OnInit, OnDestroy {
         private watchReportService: WatchReportService
     ) {
         this.subscription = this.layoutService.configUpdate$
-        .pipe(debounceTime(25))
-        .subscribe((config) => {
-            this.initChart();
-        });
+            .pipe(debounceTime(25))
+            .subscribe((config) => {
+                this.initCharts();
+            });
 
         this.watchReportService.getBestSellingWatches().subscribe({
-            next: (watches) => this.bestSellingWatches = watches
+            next: (watches) => (this.bestSellingWatches = watches),
         });
 
         this.watchReportService.getWatchMetrics().subscribe({
-            next: (metrics) => this.watchMetrics = metrics,
-            error: (error) => console.error(error)
+            next: (metrics) => (this.watchMetrics = metrics),
+            error: (error) => console.error(error),
         });
     }
 
     ngOnInit() {
-        this.initChart();
+        this.initCharts();
     }
 
-    initChart() {
+    initCharts() {
         const documentStyle = getComputedStyle(document.documentElement);
         const textColor = documentStyle.getPropertyValue('--text-color');
-        const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
-        const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
+        const textColorSecondary = documentStyle.getPropertyValue(
+            '--text-color-secondary'
+        );
+        const surfaceBorder =
+            documentStyle.getPropertyValue('--surface-border');
 
         this.watchReportService.getMonthlySales().subscribe((monthlySales) => {
-            this.chartData = {
-                labels: monthlySales.map(s => s.monthName),
+            this.salesOverviewData = {
+                labels: monthlySales.map((s) => s.monthName),
                 datasets: [
                     {
                         label: 'Total Sales',
-                        data: monthlySales.map(s => s.totalSold),
+                        data: monthlySales.map((s) => s.totalSold),
                         fill: true,
                         backgroundColor: 'rgba(185, 248, 207, 0.2)',
                         borderColor: '#21c55e',
-                        tension: .4
-                    }
-                ]
+                        tension: 0.4,
+                    },
+                ],
             };
-    
-            this.chartOptions = {
+
+            this.salesOverviewChartOptions = {
                 plugins: {
                     legend: {
                         labels: {
-                            color: textColor
-                        }
-                    }
+                            color: textColor,
+                        },
+                    },
                 },
                 scales: {
                     x: {
                         ticks: {
-                            color: textColorSecondary
+                            color: textColorSecondary,
                         },
                         grid: {
                             color: surfaceBorder,
-                            drawBorder: false
-                        }
+                            drawBorder: false,
+                        },
                     },
                     y: {
                         ticks: {
-                            color: textColorSecondary
+                            color: textColorSecondary,
                         },
                         grid: {
                             color: surfaceBorder,
-                            drawBorder: false
-                        }
-                    }
-                }
+                            drawBorder: false,
+                        },
+                    },
+                },
             };
         });
+
+        this.watchReportService.getBrandInventoryCount().subscribe((brands) => {
+
+            this.watchesByBrandData = {
+                labels: brands.map(b => b.brandName),
+                datasets: [
+                    {
+                        data: brands.map(b => b.totalCount),
+                        backgroundColor: brands.map(b => brandColors[b.brandName] ?? "#000000"),
+                       hoverBackgroundColor: brands.map(b => brandColors[b.brandName] ?? "#000000"),
+                    },
+                ],
+            };
+
+        });
+
+
+        this.watchesByBrandChartOptions = {
+            plugins: {
+                legend: {
+                    labels: {
+                        usePointStyle: true,
+                        color: textColor
+                    }
+                }
+            }
+        };
     }
 
     ngOnDestroy() {
