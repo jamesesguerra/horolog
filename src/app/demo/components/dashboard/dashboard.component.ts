@@ -6,16 +6,9 @@ import { WatchSalesReport } from 'src/app/models/watch-sales-report';
 import { WatchReportService } from 'src/app/services/watch-report.service';
 import { WatchMetrics } from 'src/app/models/watch-metrics';
 import { brandColors } from 'src/app/helpers/color-helper';
-import { BrandInventoryCount } from 'src/app/services/brand-inventory-count';
-import { InventoryBreakdown } from 'src/app/services/inventory-breakdown';
 
 @Component({
     templateUrl: './dashboard.component.html',
-    styles: `
-        ::ng-deep p-chart.pie-chart div {
-            padding: 50px 80px;
-        }
-    `
 })
 export class DashboardComponent implements OnInit, OnDestroy {
     items!: MenuItem[];
@@ -24,8 +17,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
     salesOverviewData: any;
     salesOverviewChartOptions: any;
     watchesByBrandData: any;
-    watchesByBrandChartOptions: any;
+    pieChartOptions: any;
     inventoryBreakdownData: any;
+
+    bestSellingRolexData: any;
+    barChartOptions: any;
 
     subscription!: Subscription;
     bestSellingWatches: WatchSalesReport[] = [];
@@ -122,7 +118,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 ],
             };
             
-            this.watchesByBrandChartOptions = {
+            this.pieChartOptions = {
                 plugins: {
                     legend: {
                         labels: {
@@ -145,7 +141,51 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     },
                 ],
             };
-        })
+        });
+
+        this.bestSellingRolexData = {
+            labels: ['Q1', 'Q2', 'Q3', 'Q4', 'Datejust Oysterquartz', 'Q2', 'Q3', 'Q4', 'Q1', 'Q2'],
+            datasets: [
+                {
+                    label: 'Sales',
+                    data: [540, 325, 702, 620, 540, 325, 702, 620, 540, 325],
+                    backgroundColor: ['rgba(255, 159, 64, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(153, 102, 255, 0.2)'],
+                    borderColor: ['rgb(255, 159, 64)', 'rgb(75, 192, 192)', 'rgb(54, 162, 235)', 'rgb(153, 102, 255)'],
+                    borderWidth: 1
+                }
+            ]
+        };
+
+        this.barChartOptions = {
+            plugins: {
+                legend: {
+                    labels: {
+                        color: textColor
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        color: textColorSecondary
+                    },
+                    grid: {
+                        color: surfaceBorder,
+                        drawBorder: false
+                    }
+                },
+                x: {
+                    ticks: {
+                        color: textColorSecondary
+                    },
+                    grid: {
+                        color: surfaceBorder,
+                        drawBorder: false
+                    }
+                }
+            }
+        };
     }
 
     ngOnDestroy() {
