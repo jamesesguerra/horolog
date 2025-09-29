@@ -6,6 +6,7 @@ import { BrandWatchSumaryDto } from '../models/brand-watch-summary';
 import { MonthlySales } from '../models/monthly-sales';
 import { WatchMetrics } from '../models/watch-metrics';
 import { BrandInventoryCount } from './brand-inventory-count';
+import { InventoryBreakdown } from './inventory-breakdown';
 
 @Injectable({
   providedIn: 'root'
@@ -33,5 +34,9 @@ export class WatchReportService {
 
   getBrandInventoryCount() {
     return this.http.get<BrandInventoryCount[]>(`${this.apiUrl}/brand-inventory-count`);
+  }
+
+  getInventoryBreakdown() {
+    return this.http.get<InventoryBreakdown>(`${this.apiUrl}/inventory-breakdown`);
   }
 }

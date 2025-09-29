@@ -6,6 +6,8 @@ import { WatchSalesReport } from 'src/app/models/watch-sales-report';
 import { WatchReportService } from 'src/app/services/watch-report.service';
 import { WatchMetrics } from 'src/app/models/watch-metrics';
 import { brandColors } from 'src/app/helpers/color-helper';
+import { BrandInventoryCount } from 'src/app/services/brand-inventory-count';
+import { InventoryBreakdown } from 'src/app/services/inventory-breakdown';
 
 @Component({
     templateUrl: './dashboard.component.html',
@@ -23,6 +25,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     salesOverviewChartOptions: any;
     watchesByBrandData: any;
     watchesByBrandChartOptions: any;
+    inventoryBreakdownData: any;
 
     subscription!: Subscription;
     bestSellingWatches: WatchSalesReport[] = [];
@@ -108,7 +111,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
         });
 
         this.watchReportService.getBrandInventoryCount().subscribe((brands) => {
-
             this.watchesByBrandData = {
                 labels: brands.map(b => b.brandName),
                 datasets: [
@@ -119,20 +121,31 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     },
                 ],
             };
-
-        });
-
-
-        this.watchesByBrandChartOptions = {
-            plugins: {
-                legend: {
-                    labels: {
-                        usePointStyle: true,
-                        color: textColor
+            
+            this.watchesByBrandChartOptions = {
+                plugins: {
+                    legend: {
+                        labels: {
+                            usePointStyle: true,
+                            color: textColor
+                        }
                     }
                 }
-            }
-        };
+            };
+        });
+
+        this.watchReportService.getInventoryBreakdown().subscribe((breakdown) => {
+            this.inventoryBreakdownData = {
+                labels: ['Unsold', 'Sold', 'Consigned'],
+                datasets: [
+                    {
+                        data: [breakdown.unsoldCount, breakdown.soldCount, breakdown.consignedCount],
+                        backgroundColor: ['#05df72', '#fff085', '#62748e'],
+                        hoverBackgroundColor: ['#05df72', '#fff085', '#62748e'],
+                    },
+                ],
+            };
+        })
     }
 
     ngOnDestroy() {
