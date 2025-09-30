@@ -78,37 +78,31 @@
     </div>
 
     <div class="col-12 xl:col-6">
-        <div class="card">
+        <div class="card" style="height: 100%">
             <h5>Sales Overview</h5>
             <p-chart type="line" [data]="salesOverviewData" [options]="salesOverviewChartOptions"></p-chart>
         </div>
     </div>
 
-     <!-- <div class="col-12 xl:col-6">
+     <div class="col-12 xl:col-8">
         <div class="card">
-            <h5>Best Selling Rolex Models</h5>
-            <p-chart type="bar" [data]="bestSellingRolexData" [options]="barChartOptions" />
+            <h5>Monthly Average Selling Price Trends</h5>
+            <p-chart type="line" [data]="monthlyPriceTrendData" [options]="lineChartOptions" />
         </div>
     </div>
 
-     <div class="col-12 xl:col-6">
-        <div class="card">
-            <h5>Sales Overview</h5>
-            <p-chart type="line" [data]="salesOverviewData" [options]="salesOverviewChartOptions"></p-chart>
-        </div>
-    </div> -->
-
-     <div class="col-12 xl:col-4">
-        <div class="card">
+    <div class="col-12 xl:col-4">
+        <div class="card" style="height: 100%; display: flex; flex-direction: column; gap: 20px;">
             <h5>Watches by Brand</h5>
             <p-chart class="pie-chart" type="pie" [data]="watchesByBrandData" [options]="pieChartOptions" />
         </div>
     </div>
-
-     <div class="col-12 xl:col-4">
+    
+    <div class="col-12 xl:col-4">
         <div class="card">
             <h5>Inventory Breakdown</h5>
             <p-chart class="pie-chart" type="pie" [data]="inventoryBreakdownData" [options]="pieChartOptions" />
         </div>
     </div>
+
 </div>

@@ -1,26 +1,26 @@
 export const brandColors: Record<string, string> = {
-  "Rolex": "#a8d5e2",              // pastel blue
-  "Patek Philippe": "#fbc4ab",     // pastel peach
-  "Audemars Piguet": "#b9fbc0",    // pastel green
-  "Richard Mille": "#ffb3c6",      // pastel pink
+  "Rolex": "#A8D5BA",              
+  "Patek Philippe": "#D7BFAE",     
+  "Audemars Piguet": "#A7C7E7",   
+  "Richard Mille": "#ffb3c6",     
   "Jaeger Lecoultre": "#cdb4db",   // pastel lavender
   "Hublot": "#e4c1f9",             // pastel purple
   "MB&F": "#fde2e4",               // blush pink
   "Grand Seiko": "#dfe7fd",        // pastel sky
-  "IWC": "#fff1e6",                // cream
-  "Tudor": "#caffbf",              // mint
-  "Panerai": "#ffd6a5",            // light orange
+  "IWC": "#CFCFCF",                // cream
+  "Tudor": "#7DA7D9",              // mint
+  "Panerai": "#9BC4CB",            // light orange
   "MCT": "#b5ead7",                // seafoam
   "Breguet": "#e2f0cb",            // light lime
   "Franck Muller": "#ffe5ec",      // baby pink
   "Urwerk": "#d7e3fc",             // baby blue
   "Blancpain": "#f1f1f1",          // light gray
   "DYW": "#fcf6bd",                // butter yellow
-  "Omega": "#cce2cb",              // sage
+  "Omega": "#ffd6a5",              // sage
   "Vacheron Constantin": "#f6dfeb",// soft rose
   "Zenith": "#d0f4de",             // pastel teal
-  "A. Lange & Söhne": "#fbe7c6",   // pale apricot
-  "Cartier": "#fcd5ce",            // dusty peach
+  "A. Lange & Söhne": "#C7C6E2",   // pale apricot
+  "Cartier": "#F4A7A0",            // dusty peach
   "Bell & Ross": "#e8defc",        // pale violet
   "Bulgari": "#a0c4ff",            // baby blue
   "Chopard": "#fddde6",            // cotton candy

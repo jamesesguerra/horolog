@@ -7,6 +7,7 @@ import { MonthlySales } from '../models/monthly-sales';
 import { WatchMetrics } from '../models/watch-metrics';
 import { BrandInventoryCount } from './brand-inventory-count';
 import { InventoryBreakdown } from './inventory-breakdown';
+import { BrandPriceTrend } from '../models/brand-price-trend';
 
 @Injectable({
   providedIn: 'root'
@@ -38,5 +39,9 @@ export class WatchReportService {
 
   getInventoryBreakdown() {
     return this.http.get<InventoryBreakdown>(`${this.apiUrl}/inventory-breakdown`);
+  }
+
+  getMonthlyTrend() {
+    return this.http.get<BrandPriceTrend[]>(`${this.apiUrl}/monthly-trend`);
   }
 }

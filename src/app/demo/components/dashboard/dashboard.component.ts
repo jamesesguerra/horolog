@@ -20,8 +20,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     pieChartOptions: any;
     inventoryBreakdownData: any;
 
-    bestSellingRolexData: any;
-    barChartOptions: any;
+    monthlyPriceTrendData: any;
+    lineChartOptions: any;
 
     subscription!: Subscription;
     bestSellingWatches: WatchSalesReport[] = [];
@@ -143,20 +143,68 @@ export class DashboardComponent implements OnInit, OnDestroy {
             };
         });
 
-        this.bestSellingRolexData = {
-            labels: ['Q1', 'Q2', 'Q3', 'Q4', 'Datejust Oysterquartz', 'Q2', 'Q3', 'Q4', 'Q1', 'Q2'],
-            datasets: [
-                {
-                    label: 'Sales',
-                    data: [540, 325, 702, 620, 540, 325, 702, 620, 540, 325],
-                    backgroundColor: ['rgba(255, 159, 64, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(153, 102, 255, 0.2)'],
-                    borderColor: ['rgb(255, 159, 64)', 'rgb(75, 192, 192)', 'rgb(54, 162, 235)', 'rgb(153, 102, 255)'],
-                    borderWidth: 1
-                }
-            ]
-        };
+        this.watchReportService.getMonthlyTrend().subscribe((dbRows) => {
+            const labels = Array.from(
+                new Set(dbRows.map((r) => r.month))
+            ).sort();
 
-        this.barChartOptions = {
+            const brands = Array.from(new Set(dbRows.map((r) => r.brand)));
+
+            const datasets = brands.map((brand, i) => {
+                const colors = [
+                    '#A8D5BA',
+                    '#D7BFAE',
+                    '#A7C7E7',
+                    '#F4A7A0',
+                    '#CFCFCF',
+                ];
+                const color = colors[i];
+
+                let data = labels.map((month) => {
+                    const record = dbRows.find(
+                        (r) => r.brand === brand && r.month === month
+                    );
+                    return record ? record.avgSellingPrice : null;
+                });
+
+                let lastValue: number | null = null;
+                data = data.map((value) => {
+                    if (value !== null) {
+                        lastValue = value;
+                        return value;
+                    } else {
+                        return lastValue;
+                    }
+                });
+
+                let nextValue: number | null = null;
+                for (let i = data.length - 1; i >= 0; i--) {
+                    if (data[i] !== null) {
+                        nextValue = data[i];
+                    } else if (nextValue !== null) {
+                        data[i] = nextValue;
+                    }
+                }
+
+                return {
+                    label: brand,
+                    data,
+                    fill: false,
+                    backgroundColor: color,
+                    borderColor: color,
+                    tension: 0.4,
+                };
+            });
+            this.monthlyPriceTrendData = {
+                labels,
+                datasets,
+            };
+        });
+
+
+       this.lineChartOptions = {
+            maintainAspectRatio: false,
+            aspectRatio: 0.7,
             plugins: {
                 legend: {
                     labels: {
@@ -165,8 +213,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 }
             },
             scales: {
-                y: {
-                    beginAtZero: true,
+                x: {
                     ticks: {
                         color: textColorSecondary
                     },
@@ -175,7 +222,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                         drawBorder: false
                     }
                 },
-                x: {
+                y: {
                     ticks: {
                         color: textColorSecondary
                     },
