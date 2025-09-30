@@ -9,6 +9,11 @@ import { brandColors } from 'src/app/helpers/color-helper';
 
 @Component({
     templateUrl: './dashboard.component.html',
+    styles: `
+        .pie-chart-container {
+            padding: 20px 50px;
+        }
+    `,
 })
 export class DashboardComponent implements OnInit, OnDestroy {
     items!: MenuItem[];
@@ -22,6 +27,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     monthlyPriceTrendData: any;
     lineChartOptions: any;
+
+    boxPapersStatusData: any;
+    barChartOptions: any;
 
     subscription!: Subscription;
     bestSellingWatches: WatchSalesReport[] = [];
@@ -94,6 +102,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                         },
                     },
                     y: {
+                        beginAtZero: true,
                         ticks: {
                             color: textColorSecondary,
                         },
@@ -108,47 +117,61 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
         this.watchReportService.getBrandInventoryCount().subscribe((brands) => {
             this.watchesByBrandData = {
-                labels: brands.map(b => b.brandName),
+                labels: brands.map((b) => b.brandName),
                 datasets: [
                     {
-                        data: brands.map(b => b.totalCount),
-                        backgroundColor: brands.map(b => brandColors[b.brandName] ?? "#000000"),
-                       hoverBackgroundColor: brands.map(b => brandColors[b.brandName] ?? "#000000"),
+                        data: brands.map((b) => b.totalCount),
+                        backgroundColor: brands.map(
+                            (b) => brandColors[b.brandName] ?? '#000000'
+                        ),
+                        hoverBackgroundColor: brands.map(
+                            (b) => brandColors[b.brandName] ?? '#000000'
+                        ),
                     },
                 ],
             };
-            
+
             this.pieChartOptions = {
                 plugins: {
                     legend: {
                         labels: {
                             usePointStyle: true,
-                            color: textColor
-                        }
-                    }
-                }
-            };
-        });
-
-        this.watchReportService.getInventoryBreakdown().subscribe((breakdown) => {
-            this.inventoryBreakdownData = {
-                labels: ['In Stock', 'Sold', 'Consigned'],
-                datasets: [
-                    {
-                        data: [breakdown.unsoldCount, breakdown.soldCount, breakdown.consignedCount],
-                        backgroundColor: ['#05df72', '#fff085', '#62748e'],
-                        hoverBackgroundColor: ['#05df72', '#fff085', '#62748e'],
+                            color: textColor,
+                        },
                     },
-                ],
+                },
             };
         });
 
-        this.watchReportService.getMonthlyTrend().subscribe((dbRows) => {
+        this.watchReportService
+            .getInventoryBreakdown()
+            .subscribe((breakdown) => {
+                this.inventoryBreakdownData = {
+                    labels: ['In Stock', 'Sold', 'Consigned'],
+                    datasets: [
+                        {
+                            data: [
+                                breakdown.unsoldCount,
+                                breakdown.soldCount,
+                                breakdown.consignedCount,
+                            ],
+                            backgroundColor: ['#05df72', '#fff085', '#62748e'],
+                            hoverBackgroundColor: [
+                                '#05df72',
+                                '#fff085',
+                                '#62748e',
+                            ],
+                        },
+                    ],
+                };
+            });
+
+        this.watchReportService.getMonthlyTrend().subscribe((trend) => {
             const labels = Array.from(
-                new Set(dbRows.map((r) => r.month))
+                new Set(trend.map((r) => r.month))
             ).sort();
 
-            const brands = Array.from(new Set(dbRows.map((r) => r.brand)));
+            const brands = Array.from(new Set(trend.map((r) => r.brand)));
 
             const datasets = brands.map((brand, i) => {
                 const colors = [
@@ -161,7 +184,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 const color = colors[i];
 
                 let data = labels.map((month) => {
-                    const record = dbRows.find(
+                    const record = trend.find(
                         (r) => r.brand === brand && r.month === month
                     );
                     return record ? record.avgSellingPrice : null;
@@ -199,40 +222,97 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 labels,
                 datasets,
             };
+
+            this.lineChartOptions = {
+                maintainAspectRatio: false,
+                aspectRatio: 0.7,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: textColor,
+                        },
+                    },
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            color: textColorSecondary,
+                        },
+                        grid: {
+                            color: surfaceBorder,
+                            drawBorder: false,
+                        },
+                    },
+                    y: {
+                        ticks: {
+                            color: textColorSecondary,
+                        },
+                        grid: {
+                            color: surfaceBorder,
+                            drawBorder: false,
+                        },
+                    },
+                },
+            };
         });
 
+        this.watchReportService.getBoxPapersStatus().subscribe((status) => {
+            this.boxPapersStatusData = {
+                labels: status.map(s => s.status),
+                datasets: [
+                    {
+                        label: 'Inventory Count',
+                        data: status.map(s => s.totalCount),
+                        backgroundColor: [
+                            'rgba(54, 162, 235, 0.2)', // Both
+                            'rgba(75, 192, 192, 0.2)', // Box Only
+                            'rgba(255, 206, 86, 0.2)', // Papers Only
+                            'rgba(255, 99, 132, 0.2)', // None
+                        ],
+                        borderColor: [
+                            'rgb(54, 162, 235)',
+                            'rgb(75, 192, 192)',
+                            'rgb(255, 206, 86)',
+                            'rgb(255, 99, 132)',
+                        ],
+                        borderWidth: 1,
+                    },
+                ],
+            };
 
-       this.lineChartOptions = {
-            maintainAspectRatio: false,
-            aspectRatio: 0.7,
-            plugins: {
-                legend: {
-                    labels: {
-                        color: textColor
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    ticks: {
-                        color: textColorSecondary
+            this.barChartOptions = {
+                maintainAspectRatio: false,
+                aspectRatio: 0.9,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: textColor,
+                        },
                     },
-                    grid: {
-                        color: surfaceBorder,
-                        drawBorder: false
-                    }
                 },
-                y: {
-                    ticks: {
-                        color: textColorSecondary
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: textColorSecondary,
+                        },
+                        grid: {
+                            color: surfaceBorder,
+                            drawBorder: false,
+                        },
                     },
-                    grid: {
-                        color: surfaceBorder,
-                        drawBorder: false
-                    }
-                }
-            }
-        };
+                    x: {
+                        ticks: {
+                            color: textColorSecondary,
+                        },
+                        grid: {
+                            color: surfaceBorder,
+                            drawBorder: false,
+                        },
+                    },
+                },
+            };
+        });
     }
 
     ngOnDestroy() {

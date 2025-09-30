@@ -44,4 +44,8 @@ export class WatchReportService {
   getMonthlyTrend() {
     return this.http.get<BrandPriceTrend[]>(`${this.apiUrl}/monthly-trend`);
   }
+
+  getBoxPapersStatus() {
+    return this.http.get<any>(`${this.apiUrl}/box-papers-status`);
+  }
 }
