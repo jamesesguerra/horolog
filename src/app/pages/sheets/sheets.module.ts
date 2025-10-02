@@ -23,6 +23,7 @@ import { GalleryModalComponent } from "./gallery-modal/gallery-modal.component";
 import { GalleriaModule } from "primeng/galleria";
 import { ProgressSpinnerModule } from "primeng/progressspinner";
 import { TieredMenuModule } from "primeng/tieredmenu";
+import { BadgeModule } from "primeng/badge";
 
 @NgModule({
     imports: [
@@ -45,6 +46,7 @@ import { TieredMenuModule } from "primeng/tieredmenu";
         GalleriaModule,
         ProgressSpinnerModule,
         TieredMenuModule,
+        BadgeModule,
         CommonModule
     ],
     declarations: [

@@ -28,7 +28,8 @@ export class FilterSidebarComponent implements OnInit {
       isSold: new FormControl(false),
       isIndependentBrand: new FormControl(false),
       isConsigned: new FormControl(false),
-      isWatchVault: new FormControl(false)
+      isWatchVault: new FormControl(false),
+      isConsignedBySvg: new FormControl(false)
     })
   }
 
@@ -47,7 +48,8 @@ export class FilterSidebarComponent implements OnInit {
       isSold,
       isIndependentBrand,
       isConsigned,
-      isWatchVault
+      isWatchVault,
+      isConsignedBySvg
     } = this.filterForm.value;
 
     const filters = {
@@ -59,7 +61,8 @@ export class FilterSidebarComponent implements OnInit {
       isSold,
       isIndependentBrand,
       isConsigned,
-      isWatchVault
+      isWatchVault,
+      isConsignedBySvg
     };
     this.applyFilter.emit(filters);
   }

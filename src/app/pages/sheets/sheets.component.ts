@@ -266,6 +266,11 @@ export class SheetsComponent implements OnInit {
       this.filteredRecords = this.filteredRecords.filter(x => x.isWatchVault !== false);
       this.filterCount++;
     }
+
+    if (e.isConsignedBySvg) {
+      this.filteredRecords = this.filteredRecords.filter(x => x.isConsignedBySvg !== false);
+      this.filterCount++;
+    }
   }
 
   onClearFilter() {
@@ -320,6 +325,48 @@ export class SheetsComponent implements OnInit {
               next: () => {
                 this.toastService.showSuccess("Success!", "Watch unmarked as Watch Vault.")
                 this.selectedWatch.isWatchVault = false;
+              }
+            });
+          },
+          items: []
+        }, ...items
+      ];
+    }
+
+    if (!this.selectedWatch.isConsignedBySvg) {
+       items = [
+        {
+          label: 'Mark as Consigned by SAZ AT VG',
+          icon: 'pi pi-fw pi-flag-fill',
+          command: () => {
+            const editedRecord: WatchRecord = {
+              id: this.selectedWatch.id,
+              isConsignedBySvg: true
+            };
+            this.watchRecordService.patchWatchRecord(editedRecord).subscribe({
+              next: () => {
+                this.toastService.showSuccess("Success!", "Watch marked as Consigned by SAZ AT VG.")
+                this.selectedWatch.isConsignedBySvg = true;
+              }
+            });
+          },
+          items: []
+        }, ...items
+      ];
+    } else {
+      items = [
+        {
+          label: 'Unmark as Consigned by SAZ AT VG',
+          icon: 'pi pi-fw pi-flag-fill',
+          command: () => {
+            const editedRecord: WatchRecord = {
+              id: this.selectedWatch.id,
+              isConsignedBySvg: false
+            };
+            this.watchRecordService.patchWatchRecord(editedRecord).subscribe({
+              next: () => {
+                this.toastService.showSuccess("Success!", "Watch unmarked as Consigned by SAZ AT VG.")
+                this.selectedWatch.isConsignedBySvg = false;
               }
             });
           },

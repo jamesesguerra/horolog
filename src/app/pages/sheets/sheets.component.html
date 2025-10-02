@@ -76,6 +76,18 @@
     
                             <td [pEditableColumn]="watch.description" pEditableColumnField="description"
                                 [pEditableColumnRowIndex]="watch.id">
+                                <div class="flex gap-1">
+                                    @if (watch.isWatchVault) {
+                                        <p-badge [value]="'WV'" severity="info" />
+                                    }
+                                    @if (watch.isConsignedBySvg) {
+                                        <p-badge [value]="'SVG'" severity="warning" />
+                                    }
+                                    @if (watch.isWatchVault || watch.isConsignedBySvg) {
+                                        <br />
+                                    }
+                                </div>
+
                                 <p-cellEditor>
                                     <ng-template pTemplate="input">
                                         <input pInputText type="text" [(ngModel)]="watch.description" required />

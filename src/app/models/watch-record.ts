@@ -17,6 +17,7 @@ export interface WatchRecord {
     hasPapers?: boolean;
     isConsigned?: boolean;
     isWatchVault?: boolean;
+    isConsignedBySvg?: boolean;
     cost?: number;
     remarks?: string
     createdAt?: Date;
