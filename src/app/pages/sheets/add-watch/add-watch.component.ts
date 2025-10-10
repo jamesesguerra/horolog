@@ -95,15 +95,18 @@ export class AddWatchComponent {
   private addWatch(imageUri?: string, watchImages?: any[]) {
     const formValues = this.watchForm.value;
 
+    const formatDate = (date?: Date) =>
+      date ? DateTime.fromISO(date.toISOString()).toFormat("yyyy-MM-dd'T'HH:mm:ss") : undefined;
+
     const record =
     {
       "imageUrl": imageUri,
       "modelId": this.modelId,
       "description": formValues.description,
       "material": formValues.material,
-      "datePurchased": DateTime.fromISO(formValues.datePurchased.toISOString()).toFormat("yyyy-MM-dd'T'HH:mm:ss"),
-      "dateReceived": DateTime.fromISO(formValues.dateReceived.toISOString()).toFormat("yyyy-MM-dd'T'HH:mm:ss"),
-      "dateSold": DateTime.fromISO(formValues.dateSold.toISOString()).toFormat("yyyy-MM-dd'T'HH:mm:ss"),
+      "datePurchased": formatDate(formValues.datePurchased),
+      "dateReceived": formatDate(formValues.dateReceived),
+      "dateSold": formatDate(formValues.dateSold),
       "referenceNumber": formValues.referenceNumber,
       "serialNumber": formValues.serialNumber,
       "location": formValues.location,
