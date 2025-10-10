@@ -8,6 +8,7 @@ import { FileUpload } from 'primeng/fileupload';
 import { FileService } from 'src/app/services/file.service';
 import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
 import { WatchImageService } from 'src/app/services/watch-image.service';
+import { DateTime } from 'luxon';
 
 @Component({
   selector: 'app-add-watch',
@@ -100,9 +101,9 @@ export class AddWatchComponent {
       "modelId": this.modelId,
       "description": formValues.description,
       "material": formValues.material,
-      "datePurchased": this.dateService.convertToISOString(formValues.datePurchased),
-      "dateReceived": this.dateService.convertToISOString(formValues.dateReceived),
-      "dateSold": this.dateService.convertToISOString(formValues.dateSold),
+      "datePurchased": DateTime.fromISO(formValues.datePurchased.toISOString()).toFormat("yyyy-MM-dd'T'HH:mm:ss"),
+      "dateReceived": DateTime.fromISO(formValues.dateReceived.toISOString()).toFormat("yyyy-MM-dd'T'HH:mm:ss"),
+      "dateSold": DateTime.fromISO(formValues.dateSold.toISOString()).toFormat("yyyy-MM-dd'T'HH:mm:ss"),
       "referenceNumber": formValues.referenceNumber,
       "serialNumber": formValues.serialNumber,
       "location": formValues.location,
