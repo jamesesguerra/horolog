@@ -1,0 +1,54 @@
+<div class="mt-10 max-w-55rem mx-auto">
+    <div class="flex justify-content-center align-items-center gap-4">
+        <h4>What is the</h4>
+        <p-dropdown
+            [options]="selectByOptions"
+            [(ngModel)]="selectedSelectByOption"
+            optionLabel="displayName"
+            placeholder="Select a field"
+        />
+        <h4>of the watch with</h4>
+        <p-dropdown
+            [options]="searchByOptions"
+            [(ngModel)]="selectedSearchByOption"
+            optionLabel="displayName"
+            placeholder="Select a field"
+        />
+    </div>
+
+    <div class="flex justify-content-center align-items-center gap-4">
+        <input
+            class="underline-form"
+            type="text"
+            pInputText
+            [(ngModel)]="query"
+        />
+        <h4>?</h4>
+        <button
+            type="button"
+            pButton
+            icon="pi pi-search"
+            (click)="search()"
+            [disabled]="
+                selectedSearchByOption === null ||
+                selectedSelectByOption === null ||
+                query === null ||
+                isNullOrWhitespace(query)
+            "
+        ></button>
+    </div>
+
+    <div class="flex justify-content-center mt-10 answer-container">
+        @if (isLoading$ | async) {
+            <div class="flex justify-content-center">
+                <p-progressSpinner
+                    styleClass="w-4rem h-4rem"
+                    strokeWidth="8"
+                    animationDuration=".5s"
+                />
+            </div>
+        } @else {
+            {{ answer === null ? "No result found" : answer }}
+        }
+    </div>
+</div>

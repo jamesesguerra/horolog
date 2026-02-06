@@ -1,28 +1,65 @@
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { NotfoundComponent } from './demo/components/notfound/notfound.component';
-import { AppLayoutComponent } from "./layout/app.layout.component";
+import { AppLayoutComponent } from './layout/app.layout.component';
 import { authGuard } from './guards/auth.guard';
 
 @NgModule({
     imports: [
-        RouterModule.forRoot([
+        RouterModule.forRoot(
+            [
+                {
+                    path: '',
+                    component: AppLayoutComponent,
+                    children: [
+                        {
+                            path: '',
+                            loadChildren: () =>
+                                import('./demo/components/dashboard/dashboard.module').then(
+                                    (m) => m.DashboardModule,
+                                ),
+                        },
+                        {
+                            path: 'sheets',
+                            loadChildren: () =>
+                                import('./pages/sheets/sheets.module').then(
+                                    (m) => m.SheetsModule,
+                                ),
+                        },
+                        {
+                            path: 'dynamic-search',
+                            loadChildren: () =>
+                                import('./pages/dynamic-search/dynamic-search.module').then(
+                                    (m) => m.DynamicSearchModule,
+                                ),
+                        },
+                        {
+                            path: 'brands',
+                            loadChildren: () =>
+                                import('./pages/brands/brands.module').then(
+                                    (m) => m.BrandsModule,
+                                ),
+                        },
+                    ],
+                    canActivate: [authGuard],
+                },
+                {
+                    path: 'login',
+                    loadChildren: () =>
+                        import('./pages/login/login.module').then(
+                            (m) => m.LoginModule,
+                        ),
+                },
+                { path: 'notfound', component: NotfoundComponent },
+                { path: '**', redirectTo: '/notfound' },
+            ],
             {
-                path: '', component: AppLayoutComponent,
-                children: [
-                    { path: '', loadChildren: () => import('./demo/components/dashboard/dashboard.module').then(m => m.DashboardModule) },
-                    { path: 'sheets', loadChildren: () => import('./pages/sheets/sheets.module').then(m => m.SheetsModule) },
-                    { path: 'brands', loadChildren: () => import('./pages/brands/brands.module').then(m => m.BrandsModule) },
-                    { path: 'blocks', loadChildren: () => import('./demo/components/primeblocks/primeblocks.module').then(m => m.PrimeBlocksModule) },
-                ],
-                canActivate: [authGuard]
+                scrollPositionRestoration: 'enabled',
+                anchorScrolling: 'enabled',
+                onSameUrlNavigation: 'reload',
             },
-            { path: 'login', loadChildren: () => import('./pages/login/login.module').then(m => m.LoginModule) },
-            { path: 'notfound', component: NotfoundComponent },
-            { path: '**', redirectTo: '/notfound' },
-        ], { scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled', onSameUrlNavigation: 'reload' })
+        ),
     ],
-    exports: [RouterModule]
+    exports: [RouterModule],
 })
-export class AppRoutingModule {
-}
+export class AppRoutingModule {}

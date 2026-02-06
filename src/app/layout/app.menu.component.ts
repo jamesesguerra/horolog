@@ -4,23 +4,39 @@ import { LayoutService } from './service/app.layout.service';
 
 @Component({
     selector: 'app-menu',
-    templateUrl: './app.menu.component.html'
+    templateUrl: './app.menu.component.html',
 })
 export class AppMenuComponent implements OnInit {
-
     model: any[] = [];
 
-    constructor(public layoutService: LayoutService) { }
+    constructor(public layoutService: LayoutService) {}
 
     ngOnInit() {
         this.model = [
             {
                 label: 'Home',
                 items: [
-                    { label: 'Dashboard', icon: 'pi pi-fw pi-chart-line', routerLink: ['/'] },
-                    { label: 'Sheets', icon: 'pi pi-fw pi-table', routerLink: ['/sheets'] },
-                    { label: 'Brands', icon: 'pi pi-fw pi-tags', routerLink: ['/brands'] },
-                ]
+                    {
+                        label: 'Dashboard',
+                        icon: 'pi pi-fw pi-chart-line',
+                        routerLink: ['/'],
+                    },
+                    {
+                        label: 'Sheets',
+                        icon: 'pi pi-fw pi-table',
+                        routerLink: ['/sheets'],
+                    },
+                    {
+                        label: 'Dynamic Search',
+                        icon: 'pi pi-fw pi-search',
+                        routerLink: ['/dynamic-search'],
+                    },
+                    {
+                        label: 'Brands',
+                        icon: 'pi pi-fw pi-tags',
+                        routerLink: ['/brands'],
+                    },
+                ],
             },
         ];
     }

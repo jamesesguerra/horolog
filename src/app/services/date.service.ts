@@ -8,14 +8,6 @@ export class DateService {
 
   constructor() { }
 
-  convertToISOString(date: Date | null) {
-    if (date === null) return date;
-    
-    return DateTime.fromJSDate(date)
-      .setZone('Asia/Manila')
-      .toISO(); 
-  }
-
   applyDateFilter(
     records: any[],
     dateField: keyof typeof records[0],
