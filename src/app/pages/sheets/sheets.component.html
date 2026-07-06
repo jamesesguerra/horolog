@@ -67,8 +67,8 @@
                             <td class="flex justify-content-center cursor-pointer" (click)="onOpenGalleryModal(watch)">
                                 <div class="md:w-10rem md:h-9rem relative image-container">
                                     <img class="block xl:block mx-auto border-round w-full responsive-image"
-                                        [src]="watch.imageUrl 
-                ? baseStorageDomain + watch.imageUrl 
+                                        [src]="watch.imageUrl
+                ? resolveImageUrl(watch.imageUrl)
                 : 'https://media.istockphoto.com/id/920345886/vector/classic-wristwatch-icon.jpg?s=612x612&w=0&k=20&c=MbgyLy52hlVIOqppuIpML4XSuxFUJozffHVH0Q5jMZ4='"
                                         [alt]="watch.description" />
                                 </div>

@@ -6,6 +6,7 @@ import { WatchRecord } from 'src/app/models/watch-record';
 import { FileService } from 'src/app/services/file.service';
 import { WatchImageService } from 'src/app/services/watch-image.service';
 import { environment } from 'src/environments/environment';
+import { ImageUrlHelper } from 'src/app/helpers/image-url-helper';
 
 @Component({
   selector: 'app-gallery-modal',
@@ -20,6 +21,10 @@ export class GalleryModalComponent implements OnInit {
   @Output() delete = new EventEmitter();
 
   baseStorageDomain = environment.baseStorageDomain;
+
+  resolveImageUrl(uri?: string | null): string | undefined {
+    return ImageUrlHelper.resolve(this.baseStorageDomain, uri);
+  }
 
   images: any[] | undefined = [];
   responsiveOptions: any[] | undefined;

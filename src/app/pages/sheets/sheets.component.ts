@@ -16,6 +16,7 @@ import { GalleryModalComponent } from './gallery-modal/gallery-modal.component';
 import { environment } from 'src/environments/environment';
 import { DateTime } from 'luxon';
 import { WatchReportService } from 'src/app/services/watch-report.service';
+import { ImageUrlHelper } from 'src/app/helpers/image-url-helper';
 
 @Component({
   selector: 'app-sheets',
@@ -27,6 +28,10 @@ export class SheetsComponent implements OnInit {
   @ViewChild(GalleryModalComponent) galleryModal!: GalleryModalComponent;
 
   baseStorageDomain = environment.baseStorageDomain;
+
+  resolveImageUrl(uri?: string | null): string | undefined {
+    return ImageUrlHelper.resolve(this.baseStorageDomain, uri);
+  }
 
   records!: WatchRecord[];
   filteredRecords!: WatchRecord[];
