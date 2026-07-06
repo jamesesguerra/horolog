@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MenuItem } from 'primeng/api';
-import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Brand } from 'src/app/models/brand';
 import { WatchModel } from 'src/app/models/watch-model';
 import { WatchRecord } from 'src/app/models/watch-record';
@@ -11,7 +11,6 @@ import { DateService } from 'src/app/services/date.service';
 import { ToastService } from 'src/app/layout/service/toast.service';
 import { FilterSidebarComponent } from './filter-sidebar/filter-sidebar.component';
 import { ExportService } from 'src/app/services/export.service';
-import { FileService } from 'src/app/services/file.service';
 import { GalleryModalComponent } from './gallery-modal/gallery-modal.component';
 import { environment } from 'src/environments/environment';
 import { DateTime } from 'luxon';
@@ -76,7 +75,6 @@ export class SheetsComponent implements OnInit {
     private toastService: ToastService,
     private dateService: DateService,
     private exportService: ExportService,
-    private fileService: FileService,
     private watchReportService: WatchReportService
   )
   {
@@ -105,10 +103,9 @@ export class SheetsComponent implements OnInit {
   }
 
   deleteWatch(watch: WatchRecord) {
-    forkJoin({
-      image: this.fileService.deleteFile(watch?.imageUrl),
-      watch: this.watchRecordService.deleteWatchRecord(watch.id)
-    }).subscribe({
+    // The API deletes all of this record's images from R2 as part of
+    // deleting the record, so there's no separate file-delete call to make here.
+    this.watchRecordService.deleteWatchRecord(watch.id).subscribe({
       next: () => {
         this.filteredRecords = this.filteredRecords.filter(x => x.id !== watch.id);
         this.toastService.showInfo("Record Deleted", "The watch record has been successfully removed");
