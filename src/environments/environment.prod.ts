@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  baseApiUrl: 'https://tunnel.james-esg.com/horolog',
+  baseApiUrl: 'https://horolog-api.james-esg.com',
   baseStorageDomain: 'https://tunnel.james-esg.com/blobs'
 };
