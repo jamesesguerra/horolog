@@ -65,6 +65,10 @@ export class SheetsComponent implements OnInit {
 
   filterCount = 0;
 
+  // What the sidebar last applied, so the PDF can title itself accordingly.
+  soldRange: [Date, Date | null] | null = null;
+  soldOnly = false;
+
   private isLoadingSubject: BehaviorSubject<boolean>;
   isLoading$: Observable<boolean>;
 
@@ -205,6 +209,8 @@ export class SheetsComponent implements OnInit {
     this.isFilterSidebarVisible = false;
     this.filteredRecords = this.records;
     this.filterCount = 0;
+    this.soldRange = null;
+    this.soldOnly = !!e.isSold;
 
     if (e.serialNumber !== null && e.serialNumber.length > 0) {
       this.filteredRecords = this.filteredRecords.filter(x => x.serialNumber.toLowerCase().includes(e.serialNumber.toLowerCase()));
@@ -225,12 +231,32 @@ export class SheetsComponent implements OnInit {
       this.filterCount++;
     }
   
+    if (e.monthSold != null) {
+      const month = DateTime.fromJSDate(e.monthSold);
+      const monthRange: [Date, Date] = [
+        month.startOf('month').toJSDate(),
+        month.endOf('month').toJSDate()
+      ];
+
+      this.filteredRecords = this.dateService.applyDateFilter(
+        this.filteredRecords,
+        "dateSold",
+        monthRange
+      );
+      this.soldRange = monthRange;
+      this.filterCount++;
+    }
+
     if (e.dateSold != null) {
       this.filteredRecords = this.dateService.applyDateFilter(
         this.filteredRecords,
         "dateSold",
         e.dateSold
       );
+      // Both sold filters narrow to their overlap, which no single window names
+      // honestly — fall back to an untitled sold report rather than mislabel it.
+      this.soldRange = e.monthSold != null ? null : e.dateSold;
+      this.soldOnly = true;
       this.filterCount++;
     }
 
@@ -278,6 +304,8 @@ export class SheetsComponent implements OnInit {
   onClearFilter() {
     this.isFilterSidebarVisible = false;
     this.filterCount = 0;
+    this.soldRange = null;
+    this.soldOnly = false;
     this.filteredRecords = this.records;
   }
 
@@ -526,7 +554,10 @@ export class SheetsComponent implements OnInit {
   }
 
   onExportSheets() {
-    this.exportService.exportSheetsAsPdf(this.filteredRecords);
+    this.exportService.exportSheetsAsPdf(this.filteredRecords, {
+      soldRange: this.soldRange,
+      soldOnly: this.soldOnly
+    });
     this.toastService.showSuccess("Success!", "Exported watch data");
   }
 

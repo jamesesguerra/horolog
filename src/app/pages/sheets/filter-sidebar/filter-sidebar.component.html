@@ -41,15 +41,30 @@
             </div>
 
             <div class="flex flex-column gap-2 mb-4 align-items-stretch flex-grow-1">
-                <label for="dateSold" class="font-semibold">Date Sold</label>
-                <p-calendar 
-                    [iconDisplay]="'input'" 
+                <label for="monthSold" class="font-semibold">Month Sold</label>
+                <p-calendar
+                    [iconDisplay]="'input'"
                     class="w-full"
-                    [showIcon]="true" 
+                    [showIcon]="true"
+                    inputId="monthSold"
+                    view="month"
+                    dateFormat="MM yy"
+                    [readonlyInput]="true"
+                    appendTo="body"
+                    formControlName="monthSold"
+                />
+            </div>
+
+            <div class="flex flex-column gap-2 mb-4 align-items-stretch flex-grow-1">
+                <label for="dateSold" class="font-semibold">Date Sold</label>
+                <p-calendar
+                    [iconDisplay]="'input'"
+                    class="w-full"
+                    [showIcon]="true"
                     inputId="dateSold"
                     selectionMode="range"
                     appendTo="body"
-                    formControlName="dateSold" 
+                    formControlName="dateSold"
                 />
             </div>
 
